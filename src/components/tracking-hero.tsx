@@ -636,7 +636,7 @@ export function TrackingHero() {
                           aria-label="Filter"
                           className={cn(
                             still,
-                            "h-12 w-12 rounded-full border border-[#f0f1f4] bg-black/3 p-0 text-[#212121] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-[#212121] focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-[#212121] active:border-[#f0f1f4] active:bg-[#e8eaee] [&_svg]:size-5",
+                            "h-12 w-12 rounded-full border border-[#f0f1f4] bg-white/40 p-0 text-[#212121] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-[#212121] focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-[#212121] active:border-[#f0f1f4] active:bg-[#e8eaee] [&_svg]:size-5",
                           )}
                         >
                           <Filter />
@@ -676,7 +676,7 @@ export function TrackingHero() {
                           variant="ghost"
                           className={cn(
                             still,
-                            "h-12 gap-2.5 rounded-full border border-[#f0f1f4] bg-black/3 py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-black focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-black aria-expanded:border-[#f0f1f4] aria-expanded:bg-white/40 aria-expanded:text-black",
+                            "h-12 gap-2.5 rounded-full border border-[#f0f1f4] bg-white/40 py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-black focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-black aria-expanded:border-[#f0f1f4] aria-expanded:bg-white/40 aria-expanded:text-black",
                           )}
                         >
                           {carrier && isCarrierName(carrier) ? (
