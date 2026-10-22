@@ -135,12 +135,26 @@
   * {
     @apply border-border outline-ring/50;
     }
+  *:focus,
+  *:focus-visible {
+    outline: none;
+    box-shadow: none;
+    }
   body {
     @apply bg-background text-foreground;
     }
   html {
     @apply font-sans;
     }
+}
+
+/* Hover and utility shadows stay. This only clears the focus ring. */
+*:focus,
+*:focus-visible {
+  outline: none;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-inset-ring-shadow: 0 0 #0000;
 }
 
 .tracking-scroll {

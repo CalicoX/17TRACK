@@ -5,6 +5,7 @@ import {
   useState,
   type FormEvent,
   type KeyboardEvent,
+  type ReactElement,
 } from "react"
 import { Filter, Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -191,6 +192,34 @@ function createLine(value = ""): TrackingLine {
   return { id: crypto.randomUUID(), value }
 }
 
+function HoverTooltip({
+  label,
+  children,
+}: {
+  label: string
+  children: ReactElement
+}) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Tooltip
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) setOpen(false)
+      }}
+    >
+      <TooltipTrigger
+        asChild
+        onPointerEnter={() => setOpen(true)}
+        onPointerLeave={() => setOpen(false)}
+      >
+        {children}
+      </TooltipTrigger>
+      <TooltipContent side="top">{label}</TooltipContent>
+    </Tooltip>
+  )
+}
+
 export function TrackingHero() {
   const [lines, setLines] = useState<TrackingLine[]>(() => [createLine()])
   const [history, setHistory] = useState<HistoryItem[]>([])
@@ -210,6 +239,7 @@ export function TrackingHero() {
   const applyPasteRef = useRef<(id: string, text: string) => void>(() => {})
   const listRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
+  const carrierButtonRef = useRef<HTMLButtonElement>(null)
   const showPlaceholder =
     lines.length === 1 && lines[0]?.value.length === 0
 
@@ -471,6 +501,7 @@ export function TrackingHero() {
     setCarrier(name)
     setCarrierOpen(false)
     setCarrierQuery("")
+    carrierButtonRef.current?.blur()
   }
 
   function onTrack(event: FormEvent<HTMLFormElement>) {
@@ -526,7 +557,7 @@ export function TrackingHero() {
                   key={line.id}
                   data-tracking-line
                   className={cn(
-                    "flex h-[30px] items-center px-3",
+                    "flex h-[30px] items-center px-[14px]",
                     index % 2 === 1 && "bg-[#f6f6f7]",
                   )}
                 >
@@ -598,24 +629,20 @@ export function TrackingHero() {
               <div className="pointer-events-auto flex items-center gap-2">
                 {hasNumbers ? (
                   <>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+                    <HoverTooltip label="Filter">
                         <Button
                           type="button"
                           variant="ghost"
                           aria-label="Filter"
                           className={cn(
                             still,
-                            "h-12 w-12 rounded-full border border-[#f0f1f4] bg-white/40 p-0 text-[#212121] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-[#212121] focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-[#212121] active:border-[#f0f1f4] active:bg-[#e8eaee] [&_svg]:size-5",
+                            "h-12 w-12 rounded-full border border-[#f0f1f4] bg-black/3 p-0 text-[#212121] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-[#212121] focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-[#212121] active:border-[#f0f1f4] active:bg-[#e8eaee] [&_svg]:size-5",
                           )}
                         >
                           <Filter />
                         </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">Filter</TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+                    </HoverTooltip>
+                    <HoverTooltip label="Clear">
                         <Button
                           type="button"
                           variant="ghost"
@@ -628,9 +655,7 @@ export function TrackingHero() {
                         >
                           <Trash2 />
                         </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">Clear</TooltipContent>
-                    </Tooltip>
+                    </HoverTooltip>
                   </>
                 ) : null}
               </div>
@@ -643,22 +668,22 @@ export function TrackingHero() {
                     if (open) setCarrierQuery("")
                   }}
                 >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
+                  <HoverTooltip label="Select carrier">
                       <PopoverTrigger asChild>
                         <Button
+                          ref={carrierButtonRef}
                           type="button"
                           variant="ghost"
                           className={cn(
                             still,
-                            "h-12 gap-2.5 rounded-full border border-[#f0f1f4] bg-white/40 py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-black focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-black aria-expanded:border-[#f0f1f4] aria-expanded:bg-white/40 aria-expanded:text-black",
+                            "h-12 gap-2.5 rounded-full border border-[#f0f1f4] bg-black/3 py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-black focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-black aria-expanded:border-[#f0f1f4] aria-expanded:bg-white/40 aria-expanded:text-black",
                           )}
                         >
                           {carrier && isCarrierName(carrier) ? (
                             <img
                               src={CARRIER_LOGOS[carrier]}
                               alt=""
-                              className="size-8 shrink-0 rounded-full object-cover"
+                              className="size-9 shrink-0 rounded-full object-cover"
                             />
                           ) : (
                             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eaee]">
@@ -668,9 +693,7 @@ export function TrackingHero() {
                           {carrier ?? "Select carrier"}
                         </Button>
                       </PopoverTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">Select carrier</TooltipContent>
-                  </Tooltip>
+                  </HoverTooltip>
                   <PopoverContent
                     side="top"
                     align="end"
@@ -679,6 +702,10 @@ export function TrackingHero() {
                     onOpenAutoFocus={(event) => {
                       event.preventDefault()
                       searchRef.current?.focus()
+                    }}
+                    onCloseAutoFocus={(event) => {
+                      event.preventDefault()
+                      carrierButtonRef.current?.blur()
                     }}
                   >
                     <Input
@@ -742,27 +769,24 @@ export function TrackingHero() {
                   </PopoverContent>
                 </Popover>
 
-                <Tooltip>
-                  <TooltipTrigger asChild>
+                <HoverTooltip label="Track">
                     <Button
                       type="submit"
                       variant="ghost"
                       aria-label="Track"
                       className={cn(
                         still,
-                        "h-12 items-center gap-1 rounded-full border-0 bg-[#FF9916] py-0 pr-4 pl-3 text-[14px] leading-5 font-medium tracking-[-0.21px] text-white shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(255,153,22,0.28)] hover:bg-[#f08c0c] hover:text-white focus-visible:bg-[#f08c0c] focus-visible:text-white",
+                        "h-12 items-center gap-1 rounded-full border-0 bg-[#FF9916] py-0 pr-4 pl-3 text-[14px] leading-5 font-bold tracking-[-0.21px] text-white shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(255,153,22,0.28)] hover:bg-[#f08c0c] hover:text-white focus-visible:bg-[#f08c0c] focus-visible:text-white",
                       )}
                     >
                       <span className="inline-flex size-6 shrink-0 items-center justify-center">
                         <img src="/figma/tracking.svg" alt="" className="shrink-0" />
                       </span>
-                      <span className="text-[14px] leading-5 font-medium text-white">
+                      <span className="text-[14px] leading-5 font-bold text-white">
                         TRACK
                       </span>
                     </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">Track</TooltipContent>
-                </Tooltip>
+                </HoverTooltip>
               </div>
               </div>
             </div>
