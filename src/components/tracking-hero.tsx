@@ -56,9 +56,6 @@ type HistoryItem = {
   value: string
 }
 
-const lineText =
-  "text-[13px] leading-[19.5px] tracking-[-0.19px] text-[#212121]"
-
 const still = "active:translate-y-0!"
 
 const BLUR_STEPS = [
