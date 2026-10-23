@@ -181,3 +181,271 @@
   width: 0;
   height: 0;
 }
+
+/* Top edge stays bright, sides fall off, bottom rim comes back softer. */
+.tool-sheen {
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 6px rgba(0, 0, 0, 0.05),
+    0 6px 28px rgba(0, 0, 0, 0.1);
+}
+
+.tool-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.08) 46%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Dotted globe from the API hero (.api-s1-hero-globe): left edge at 50%,
+   top 46%, up to 520px. Sits on the gradient, behind the copy. */
+.track-hero-globe {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 46%;
+  width: min(38vw, 520px);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.42;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 74%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 74%);
+}
+
+.track-hero-globe canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Below 768px the title scales with the viewport and floors at 20px. */
+.track-hero-title {
+  font-size: clamp(20px, calc(32 * 100vw / 768), 32px);
+  line-height: clamp(calc(28.6px * 20 / 32), calc(28.6 * 100vw / 768), 28.6px);
+  letter-spacing: clamp(-0.66px, calc(-0.66 * 100vw / 768), calc(-0.66px * 20 / 32));
+}
+
+@media (width >= 768px) {
+  .track-hero-title {
+    font-size: 32px;
+    line-height: 28.6px;
+    letter-spacing: -0.66px;
+  }
+}
+
+/* Narrow screens use the Figma pill. At md (48rem) the Tailwind card
+   (262px, 24px radius, toolbar px-3 pt-2 pb-3) wins again. */
+.track-shell {
+  background-color: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  transition:
+    height 280ms ease,
+    border-radius 280ms ease,
+    border-color 280ms ease,
+    box-shadow 280ms ease,
+    padding 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-shell {
+    height: 58px;
+    border-radius: 29px;
+    border-color: #dfdfdf;
+  }
+
+  .track-shell:focus-within {
+    border-color: #d5d8de;
+  }
+}
+
+.track-mobile-field {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 280ms ease;
+}
+
+.track-desktop-list {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+}
+
+@media (width >= 48rem) {
+  .track-mobile-field {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .track-desktop-list {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.track-mobile-input {
+  height: 20px;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: -0.21px;
+  color: #212121;
+}
+
+.track-mobile-input::placeholder {
+  color: #909090;
+  font-weight: 500;
+  opacity: 1;
+}
+
+.track-mobile-input:focus,
+.track-mobile-input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.track-toolbar {
+  position: absolute;
+  z-index: 10;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 68px;
+  overflow: visible;
+  transition:
+    bottom 280ms ease,
+    left 280ms ease,
+    width 280ms ease,
+    height 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-toolbar {
+    bottom: 4px;
+    left: calc(100% - 52px);
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.track-toolbar-bar {
+  transition: padding 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-toolbar-bar {
+    padding: 0;
+    justify-content: flex-end;
+  }
+}
+
+.track-toolbar-end {
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: gap 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-toolbar-end {
+    gap: 0;
+  }
+}
+
+.track-toolbar-extra {
+  opacity: 1;
+  overflow: visible;
+  transition:
+    max-width 280ms ease,
+    opacity 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-toolbar-extra {
+    min-width: 0;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+}
+
+.track-tool-blur {
+  opacity: 1;
+  transition: opacity 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-tool-blur {
+    opacity: 0;
+  }
+}
+
+.track-submit {
+  interpolate-size: allow-keywords;
+  transition:
+    width 280ms ease,
+    padding 280ms ease,
+    gap 280ms ease,
+    box-shadow 280ms ease,
+    background-color 280ms ease,
+    color 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-submit {
+    width: 48px;
+    gap: 0;
+    padding: 0;
+    box-shadow:
+      inset 0 1px 3px rgba(255, 255, 255, 0.85),
+      0 4px 6px rgba(120, 52, 0, 0.08);
+  }
+}
+
+.track-submit-label {
+  display: inline-block;
+  max-width: 5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    max-width 280ms ease,
+    opacity 280ms ease;
+}
+
+@media (width < 48rem) {
+  .track-submit-label {
+    max-width: 0;
+    min-width: 0;
+    opacity: 0;
+  }
+}

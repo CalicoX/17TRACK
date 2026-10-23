@@ -5,6 +5,8 @@ import {
   useState,
   type FormEvent,
   type KeyboardEvent,
+  type MouseEvent,
+  type PointerEvent,
   type ReactElement,
 } from "react"
 import { Filter, Trash2 } from "lucide-react"
@@ -21,6 +23,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { HeroGlobe } from "@/components/hero-globe"
 import { cn } from "@/lib/utils"
 
 const CARRIERS = [
@@ -70,6 +73,11 @@ const BLUR_STEPS = [
 const TOOLBAR_CLEARANCE = 84
 const MAX_TRACKING_LINES = 40
 const LINE_BREAK = /[\n\r\u2028\u2029]/
+const DESKTOP_TRACK_QUERY = "(min-width: 48rem)"
+
+function isDesktopTrack() {
+  return window.matchMedia(DESKTOP_TRACK_QUERY).matches
+}
 
 type PasteEventLike = {
   clipboardData: DataTransfer | null
@@ -169,7 +177,7 @@ function ToolBlur() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+      className="track-tool-blur pointer-events-none absolute inset-x-0 bottom-0 h-24"
     >
       {BLUR_STEPS.map((step) => (
         <div
@@ -199,23 +207,14 @@ function HoverTooltip({
   label: string
   children: ReactElement
 }) {
-  const [open, setOpen] = useState(false)
-
   return (
-    <Tooltip
-      open={open}
-      onOpenChange={(next) => {
-        if (!next) setOpen(false)
-      }}
-    >
-      <TooltipTrigger
-        asChild
-        onPointerEnter={() => setOpen(true)}
-        onPointerLeave={() => setOpen(false)}
-      >
+    <Tooltip delayDuration={400}>
+      <TooltipTrigger asChild onFocus={(event) => event.preventDefault()}>
         {children}
       </TooltipTrigger>
-      <TooltipContent side="top">{label}</TooltipContent>
+      <TooltipContent side="top" sideOffset={8}>
+        {label}
+      </TooltipContent>
     </Tooltip>
   )
 }
@@ -240,8 +239,11 @@ export function TrackingHero() {
   const listRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const carrierButtonRef = useRef<HTMLButtonElement>(null)
+  const mobileInputRef = useRef<HTMLInputElement>(null)
+  const [desktopLayout, setDesktopLayout] = useState(isDesktopTrack)
   const showPlaceholder =
     lines.length === 1 && lines[0]?.value.length === 0
+  const mobileLine = lines[0]
 
   const hasNumbers = lines.some((line) => line.value.trim().length > 0)
   const carrierQueryNormalized = carrierQuery.trim().toLowerCase()
@@ -251,6 +253,11 @@ export function TrackingHero() {
 
   useLayoutEffect(() => {
     if (!pendingFocus) return
+    if (!isDesktopTrack()) {
+      mobileInputRef.current?.focus({ preventScroll: true })
+      setPendingFocus(null)
+      return
+    }
     const input = inputRefs.current[pendingFocus]
     const scroller = listRef.current
     const line = input?.closest("[data-tracking-line]")
@@ -267,6 +274,17 @@ export function TrackingHero() {
     }
     setPendingFocus(null)
   }, [pendingFocus])
+
+  useEffect(() => {
+    const query = window.matchMedia(DESKTOP_TRACK_QUERY)
+    const onChange = () => {
+      const desktop = query.matches
+      setDesktopLayout(desktop)
+      if (!desktop) setCarrierOpen(false)
+    }
+    query.addEventListener("change", onChange)
+    return () => query.removeEventListener("change", onChange)
+  }, [])
 
   function updateLine(id: string, value: string, inputType?: string) {
     if (
@@ -302,7 +320,7 @@ export function TrackingHero() {
     const nextValue = before.slice(0, start) + text + before.slice(end)
     if (nextValue === before) return
     requestAnimationFrame(() => {
-      const node = inputRefs.current[id] ?? input
+      const node = input.isConnected ? input : (inputRefs.current[id] ?? input)
       if (node.value !== before) return
       setLines((current) =>
         current.map((line) =>
@@ -323,6 +341,22 @@ export function TrackingHero() {
 
   function applyMultilinePaste(id: string, text: string) {
     if (pasteLock.current) return
+    if (!isDesktopTrack()) {
+      const first = splitTrackingPaste(text)[0] ?? ""
+      if (!first) return
+      pasteLock.current = true
+      queueMicrotask(() => {
+        pasteLock.current = false
+      })
+      armPasteIgnore(flattenedPasteValues(text, first))
+      notePasteInput(id)
+      setLines((current) =>
+        current.map((line) =>
+          line.id === id ? { ...line, value: first } : line,
+        ),
+      )
+      return
+    }
     const parts = splitTrackingPaste(text)
     if (parts.length === 0) return
     pasteLock.current = true
@@ -368,6 +402,16 @@ export function TrackingHero() {
   }
 
   function insertHistory(value: string) {
+    if (!isDesktopTrack()) {
+      setLines((current) => {
+        const first = current[0]
+        if (!first) return [createLine(value)]
+        return current.map((line, index) =>
+          index === 0 ? { ...line, value } : line,
+        )
+      })
+      return
+    }
     setLines((current) => {
       if (current.some((line) => line.value.trim() === value)) return current
       const index = current.findIndex((line) => line.value.trim() === "")
@@ -416,10 +460,13 @@ export function TrackingHero() {
     if (event.nativeEvent.isComposing) return
 
     if (event.key === "Enter") {
+      if (!isDesktopTrack()) return
       event.preventDefault()
       addLineAfter(index)
       return
     }
+
+    if (!isDesktopTrack()) return
 
     if (
       event.key === "Backspace" &&
@@ -439,6 +486,10 @@ export function TrackingHero() {
     if (native.inputType !== "insertFromPaste" || !native.data) return
     if (!LINE_BREAK.test(native.data)) return
     if (splitTrackingPaste(native.data).length === 0) return
+    if (!isDesktopTrack()) {
+      event.preventDefault()
+      return
+    }
     event.preventDefault()
     applyMultilinePaste(id, native.data)
   }
@@ -455,6 +506,15 @@ export function TrackingHero() {
       if (!text) return
       markPasteHandled(event)
       schedulePlainPaste(event, id, text)
+      return
+    }
+    if (!isDesktopTrack()) {
+      const first = splitTrackingPaste(text)[0]
+      if (!first) return
+      markPasteHandled(event)
+      event.preventDefault()
+      event.stopPropagation()
+      schedulePlainPaste(event, id, first)
       return
     }
     if (splitTrackingPaste(text).length === 0) return
@@ -504,6 +564,30 @@ export function TrackingHero() {
     carrierButtonRef.current?.blur()
   }
 
+  function focusTrackField() {
+    if (!isDesktopTrack()) {
+      mobileInputRef.current?.focus({ preventScroll: true })
+      return
+    }
+    const line =
+      lines.find((item) => item.value.length === 0) ??
+      lines.at(-1) ??
+      lines[0]
+    if (!line) return
+    inputRefs.current[line.id]?.focus({ preventScroll: true })
+  }
+
+  function onShellPointerDown(
+    event: PointerEvent<HTMLFormElement> | MouseEvent<HTMLFormElement>,
+  ) {
+    if (event.button !== 0) return
+    const target = event.target
+    if (!(target instanceof Element)) return
+    if (target.closest("input, textarea, select, button, a")) return
+    event.preventDefault()
+    focusTrackField()
+  }
+
   function onTrack(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const numbers = lines
@@ -522,13 +606,14 @@ export function TrackingHero() {
   }
 
   return (
-    <section className="flex w-full flex-col items-center bg-white px-6 py-16 text-[#212121] antialiased">
-      <div className="flex w-full max-w-[728px] flex-col items-center gap-6">
-        <div className="flex w-full flex-col items-center gap-[18px] text-center">
-          <h1 className="w-full text-[32px] leading-[28.6px] font-bold tracking-[-0.66px] text-[#212121]">
-            ALL IN ONE GLOBAL PACKAGE TRACKING
+    <section className="relative flex w-full flex-col items-center overflow-hidden bg-[linear-gradient(180deg,#f7fbff_0%,#f6f6f6_100%)] px-6 py-16 text-[#212121] antialiased">
+      <HeroGlobe />
+      <div className="relative z-[1] flex w-full max-w-[728px] flex-col items-center gap-6">
+        <div className="flex w-full flex-col items-center gap-[10px] text-center">
+          <h1 className="track-hero-title w-full font-bold text-[#212121]">
+            ALL-IN-ONE GLOBAL PACKAGE TRACKING
           </h1>
-          <p className="w-full text-[16px] leading-6 font-normal tracking-[-0.24px] text-[#5c6370]">
+          <p className="w-full text-[14px] leading-[21px] font-normal tracking-[-0.21px] text-[#5c6370] md:text-[16px] md:leading-6 md:tracking-[-0.24px]">
             Track global packages, eCommerce orders, and air cargo from 3500+
             carriers and 190+ airlines, covering China and beyond with 17TRACK.
           </p>
@@ -536,21 +621,50 @@ export function TrackingHero() {
 
         <div className="flex w-full flex-col gap-4">
           <form
-            className="relative h-[262px] w-full overflow-hidden rounded-[24px] border border-[#e6e8ec] bg-white shadow-none focus-within:border-[#d5d8de] focus-within:shadow-[0px_1px_1.5px_rgba(0,0,0,0.025)]"
+            className="track-shell relative h-[262px] w-full overflow-hidden rounded-[24px] border border-[#e6e8ec] shadow-none focus-within:border-[#d5d8de] focus-within:shadow-[0px_4px_16px_rgba(0,0,0,0.06)]"
+            onMouseDown={onShellPointerDown}
+            onPointerDown={onShellPointerDown}
             onSubmit={onTrack}
           >
+            {mobileLine ? (
+              <div
+                className="track-mobile-field absolute top-0 left-0 z-[1] flex h-[56px] w-[calc(100%-62px)] items-center pl-4"
+                inert={desktopLayout || undefined}
+                aria-hidden={desktopLayout || undefined}
+              >
+                <Input
+                  ref={mobileInputRef}
+                  value={mobileLine.value}
+                  placeholder="TRACK YOUR ORDER"
+                  aria-label="Tracking number"
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  autoComplete="off"
+                  spellCheck={false}
+                  enterKeyHint="go"
+                  onChange={(event) =>
+                    updateLine(
+                      mobileLine.id,
+                      event.target.value,
+                      event.nativeEvent instanceof InputEvent
+                        ? event.nativeEvent.inputType
+                        : undefined,
+                    )
+                  }
+                  onKeyDown={(event) => onLineKeyDown(event, 0)}
+                  onBeforeInput={(event) =>
+                    onLineBeforeInput(event, mobileLine.id)
+                  }
+                  onPaste={(event) => onLinePaste(event, mobileLine.id)}
+                  className="track-mobile-input"
+                />
+              </div>
+            ) : null}
             <div
               ref={listRef}
-              className="tracking-scroll h-full overflow-y-auto pt-2 pb-24"
-              onPointerDown={(event) => {
-                const target = event.target
-                if (!(target instanceof HTMLElement)) return
-                if (target.closest("input, button, a")) return
-                const line =
-                  lines.find((item) => item.value.length === 0) ?? lines[0]
-                if (!line) return
-                inputRefs.current[line.id]?.focus({ preventScroll: true })
-              }}
+              inert={!desktopLayout || undefined}
+              aria-hidden={!desktopLayout || undefined}
+              className="track-desktop-list tracking-scroll h-full overflow-y-auto pt-2 pb-24"
             >
               {lines.map((line, index) => (
                 <div
@@ -558,7 +672,7 @@ export function TrackingHero() {
                   data-tracking-line
                   className={cn(
                     "flex h-[30px] items-center px-[14px]",
-                    index % 2 === 1 && "bg-[#f6f6f7]",
+                    index % 2 === 1 && "bg-black/[0.035]",
                   )}
                 >
                   <span
@@ -623,10 +737,10 @@ export function TrackingHero() {
               ))}
             </div>
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
+            <div className="track-toolbar pointer-events-none absolute z-10">
               <ToolBlur />
-              <div className="relative flex items-center justify-between px-3 pt-2 pb-3">
-              <div className="pointer-events-auto flex items-center gap-2">
+              <div className="track-toolbar-bar relative flex h-full w-full items-center justify-between px-3 pt-2 pb-3">
+              <div className="track-toolbar-extra pointer-events-auto flex items-center gap-2">
                 {hasNumbers ? (
                   <>
                     <HoverTooltip label="Filter">
@@ -636,7 +750,7 @@ export function TrackingHero() {
                           aria-label="Filter"
                           className={cn(
                             still,
-                            "h-12 w-12 rounded-full border border-[#f0f1f4] bg-white/40 p-0 text-[#212121] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-[#212121] focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-[#212121] active:border-[#f0f1f4] active:bg-[#e8eaee] [&_svg]:size-5",
+                            "tool-sheen h-12 w-12 rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] p-0 text-[#212121] backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-[#212121]! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-[#212121]! active:bg-[#e8eaee] [&_svg]:size-5",
                           )}
                         >
                           <Filter />
@@ -649,7 +763,7 @@ export function TrackingHero() {
                           aria-label="Clear tracking numbers"
                           className={cn(
                             still,
-                            "h-12 w-12 rounded-full border border-[#e5484d]/35 bg-[#e5484d]/20 p-0 text-[#e5484d] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#e5484d]/35 hover:bg-[#e5484d]/32 hover:text-[#e5484d] focus-visible:border-[#e5484d]/35 focus-visible:bg-[#e5484d]/32 focus-visible:text-[#e5484d] active:bg-[#e5484d]/40 [&_svg]:size-5",
+                            "h-12 w-12 rounded-full border border-[#e5484d]/35 bg-[#e5484d]/20 p-0 text-[#e5484d] shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-xl hover:border-[#e5484d]/35 hover:bg-[#e5484d]/10! hover:text-[#e5484d]! focus-visible:border-[#e5484d]/35 focus-visible:bg-[#e5484d]/10! focus-visible:text-[#e5484d]! active:bg-[#e5484d]/40 [&_svg]:size-5",
                           )}
                           onClick={clearLines}
                         >
@@ -660,7 +774,8 @@ export function TrackingHero() {
                 ) : null}
               </div>
 
-              <div className="pointer-events-auto flex items-center gap-3">
+              <div className="track-toolbar-end pointer-events-auto flex items-center gap-3">
+                <div className="track-toolbar-extra">
                 <Popover
                   open={carrierOpen}
                   onOpenChange={(open) => {
@@ -676,7 +791,7 @@ export function TrackingHero() {
                           variant="ghost"
                           className={cn(
                             still,
-                            "h-12 gap-2.5 rounded-full border border-[#f0f1f4] bg-white/40 py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(0,0,0,0.03)] backdrop-blur-xl hover:border-[#f0f1f4] hover:bg-white hover:text-black focus-visible:border-[#f0f1f4] focus-visible:bg-white focus-visible:text-black aria-expanded:border-[#f0f1f4] aria-expanded:bg-white/40 aria-expanded:text-black",
+                            "tool-sheen h-12 gap-2.5 rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-black! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-black! aria-expanded:bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] aria-expanded:text-black",
                           )}
                         >
                           {carrier && isCarrierName(carrier) ? (
@@ -690,7 +805,7 @@ export function TrackingHero() {
                               <img src="/figma/shipment-major.svg" alt="" />
                             </span>
                           )}
-                          {carrier ?? "Select carrier"}
+                          {carrier ?? "Auto detect"}
                         </Button>
                       </PopoverTrigger>
                   </HoverTooltip>
@@ -737,7 +852,7 @@ export function TrackingHero() {
                           )}
                           onClick={() => selectCarrier(null)}
                         >
-                          Select carrier
+                          Auto detect
                         </Button>
                       ) : null}
                       {filteredCarriers.map((name) => (
@@ -768,6 +883,7 @@ export function TrackingHero() {
                     </div>
                   </PopoverContent>
                 </Popover>
+                </div>
 
                 <HoverTooltip label="Track">
                     <Button
@@ -776,13 +892,13 @@ export function TrackingHero() {
                       aria-label="Track"
                       className={cn(
                         still,
-                        "h-12 items-center gap-1 rounded-full border-0 bg-[#FF9916] py-0 pr-4 pl-3 text-[14px] leading-5 font-bold tracking-[-0.21px] text-white shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(255,153,22,0.28)] hover:bg-[#f08c0c] hover:text-white focus-visible:bg-[#f08c0c] focus-visible:text-white",
+                        "track-submit h-12 items-center gap-1 rounded-full border-0 bg-[#FF9916] py-0 pr-4 pl-3 text-[14px] leading-5 font-bold tracking-[-0.21px] text-white shadow-[inset_0_1px_3px_rgba(255,255,255,0.85),0_4px_12px_rgba(255,153,22,0.28)] hover:bg-[#f08c0c] hover:text-white focus-visible:bg-[#f08c0c] focus-visible:text-white",
                       )}
                     >
                       <span className="inline-flex size-6 shrink-0 items-center justify-center">
                         <img src="/figma/tracking.svg" alt="" className="shrink-0" />
                       </span>
-                      <span className="text-[14px] leading-5 font-bold text-white">
+                      <span className="track-submit-label text-[14px] leading-5 font-bold text-white">
                         TRACK
                       </span>
                     </Button>
