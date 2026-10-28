@@ -14,27 +14,37 @@ export function ComplexitySection() {
 
   useEffect(() => {
     const section = sectionRef.current
-    const stats = section?.querySelector(".track-coverage-stats")
-    if (!section || !stats) return
+    if (!section) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-    stats.classList.add("is-armed")
+    const items = [...section.querySelectorAll("ul.track-coverage-stats > li")]
+    if (!items.length) return
+
     let observer: IntersectionObserver | null = null
-    const frame = requestAnimationFrame(() => {
+    const revealFrames: number[] = []
+
+    const arm = requestAnimationFrame(() => {
       observer = new IntersectionObserver(
         (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return
-          stats.classList.add("is-shown")
-          observer?.disconnect()
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue
+            observer?.unobserve(entry.target)
+            const frame = requestAnimationFrame(() => {
+              entry.target.classList.add("is-shown")
+            })
+            revealFrames.push(frame)
+          }
         },
-        { threshold: 0.35 },
+        { threshold: 0.5 },
       )
-      observer.observe(section)
+      items.forEach((item) => observer?.observe(item))
     })
 
     return () => {
-      cancelAnimationFrame(frame)
+      cancelAnimationFrame(arm)
+      revealFrames.forEach((frame) => cancelAnimationFrame(frame))
       observer?.disconnect()
+      items.forEach((item) => item.classList.remove("is-shown"))
     }
   }, [])
 

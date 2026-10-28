@@ -75,13 +75,15 @@ const ROW_THREE: CarrierLogo[] = [
   },
 ]
 
+const carrierCardShape = "rounded-[20px] [corner-shape:squircle]"
+
 function LogoCard({ name, src, href }: CarrierLogo) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex h-[120px] min-w-0 items-center justify-center overflow-hidden rounded-[12px] border border-[#e0e0e0] bg-white"
+      className={`flex h-[120px] min-w-0 items-center justify-center overflow-hidden border border-[#e0e0e0] ${name === "DHL" ? "bg-[#f5cc42]" : "bg-white"} ${carrierCardShape}`}
     >
       <img src={src} alt={name} className="max-h-full max-w-full object-contain" />
     </a>
@@ -92,7 +94,7 @@ function JoinCard() {
   return (
     <a
       href="mailto:davi@17track.net"
-      className="group flex h-[120px] min-w-0 flex-col items-center justify-center gap-[5px] rounded-[12px] border border-[#e0e0e0] bg-white"
+      className={`group flex h-[120px] min-w-0 flex-col items-center justify-center gap-[5px] border border-[#e0e0e0] bg-white ${carrierCardShape}`}
     >
       <img src="/carriers/mail.svg" alt="" className="h-8 w-8" />
       <span className="text-[14px] leading-none font-medium text-[#000075]">
@@ -123,7 +125,7 @@ function LogoRow({
 
 export function CarriersSection() {
   return (
-    <section className="w-full bg-[#f6f6f6] pt-[100px] pb-[100px] text-[#212121] antialiased">
+    <section className="hidden w-full bg-[#f6f6f6] pt-[100px] pb-[100px] text-[#212121] antialiased md:block">
       <div className="mx-auto w-full max-w-[1320px] px-[15px]">
         <h2 className="track-carriers-title mb-[5px] text-center font-bold text-[#212121]">
           3500+ Carriers in one

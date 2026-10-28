@@ -1,16 +1,31 @@
+import { SolutionPhone } from "@/components/solution-phone"
+
 type Solution = {
   name: string
+  /** Official product mark, shown in a 64px square above the title. */
+  icon: string
   description: string
   points: string[]
   image: string
   imageAlt: string
+  /** Width / height, so the cell can grow with the picture and still fill if copy is taller. */
+  imageRatio?: string
+  phone?: boolean
+  /** Whole picture, padded inside the cell. */
+  framed?: boolean
   badge?: { src: string; alt: string }
-  actions: { label: string; href: string; tone: "solid" | "outline" }[]
+  actions: {
+    label: string
+    href: string
+    tone: "solid" | "outline" | "returns" | "badge"
+    badge?: { src: string; alt: string }
+  }[]
 }
 
 const SOLUTIONS: Solution[] = [
   {
     name: "Shopify Order Tracking",
+    icon: "/solutions/shopify-logo.svg",
     description:
       "Centralize all shipment data in a single dashboard, keep customers informed at every stage with automated email notifications, and streamline returns — all within one 17TRACK Shopify app.",
     points: [
@@ -20,6 +35,7 @@ const SOLUTIONS: Solution[] = [
     ],
     image: "/solutions/shopify.webp",
     imageAlt: "Shopify order tracking list and a package timeline",
+    imageRatio: "820 / 465",
     badge: {
       src: "/solutions/built-for-shopify.svg",
       alt: "Built for Shopify",
@@ -34,6 +50,7 @@ const SOLUTIONS: Solution[] = [
   },
   {
     name: "17RETURNS",
+    icon: "/solutions/returns-icon.png",
     description:
       "AI-powered returns that run around the clock, recover revenue, and take the repeat work off your support team.",
     points: [
@@ -41,18 +58,21 @@ const SOLUTIONS: Solution[] = [
       "Cut reverse logistics cost by 18%+",
       "Automate returns 24/7 and reduce support work by 80%",
     ],
-    image: "/solutions/returns.webp",
-    imageAlt: "17RETURNS product",
+    image: "/solutions/returns-hero.webp",
+    imageAlt: "17RETURNS hero with the return flow",
+    imageRatio: "1354 / 1131",
+    framed: true,
     actions: [
       {
         label: "Start free trial",
         href: "https://www.17returns.com?utm_source=www.17track.com&utm_medium=products&utm_campaign=button",
-        tone: "solid",
+        tone: "returns",
       },
     ],
   },
   {
     name: "Tracking API",
+    icon: "/solutions/api-logo.svg",
     description:
       "Built for logistics providers, eCommerce platforms, SaaS companies, and payment platforms. One tracking API covers 3,500+ carriers and sends reliable, real-time updates to your users.",
     points: [
@@ -62,6 +82,7 @@ const SOLUTIONS: Solution[] = [
     ],
     image: "/solutions/api.webp",
     imageAlt: "17TRACK Tracking API illustration",
+    imageRatio: "1440 / 1120",
     actions: [
       {
         label: "Try for free",
@@ -72,6 +93,7 @@ const SOLUTIONS: Solution[] = [
   },
   {
     name: "17TRACK App",
+    icon: "/solutions/app-icon.svg",
     description:
       "Join 15+ million people who use the free app to auto-detect carriers, follow packages, and get delivery alerts as they happen.",
     points: [
@@ -79,18 +101,27 @@ const SOLUTIONS: Solution[] = [
       "Real-time delivery notifications",
       "Free on iOS and Android",
     ],
-    image: "/solutions/app.webp",
+    image: "/solutions/app-screen.png",
     imageAlt: "17TRACK mobile app",
+    phone: true,
     actions: [
       {
         label: "App Store",
         href: "https://itunes.apple.com/app/id1004956012",
-        tone: "solid",
+        tone: "badge",
+        badge: {
+          src: "/footer/badge-appstore.png",
+          alt: "Download on the App Store",
+        },
       },
       {
         label: "Google Play",
         href: "https://play.google.com/store/apps/details?id=yqtrack.app",
-        tone: "outline",
+        tone: "badge",
+        badge: {
+          src: "/footer/badge-googleplay.png",
+          alt: "Get it on Google Play",
+        },
       },
     ],
   },
@@ -100,16 +131,40 @@ function Action({
   label,
   href,
   tone,
+  badge,
 }: Solution["actions"][number]) {
+  if (tone === "badge" && badge) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex shrink-0 no-underline"
+      >
+        <img
+          src={badge.src}
+          alt={badge.alt}
+          width={154}
+          height={44}
+          className="block h-11 w-[154px] object-contain"
+        />
+      </a>
+    )
+  }
+
+  const size =
+    "inline-flex h-10 items-center justify-center rounded-full px-4 py-0 text-[16px] leading-5 font-medium no-underline"
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={
-        tone === "solid"
-          ? "inline-flex h-12 items-center rounded-full bg-[#003a9b] px-5 text-[14px] leading-5 font-medium text-white no-underline hover:bg-[#002f7d]"
-          : "inline-flex h-12 items-center rounded-full border border-[#d2d6dd] bg-white px-5 text-[14px] leading-5 font-medium text-[#212121] no-underline hover:bg-[#f6f6f6]"
+        tone === "returns"
+          ? `${size} bg-[#15b497] text-white hover:bg-[#11927a]`
+          : tone === "solid"
+            ? `${size} bg-[#003a9b] text-white hover:bg-[#002f7d]`
+            : `${size} border border-[#d2d6dd] bg-white text-[#212121] hover:bg-[#f6f6f6]`
       }
     >
       {label}
@@ -120,67 +175,115 @@ function Action({
 export function SolutionsSection() {
   return (
     <section className="w-full bg-white py-24 text-[#212121] antialiased">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-20 px-6">
-        <h2 className="track-solutions-title text-center font-bold">
+      <div className="mx-auto w-full max-w-[1440px] px-6">
+        <h2 className="track-solutions-title mb-12 text-center font-bold md:mb-16">
           Multiple package tracking solutions in one
         </h2>
-        {SOLUTIONS.map((item, index) => {
-          const flipped = index % 2 === 1
-          return (
-            <article
-              key={item.name}
-              className="grid items-center gap-10 md:grid-cols-2 md:gap-16"
-            >
-              <figure
-                className={
-                  flipped
-                    ? "order-1 m-0 md:order-2"
-                    : "order-1 m-0"
-                }
+      </div>
+      <div>
+          {SOLUTIONS.map((item, index) => {
+            const flipped = index % 2 === 1
+            const rule = "md:border-r md:border-[#f0f2f5]"
+            return (
+              <article
+                key={item.name}
+                className="border-b border-[#f0f2f5] last:border-b-0"
               >
-                <img
-                  src={item.image}
-                  alt={item.imageAlt}
-                  className="h-auto w-full rounded-[24px] bg-[#f6f6f6] object-contain"
-                />
-              </figure>
-              <div className={flipped ? "order-2 md:order-1" : "order-2"}>
-                <h3 className="track-solution-title flex flex-wrap items-center gap-x-3 gap-y-2 font-bold">
-                  {item.name}
-                  {item.badge ? (
+              <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 px-6 md:min-h-[720px] md:grid-cols-2">
+                {index < SOLUTIONS.length - 1 ? (
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute top-full left-1/2 z-10 hidden size-[6px] -mt-[2.5px] -ml-[3.5px] bg-[#f0f2f5] md:block"
+                  />
+                ) : null}
+                <figure
+                  aria-label={item.phone ? item.imageAlt : undefined}
+                  role={item.phone ? "img" : undefined}
+                  className={
+                    item.phone
+                      ? `relative m-0 min-h-[520px] overflow-hidden md:h-full md:min-h-0 ${flipped ? "md:order-2" : `md:order-1 ${rule}`}`
+                      : `relative m-0 min-h-[380px] overflow-hidden md:h-full md:min-h-0 ${flipped ? "md:order-2" : `md:order-1 ${rule}`}`
+                  }
+                >
+                  {item.phone ? (
+                    <SolutionPhone />
+                  ) : item.framed ? (
                     <img
-                      src={item.badge.src}
-                      alt={item.badge.alt}
-                      className="h-[25px] w-auto"
+                      src={item.image}
+                      alt={item.imageAlt}
+                      className="absolute inset-6 h-[calc(100%-3rem)] w-[calc(100%-3rem)] object-contain md:inset-12 md:h-[calc(100%-6rem)] md:w-[calc(100%-6rem)]"
                     />
-                  ) : null}
-                </h3>
-                <p className="mt-1 text-[16px] leading-6 text-[#5c6370]">
-                  {item.description}
-                </p>
-                <ul className="mt-5 flex flex-col gap-2">
-                  {item.points.map((point) => (
-                    <li
-                      key={point}
-                      className="flex items-start gap-2.5 text-[15px] leading-6 font-medium"
-                    >
-                      <span
+                  ) : (
+                    <>
+                      <div
                         aria-hidden
-                        className="mt-[9px] size-1.5 shrink-0 rounded-full bg-[#212121]"
+                        className="w-full"
+                        style={{ aspectRatio: item.imageRatio }}
                       />
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  {item.actions.map((action) => (
-                    <Action key={action.label} {...action} />
-                  ))}
+                      <img
+                        src={item.image}
+                        alt={item.imageAlt}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                    </>
+                  )}
+                </figure>
+                <div
+                  className={`flex flex-col justify-center py-8 md:py-14 ${flipped ? `md:order-1 md:pr-14 ${rule}` : "md:order-2 md:pl-14"}`}
+                >
+                  <img
+                    src={item.icon}
+                    alt=""
+                    width={64}
+                    height={64}
+                    className={
+                      item.name === "17RETURNS"
+                        ? "mb-4 block size-[64px] shrink-0 self-start overflow-hidden rounded-[14px] object-cover"
+                        : "mb-4 block size-[64px] shrink-0 self-start object-contain object-left"
+                    }
+                  />
+                  <h3 className="track-solution-title flex flex-wrap items-center gap-x-3 gap-y-2 font-bold">
+                    {item.name}
+                    {item.name === "17TRACK App" ? (
+                      <span className="inline-flex shrink-0 items-center rounded-full bg-[#ff8a00] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
+                        Free
+                      </span>
+                    ) : null}
+                    {item.badge ? (
+                      <img
+                        src={item.badge.src}
+                        alt={item.badge.alt}
+                        className="h-[25px] w-auto"
+                      />
+                    ) : null}
+                  </h3>
+                  <p className="mt-1 text-[16px] leading-6 text-[#5c6370]">
+                    {item.description}
+                  </p>
+                  <ul className="mt-5 flex flex-col gap-2">
+                    {item.points.map((point) => (
+                      <li
+                        key={point}
+                        className="flex items-start gap-2.5 text-[15px] leading-6 font-medium"
+                      >
+                        <span
+                          aria-hidden
+                          className="mt-[9px] size-1.5 shrink-0 rounded-full bg-[#212121]"
+                        />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {item.actions.map((action) => (
+                      <Action key={action.label} {...action} />
+                    ))}
+                  </div>
                 </div>
               </div>
-            </article>
-          )
-        })}
+              </article>
+            )
+          })}
       </div>
     </section>
   )

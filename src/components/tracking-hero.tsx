@@ -96,11 +96,11 @@ function CarrierGroup({
               className="size-8 shrink-0 rounded-[4px] bg-white object-contain"
             />
             <span className="min-w-0">
+              <span className="block truncate text-[13px] leading-4 font-medium text-[#212121]">
+                {item.name}
+              </span>
               <span className="block truncate text-[11px] leading-4 text-[#8a8f98]">
                 {item.country}
-              </span>
-              <span className="block truncate text-[13px] leading-4 text-[#212121]">
-                {item.name}
               </span>
             </span>
           </button>
@@ -122,21 +122,36 @@ type HistoryItem = {
 
 const still = "active:translate-y-0!"
 
-const BLUR_STEPS = [
-  { blur: 1, from: 0 },
-  { blur: 2, from: 16 },
-  { blur: 4, from: 32 },
-  { blur: 8, from: 48 },
-  { blur: 14, from: 64 },
-] as const
-
 const TOOLBAR_CLEARANCE = 84
+const CARRIER_MENU_TOP_CLEARANCE = 64
+const CARRIER_MENU_SIDE_OFFSET = 4
+const CARRIER_MENU_FIXED_CHROME = 112
+const CARRIER_LIST_MAX_HEIGHT = 360
 const MAX_TRACKING_LINES = 40
 const LINE_BREAK = /[\n\r\u2028\u2029]/
 const DESKTOP_TRACK_QUERY = "(min-width: 48rem)"
 
 function isDesktopTrack() {
   return window.matchMedia(DESKTOP_TRACK_QUERY).matches
+}
+
+function spaceAboveCarrierButton(button: HTMLElement) {
+  return Math.floor(
+    button.getBoundingClientRect().top -
+      CARRIER_MENU_TOP_CLEARANCE -
+      CARRIER_MENU_SIDE_OFFSET,
+  )
+}
+
+function isCarrierMenuScroll(target: EventTarget | null) {
+  return (
+    target instanceof Element &&
+    Boolean(target.closest("[data-slot=popover-content]"))
+  )
+}
+
+function isQueryCardScroll(target: EventTarget | null) {
+  return target instanceof Element && Boolean(target.closest(".track-shell"))
 }
 
 type PasteEventLike = {
@@ -234,26 +249,7 @@ function flattenedPasteValues(text: string, first: string): Set<string> {
 }
 
 function ToolBlur() {
-  return (
-    <div
-      aria-hidden
-      className="track-tool-blur pointer-events-none absolute inset-x-0 bottom-0 h-24"
-    >
-      {BLUR_STEPS.map((step) => (
-        <div
-          key={step.blur}
-          className="absolute inset-0"
-          style={{
-            backdropFilter: `blur(${step.blur}px)`,
-            WebkitBackdropFilter: `blur(${step.blur}px)`,
-            maskImage: `linear-gradient(to bottom, transparent ${step.from}%, black ${step.from + 28}%, black 100%)`,
-            WebkitMaskImage: `linear-gradient(to bottom, transparent ${step.from}%, black ${step.from + 28}%, black 100%)`,
-          }}
-        />
-      ))}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/15 to-white/55" />
-    </div>
-  )
+  return <div aria-hidden className="track-tool-blur" />
 }
 
 function createLine(value = ""): TrackingLine {
@@ -285,6 +281,7 @@ export function TrackingHero() {
   const [historyExpanded, setHistoryExpanded] = useState(false)
   const [carrier, setCarrier] = useState<string | null>(null)
   const [carrierOpen, setCarrierOpen] = useState(false)
+  const [carrierMenuMaxHeight, setCarrierMenuMaxHeight] = useState<number | null>(null)
   const [carrierQuery, setCarrierQuery] = useState("")
   const [carrierHistory, setCarrierHistory] = useState<string[]>([])
   const [pendingFocus, setPendingFocus] = useState<string | null>(null)
@@ -320,6 +317,13 @@ export function TrackingHero() {
   const allCarriers = CARRIER_OPTIONS.filter(
     (item) => !item.popular && carrierMatches(item),
   )
+  const carrierListMaxHeight =
+    carrierMenuMaxHeight == null
+      ? CARRIER_LIST_MAX_HEIGHT
+      : Math.min(
+          CARRIER_LIST_MAX_HEIGHT,
+          Math.max(0, carrierMenuMaxHeight - CARRIER_MENU_FIXED_CHROME),
+        )
 
   useLayoutEffect(() => {
     if (!pendingFocus) return
@@ -355,6 +359,27 @@ export function TrackingHero() {
     query.addEventListener("change", onChange)
     return () => query.removeEventListener("change", onChange)
   }, [])
+
+  useLayoutEffect(() => {
+    if (!carrierOpen) return
+    const update = () => {
+      const button = carrierButtonRef.current
+      if (!button) return
+      const next = spaceAboveCarrierButton(button)
+      setCarrierMenuMaxHeight((current) => (current === next ? current : next))
+    }
+    const onScroll = (event: Event) => {
+      if (isCarrierMenuScroll(event.target) || isQueryCardScroll(event.target)) return
+      setCarrierOpen(false)
+    }
+    update()
+    window.addEventListener("resize", update)
+    window.addEventListener("scroll", onScroll, true)
+    return () => {
+      window.removeEventListener("resize", update)
+      window.removeEventListener("scroll", onScroll, true)
+    }
+  }, [carrierOpen])
 
   function updateLine(id: string, value: string, inputType?: string) {
     if (
@@ -681,7 +706,7 @@ export function TrackingHero() {
   }
 
   return (
-    <section className="relative flex w-full flex-col items-center overflow-hidden bg-[linear-gradient(180deg,#eef7fd_0%,#f6f6f6_100%)] px-6 py-16 text-[#212121] antialiased">
+    <section className="track-hero relative flex w-full flex-col items-center overflow-hidden px-6 py-16 text-[#212121] antialiased">
       <HeroGlobe />
       <div className="relative z-[1] flex w-full max-w-[728px] flex-col items-center gap-6">
         <div className="flex w-full flex-col items-center gap-[10px] text-center">
@@ -696,11 +721,12 @@ export function TrackingHero() {
 
         <div className="flex w-full flex-col gap-4">
           <form
-            className="track-shell relative h-[262px] w-full overflow-hidden rounded-[24px] border border-[#d2d6dd] shadow-none hover:shadow-[0px_4px_16px_rgba(0,0,0,0.06)] focus-within:border-[#c8cdd6] focus-within:shadow-[0px_4px_16px_rgba(0,0,0,0.06)]"
+            className="track-field relative h-[262px] w-full"
             onMouseDown={onShellPointerDown}
             onPointerDown={onShellPointerDown}
             onSubmit={onTrack}
           >
+            <div className="track-shell absolute inset-0 overflow-hidden rounded-[24px] border border-[rgba(148,163,184,0.28)] shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_1px_3px_rgba(15,23,42,0.06)] hover:shadow-[0px_4px_16px_rgba(0,0,0,0.06)] focus-within:border-[#c8cdd6] focus-within:shadow-[0px_4px_16px_rgba(0,0,0,0.06)]">
             {mobileLine ? (
               <div
                 className="track-mobile-field absolute top-0 left-0 z-[1] flex h-[56px] w-[calc(100%-62px)] items-center pl-4"
@@ -739,7 +765,7 @@ export function TrackingHero() {
               ref={listRef}
               inert={!desktopLayout || undefined}
               aria-hidden={!desktopLayout || undefined}
-              className="track-desktop-list tracking-scroll h-full overflow-y-auto pt-2 pb-24"
+              className="track-desktop-list tracking-scroll h-full overflow-y-auto pt-2 pb-3"
             >
               {lines.map((line, index) => (
                 <div
@@ -811,9 +837,10 @@ export function TrackingHero() {
                 </div>
               ))}
             </div>
+            </div>
+            <ToolBlur />
 
             <div className="track-toolbar pointer-events-none absolute z-10">
-              <ToolBlur />
               <div className="track-toolbar-bar relative flex h-full w-full items-center justify-between px-3 pt-2 pb-3">
               <div className="track-toolbar-extra pointer-events-auto flex items-center gap-2">
                 {hasNumbers ? (
@@ -854,8 +881,13 @@ export function TrackingHero() {
                 <Popover
                   open={carrierOpen}
                   onOpenChange={(open) => {
+                    if (open && carrierButtonRef.current) {
+                      setCarrierMenuMaxHeight(
+                        spaceAboveCarrierButton(carrierButtonRef.current),
+                      )
+                      setCarrierQuery("")
+                    }
                     setCarrierOpen(open)
-                    if (open) setCarrierQuery("")
                   }}
                 >
                   <HoverTooltip label="Select carrier">
@@ -887,11 +919,22 @@ export function TrackingHero() {
                   <PopoverContent
                     side="top"
                     align="end"
-                    avoidCollisions={false}
-                    className="w-[560px] max-w-[calc(100vw-24px)] gap-3 p-3"
+                    sideOffset={CARRIER_MENU_SIDE_OFFSET}
+                    collisionPadding={{ top: CARRIER_MENU_TOP_CLEARANCE }}
+                    className="w-[560px] max-w-[calc(100vw-24px)] gap-3 overflow-hidden p-3 shadow-[0_16px_48px_rgba(15,23,42,0.16)] duration-200 ease-out fill-mode-forwards data-closed:slide-out-to-top-2"
+                    style={
+                      carrierMenuMaxHeight != null && carrierMenuMaxHeight > 0
+                        ? {
+                            maxHeight: `min(${carrierMenuMaxHeight}px, var(--radix-popover-content-available-height, ${carrierMenuMaxHeight}px))`,
+                          }
+                        : {
+                            maxHeight:
+                              "var(--radix-popover-content-available-height)",
+                          }
+                    }
                     onOpenAutoFocus={(event) => {
                       event.preventDefault()
-                      searchRef.current?.focus()
+                      searchRef.current?.focus({ preventScroll: true })
                     }}
                     onCloseAutoFocus={(event) => {
                       event.preventDefault()
@@ -918,22 +961,50 @@ export function TrackingHero() {
                         if (match) selectCarrier(match.name)
                       }}
                     />
-                    <button
-                      type="button"
-                      className={cn(
-                        still,
-                        "flex items-center gap-2 rounded-md px-1 py-1 text-left text-[13px] leading-5",
-                        carrier === null && "bg-[#f2f2f2]",
-                      )}
-                      onClick={() => selectCarrier(null)}
+                    {carrier && carrierByName(carrier) ? (
+                      <div
+                        className={cn(
+                          still,
+                          "flex items-center gap-2 rounded-md px-3 py-1.5 text-left text-[13px] leading-5",
+                        )}
+                      >
+                        <span className="flex min-w-0 items-center gap-2">
+                          <span className="shrink-0 text-[#5c6370]">Current item :</span>
+                          <img
+                            src={carrierByName(carrier)?.logo}
+                            alt=""
+                            className="size-5 shrink-0 rounded-[4px] object-contain"
+                          />
+                          <span className="truncate font-medium text-[#212121]">{carrier}</span>
+                        </span>
+                        <button
+                          type="button"
+                          className="ml-auto shrink-0 rounded-md px-1 font-medium text-[#212121] hover:bg-[#f2f2f2]"
+                          onClick={() => selectCarrier(null)}
+                        >
+                          Auto detect
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className={cn(
+                          still,
+                          "flex items-center gap-2 rounded-md bg-[#f2f2f2] px-3 py-1.5 text-left text-[13px] leading-5",
+                        )}
+                        onClick={() => selectCarrier(null)}
+                      >
+                        <span className="text-[#5c6370]">Current item :</span>
+                        <span className="flex size-5 items-center justify-center rounded-full bg-[#e8eaee]">
+                          <img src="/figma/shipment-major.svg" alt="" className="size-3.5" />
+                        </span>
+                        <span className="font-medium text-[#212121]">Auto detect</span>
+                      </button>
+                    )}
+                    <div
+                      className="overflow-y-auto overscroll-contain"
+                      style={{ maxHeight: carrierListMaxHeight }}
                     >
-                      <span className="text-[#5c6370]">Current item :</span>
-                      <span className="flex size-5 items-center justify-center rounded-full bg-[#e8eaee]">
-                        <img src="/figma/shipment-major.svg" alt="" className="size-3.5" />
-                      </span>
-                      <span className="font-medium text-[#212121]">Auto detect</span>
-                    </button>
-                    <div className="max-h-[360px] overflow-y-auto">
                       <CarrierGroup
                         title="Search history"
                         items={historyCarriers}

@@ -216,6 +216,32 @@
   pointer-events: none;
 }
 
+/* API hero (.api-s1.hero): left-top blue wash, lighter wash on the right,
+   then a vertical fade. The page ends on white; here the last stop is
+   #f6f6f6 so the carriers section meets it. */
+.track-hero {
+  background:
+    radial-gradient(58% 78% at 12% 0, rgba(147, 197, 253, 0.34), rgba(147, 197, 253, 0) 70%),
+    radial-gradient(62% 88% at 94% 16%, rgba(191, 219, 254, 0.42), rgba(191, 219, 254, 0) 72%),
+    linear-gradient(180deg, #f3f8ff 0%, #fafcff 55%, #f6f6f6 100%);
+}
+
+/* API .hero::before: 56px hairline grid, masked out toward the bottom. */
+.track-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 58, 155, 0.018) 1px, transparent 0),
+    linear-gradient(90deg, rgba(0, 58, 155, 0.018) 1px, transparent 0);
+  background-size: 56px 56px;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 80%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 80%);
+  opacity: 0.4;
+}
+
 /* Dotted globe from the API hero (.api-s1-hero-globe): left edge at 50%,
    top 46%, up to 520px. Sits on the gradient, behind the copy. */
 .track-hero-globe {
@@ -227,7 +253,7 @@
   aspect-ratio: 1;
   transform: translateY(-50%);
   pointer-events: none;
-  opacity: 0.42;
+  opacity: 0.52;
   -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 74%);
   mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 74%);
 }
@@ -292,12 +318,21 @@
   }
 }
 
-/* Narrow screens use the Figma pill. At md (48rem) the Tailwind card
-   (262px, 24px radius, toolbar px-3 pt-2 pb-3) wins again. */
+/* Narrow screens use the Figma pill. At md (48rem) the card is 262px
+   with a 24px radius: a step under the 37px curve that would sit
+   concentric with the 48px pill buttons. */
+.track-field {
+  position: relative;
+}
+
 .track-shell {
-  background-color: rgba(255, 255, 255, 0.62);
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
+  /* Clips the lines to the radius. The frosted bar stays outside this
+     box so its backdrop-filter can see those lines. */
+  z-index: 1;
+  overflow: hidden;
+  background-color: transparent;
+  /* Same circular corner as the pill buttons, so the curves stay parallel. */
+  corner-shape: round;
   transition:
     height 280ms ease,
     border-radius 280ms ease,
@@ -307,15 +342,33 @@
 }
 
 @media (width < 48rem) {
-  .track-shell {
+  .track-field {
     height: 58px;
+  }
+
+  .track-shell {
     border-radius: 29px;
     border-color: #dfdfdf;
+    /* Capsule ends are already semicircles; squircle would flatten them. */
+    corner-shape: round;
   }
 
   .track-shell:focus-within {
     border-color: #d5d8de;
   }
+}
+
+/* Page frost sits behind the lines, not on the shell itself. */
+.track-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background-color: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
 }
 
 .track-mobile-field {
@@ -325,6 +378,8 @@
 }
 
 .track-desktop-list {
+  position: relative;
+  z-index: 1;
   opacity: 0;
   pointer-events: none;
   transition: opacity 280ms ease;
@@ -376,7 +431,7 @@
 
 .track-toolbar {
   position: absolute;
-  z-index: 10;
+  z-index: 3;
   right: auto;
   bottom: 0;
   left: 0;
@@ -400,6 +455,8 @@
 }
 
 .track-toolbar-bar {
+  position: relative;
+  z-index: 2;
   transition: padding 280ms ease;
 }
 
@@ -441,13 +498,26 @@
 }
 
 .track-tool-blur {
-  opacity: 1;
-  transition: opacity 280ms ease;
+  position: absolute;
+  z-index: 2;
+  /* Sit inside the shell's 1px stroke. Outer radius is 24px, so the
+     inner curve is 23px and the frost no longer covers the border. */
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
+  height: 67px;
+  pointer-events: none;
+  border-bottom-right-radius: 23px;
+  border-bottom-left-radius: 23px;
+  corner-shape: round;
+  background-color: rgba(255, 255, 255, 0.45);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
 }
 
 @media (width < 48rem) {
   .track-tool-blur {
-    opacity: 0;
+    display: none;
   }
 }
 
@@ -573,31 +643,24 @@
   grid-column: span 3;
 }
 
-.track-coverage-stats li:nth-child(1) { --stat-delay: 0ms; }
-.track-coverage-stats li:nth-child(2) { --stat-delay: 70ms; }
-.track-coverage-stats li:nth-child(3) { --stat-delay: 140ms; }
-.track-coverage-stats li:nth-child(4) { --stat-delay: 210ms; }
-.track-coverage-stats li:nth-child(5) { --stat-delay: 280ms; }
-
-.track-coverage-stats.is-armed:not(.is-shown) strong {
-  filter: blur(12px);
-  transform: translateY(16px);
+ul.track-coverage-stats > li {
+  filter: blur(16px);
+  opacity: 0.45;
+  transition:
+    filter 700ms ease-out,
+    opacity 700ms ease-out;
 }
 
-.track-coverage-stats.is-shown strong {
+ul.track-coverage-stats > li.is-shown {
   filter: blur(0);
-  transform: translateY(0);
-  transition:
-    filter 800ms ease-out,
-    transform 800ms ease-out;
-  transition-delay: var(--stat-delay, 0ms);
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .track-coverage-stats.is-armed:not(.is-shown) strong,
-  .track-coverage-stats.is-shown strong {
+  ul.track-coverage-stats > li,
+  ul.track-coverage-stats > li.is-shown {
     filter: none;
-    transform: none;
+    opacity: 1;
     transition: none;
   }
 }
@@ -612,13 +675,8 @@
   white-space: nowrap;
 }
 
-.track-coverage-stats li:nth-child(4) strong,
-.track-coverage-stats li:nth-child(5) strong {
-  font-size: clamp(40px, 4vw, 68px);
-}
-
 .track-coverage-stats span {
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.78);
   text-shadow: 0 1px 10px rgba(1, 4, 9, 0.85);
@@ -639,37 +697,43 @@
   }
 
   .track-coverage-stats {
-    grid-template-columns: 1fr;
-    row-gap: 32px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    align-items: start;
+    column-gap: 8px;
+    row-gap: 28px;
     margin-top: 48px;
   }
 
-  .track-coverage-stats li,
-  .track-coverage-stats li:nth-child(4),
+  .track-coverage-stats li {
+    grid-column: span 2;
+  }
+
+  .track-coverage-stats li:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
   .track-coverage-stats li:nth-child(5) {
-    grid-column: auto;
+    grid-column: 4 / span 2;
   }
 
   .track-coverage-stats strong {
-    font-size: 32px;
-  }
-
-  .track-coverage-stats li:nth-child(4) strong,
-  .track-coverage-stats li:nth-child(5) strong {
-    font-size: 40px;
+    font-size: 28px;
   }
 }
 
-/* Best package & order tracker. Gradient is the measured feature-section
-   fill (bottom #385eff, top #0027a6) kept 1408px tall so this block shows
-   the same top slice as the test page. */
+/* Best package & order tracker. Ground matches the coverage band below.
+   The 1px gap paints the internal rules in the same color as the frame. */
 .track-best-section {
-  color: #fff;
-  background-color: #385eff;
-  background-image: linear-gradient(0deg, #385eff, #0027a6);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% 1408px;
+  --track-best-ground: #010409;
+  --track-best-stroke: rgba(255, 255, 255, 0.08);
+  --track-best-joint: rgba(255, 255, 255, 0.28);
+  color: #f5f7fa;
+  background-color: var(--track-best-ground);
+}
+
+.track-best-section ::selection {
+  background-color: rgba(245, 247, 250, 0.28);
+  color: #f5f7fa;
 }
 
 .track-best-title {
@@ -677,69 +741,112 @@
   font-size: clamp(calc(40px * 20 / 32), calc(40 * 100vw / 768), 40px);
   line-height: clamp(calc(48px * 20 / 32), calc(48 * 100vw / 768), 48px);
   letter-spacing: clamp(-0.4px, calc(-0.4 * 100vw / 768), calc(-0.4px * 20 / 32));
-  color: transparent;
-  background-image: linear-gradient(160deg, #ff9e25 -18%, #ffffff 37%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #f5f7fa;
+}
+
+.track-best-lead {
+  color: rgba(245, 247, 250, 0.78);
 }
 
 .track-best-card-title {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-size: clamp(calc(24px * 20 / 32), calc(24 * 100vw / 768), 24px);
   line-height: clamp(calc(28.8px * 20 / 32), calc(28.8 * 100vw / 768), 28.8px);
   letter-spacing: clamp(-0.24px, calc(-0.24 * 100vw / 768), calc(-0.24px * 20 / 32));
   font-weight: 600;
-  color: #fff;
+  color: #f7f8f9;
 }
 
 .track-best-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 1px;
   margin-top: 48px;
+  overflow: hidden;
+  border: 1px solid var(--track-best-stroke);
+  border-radius: 24px;
+  corner-shape: squircle;
+  background-color: var(--track-best-stroke);
 }
 
 .track-best-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   height: 100%;
-  padding: 28px 28px 32px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  background-color: rgba(0, 18, 74, 0.34);
-  box-shadow: 0 14px 32px rgba(0, 12, 48, 0.24);
-  transition:
-    background-color 0.3s,
-    border-color 0.3s,
-    box-shadow 0.3s;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--track-best-ground);
+  box-shadow: none;
+}
+
+.track-best-joint {
+  display: none;
+  position: absolute;
+  top: -3.5px;
+  left: -3.5px;
+  z-index: 1;
+  width: 6px;
+  height: 6px;
+  background-color: var(--track-best-joint);
+  pointer-events: none;
+}
+
+.track-best-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  flex: none;
+  background-color: transparent;
+}
+
+.track-best-badges {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-best-badge {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-left: -24px;
+  flex: none;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.track-best-badge:first-child {
+  margin-left: 0;
+}
+
+.track-best-copy {
+  padding: 24px 24px 28px;
 }
 
 .track-best-card p {
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.track-best-card:hover {
-  border-color: rgba(255, 255, 255, 0.32);
-  background-color: rgba(0, 18, 74, 0.2);
-  box-shadow: 0 18px 36px rgba(0, 12, 48, 0.3);
+  color: rgba(245, 247, 250, 0.55);
 }
 
 @media (width >= 768px) {
   .track-best-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
   }
-}
 
-@media (width >= 1024px) {
-  .track-best-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 28px 32px;
+  .track-best-joint {
+    display: block;
   }
-}
 
-@media (width >= 768px) {
+  .track-best-copy {
+    padding: 28px 32px 36px;
+  }
+
   .track-best-title {
     font-size: 40px;
     line-height: 48px;

@@ -3,6 +3,13 @@ type Feature = {
   body: string
 }
 
+const BADGES = [
+  { src: "/credentials/soc2.png", alt: "AICPA SOC 2" },
+  { src: "/credentials/iso27001.png", alt: "DNV ISO/IEC 27001" },
+  { src: "/credentials/iso27701.png", alt: "DNV ISO/IEC 27701" },
+  { src: "/credentials/gdpr.png", alt: "EU GDPR" },
+]
+
 const FEATURES: Feature[] = [
   {
     title: "Accurate package tracking",
@@ -37,15 +44,40 @@ export function BestTrackerSection() {
         <h2 className="track-best-title text-center font-bold">
           Best package & order tracker
         </h2>
-        <p className="m-0 text-center text-[16px] leading-[25px]">
+        <p className="track-best-lead m-0 text-center text-[16px] leading-[25px]">
           Track every shipment with ease — discover why 17TRACK is the most
           reliable package tracker for all your orders and packages worldwide.
         </p>
         <div className="track-best-grid">
-          {FEATURES.map((item) => (
+          {FEATURES.map((item, index) => (
             <article key={item.title} className="track-best-card">
-              <h3 className="track-best-card-title">{item.title}</h3>
-              <p className="m-0 text-[16px] leading-6">{item.body}</p>
+              {index === 3 || index === 5 ? (
+                <span className="track-best-joint" aria-hidden="true" />
+              ) : null}
+              {index === 5 ? (
+                <div className="track-best-media">
+                  <div className="track-best-badges">
+                    {BADGES.map((badge, badgeIndex) => (
+                      <span
+                        key={badge.src}
+                        role="img"
+                        aria-label={badge.alt}
+                        className="track-best-badge"
+                        style={{
+                          zIndex: BADGES.length - badgeIndex,
+                          backgroundImage: `url("${badge.src}")`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="track-best-media" aria-hidden="true" />
+              )}
+              <div className="track-best-copy">
+                <h3 className="track-best-card-title">{item.title}</h3>
+                <p className="m-0 text-[16px] leading-6">{item.body}</p>
+              </div>
             </article>
           ))}
         </div>
