@@ -1,14 +1,25 @@
 /**
- * Dotted hero globe from the API landing page (src/fx/modules/hero-globe.js).
- * Three.js points on a sphere, pale blue, slow spin. Decorative only.
+ * Dotted globe from the API landing hero (src/fx/modules/hero-globe.js).
+ * Three.js points on a sphere, slow spin. Decorative only.
+ * Defaults match the tracking hero (pale blue, 0.016 / 0.75). Pass
+ * className, color, pointSize, or opacity to reuse the same sphere.
  */
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
 
 const DOT = 0x7fb2e5
+const POINT_SIZE = 0.016
+const POINT_OPACITY = 0.75
 const RADIUS = 1
 const ROWS = 46
 const SPEED = 0.07
+
+type HeroGlobeProps = {
+  className?: string
+  color?: number
+  pointSize?: number
+  opacity?: number
+}
 
 function buildDots() {
   const pos: number[] = []
@@ -31,7 +42,12 @@ function buildDots() {
   return geo
 }
 
-export function HeroGlobe() {
+export function HeroGlobe({
+  className = "track-hero-globe",
+  color = DOT,
+  pointSize = POINT_SIZE,
+  opacity = POINT_OPACITY,
+}: HeroGlobeProps) {
   const hostRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -57,11 +73,11 @@ export function HeroGlobe() {
 
     const geometry = buildDots()
     const material = new THREE.PointsMaterial({
-      color: DOT,
-      size: 0.016,
+      color,
+      size: pointSize,
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.75,
+      opacity,
       depthWrite: false,
     })
     const points = new THREE.Points(geometry, material)
@@ -141,7 +157,7 @@ export function HeroGlobe() {
       renderer.dispose()
       renderer.domElement.remove()
     }
-  }, [])
+  }, [color, opacity, pointSize])
 
-  return <div ref={hostRef} className="track-hero-globe" aria-hidden="true" />
+  return <div ref={hostRef} className={className} aria-hidden="true" />
 }

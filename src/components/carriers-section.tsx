@@ -125,7 +125,7 @@ export function CarriersSection() {
   return (
     <section className="w-full bg-[#f6f6f6] pt-[100px] pb-[100px] text-[#212121] antialiased">
       <div className="mx-auto w-full max-w-[1320px] px-[15px]">
-        <h2 className="mb-[5px] text-center text-[32px] leading-10 font-bold text-[#212121] sm:text-[40px] sm:leading-[48px]">
+        <h2 className="track-carriers-title mb-[5px] text-center font-bold text-[#212121]">
           3500+ Carriers in one
         </h2>
         <p className="mx-auto mb-[30px] max-w-[728px] text-center text-[16px] leading-6 text-[#212121]">

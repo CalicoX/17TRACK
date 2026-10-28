@@ -1,5 +1,6 @@
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
 @import "@fontsource/inter/700.css";
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -142,6 +143,7 @@
     }
   body {
     @apply bg-background text-foreground;
+    letter-spacing: -0.13px;
     }
   html {
     @apply font-sans;
@@ -248,6 +250,45 @@
     font-size: 32px;
     line-height: 28.6px;
     letter-spacing: -0.66px;
+  }
+}
+
+/* Section titles use the same rule as .track-hero-title: scale with the
+   viewport below 768px, floor at desktop size * 20/32, and stay at the
+   desktop size from 768px up. */
+.track-carriers-title {
+  font-size: clamp(calc(40px * 20 / 32), calc(40 * 100vw / 768), 40px);
+  line-height: clamp(calc(48px * 20 / 32), calc(48 * 100vw / 768), 48px);
+}
+
+.track-solutions-title {
+  font-size: clamp(calc(40px * 20 / 32), calc(40 * 100vw / 768), 40px);
+  line-height: clamp(calc(48px * 20 / 32), calc(48 * 100vw / 768), 48px);
+  letter-spacing: clamp(-0.4px, calc(-0.4 * 100vw / 768), calc(-0.4px * 20 / 32));
+}
+
+.track-solution-title {
+  font-size: clamp(calc(28px * 20 / 32), calc(28 * 100vw / 768), 28px);
+  line-height: clamp(calc(36px * 20 / 32), calc(36 * 100vw / 768), 36px);
+  letter-spacing: clamp(-0.3px, calc(-0.3 * 100vw / 768), calc(-0.3px * 20 / 32));
+}
+
+@media (width >= 768px) {
+  .track-carriers-title {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .track-solutions-title {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.4px;
+  }
+
+  .track-solution-title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.3px;
   }
 }
 
@@ -447,5 +488,267 @@
     max-width: 0;
     min-width: 0;
     opacity: 0;
+  }
+}
+
+/* Dark coverage band. Globe is the API coverage sphere
+   (coverage-globe.js): land dots, rim light, camera raised so the
+   disk sits low. Canvas opacity matches that module's view. */
+.track-coverage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(640px, 68vh, 760px);
+  background: #010409;
+  color: #fff;
+  text-align: center;
+  padding: 88px 24px 120px;
+}
+
+.track-coverage-globe {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.track-coverage-globe canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.55;
+}
+
+.track-coverage-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.track-coverage-title {
+  margin: 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  font-size: clamp(calc(40px * 20 / 32), calc(40 * 100vw / 768), 40px);
+  line-height: clamp(calc(48px * 20 / 32), calc(48 * 100vw / 768), 48px);
+  letter-spacing: clamp(-0.4px, calc(-0.4 * 100vw / 768), calc(-0.4px * 20 / 32));
+  color: transparent;
+  background-image: linear-gradient(90deg, #ffffff, #a8c6ff 55%, #4f8dff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.track-coverage-stats {
+  list-style: none;
+  margin: 72px auto 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  justify-items: center;
+  align-items: end;
+  column-gap: clamp(16px, 2vw, 28px);
+  row-gap: 64px;
+  width: 100%;
+}
+
+.track-coverage-stats li {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.track-coverage-stats li:nth-child(4),
+.track-coverage-stats li:nth-child(5) {
+  grid-column: span 3;
+}
+
+.track-coverage-stats li:nth-child(1) { --stat-delay: 0ms; }
+.track-coverage-stats li:nth-child(2) { --stat-delay: 70ms; }
+.track-coverage-stats li:nth-child(3) { --stat-delay: 140ms; }
+.track-coverage-stats li:nth-child(4) { --stat-delay: 210ms; }
+.track-coverage-stats li:nth-child(5) { --stat-delay: 280ms; }
+
+.track-coverage-stats.is-armed:not(.is-shown) strong {
+  filter: blur(12px);
+  transform: translateY(16px);
+}
+
+.track-coverage-stats.is-shown strong {
+  filter: blur(0);
+  transform: translateY(0);
+  transition:
+    filter 800ms ease-out,
+    transform 800ms ease-out;
+  transition-delay: var(--stat-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track-coverage-stats.is-armed:not(.is-shown) strong,
+  .track-coverage-stats.is-shown strong {
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}
+
+.track-coverage-stats strong {
+  font-size: clamp(32px, 3.2vw, 56px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(1, 4, 9, 0.72);
+  white-space: nowrap;
+}
+
+.track-coverage-stats li:nth-child(4) strong,
+.track-coverage-stats li:nth-child(5) strong {
+  font-size: clamp(40px, 4vw, 68px);
+}
+
+.track-coverage-stats span {
+  font-size: 16px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+  text-shadow: 0 1px 10px rgba(1, 4, 9, 0.85);
+}
+
+@media (width >= 768px) {
+  .track-coverage-title {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.4px;
+  }
+}
+
+@media (width < 768px) {
+  .track-coverage {
+    min-height: 0;
+    padding: 72px 20px 96px;
+  }
+
+  .track-coverage-stats {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+    margin-top: 48px;
+  }
+
+  .track-coverage-stats li,
+  .track-coverage-stats li:nth-child(4),
+  .track-coverage-stats li:nth-child(5) {
+    grid-column: auto;
+  }
+
+  .track-coverage-stats strong {
+    font-size: 32px;
+  }
+
+  .track-coverage-stats li:nth-child(4) strong,
+  .track-coverage-stats li:nth-child(5) strong {
+    font-size: 40px;
+  }
+}
+
+/* Best package & order tracker. Gradient is the measured feature-section
+   fill (bottom #385eff, top #0027a6) kept 1408px tall so this block shows
+   the same top slice as the test page. */
+.track-best-section {
+  color: #fff;
+  background-color: #385eff;
+  background-image: linear-gradient(0deg, #385eff, #0027a6);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% 1408px;
+}
+
+.track-best-title {
+  margin: 0 0 6px;
+  font-size: clamp(calc(40px * 20 / 32), calc(40 * 100vw / 768), 40px);
+  line-height: clamp(calc(48px * 20 / 32), calc(48 * 100vw / 768), 48px);
+  letter-spacing: clamp(-0.4px, calc(-0.4 * 100vw / 768), calc(-0.4px * 20 / 32));
+  color: transparent;
+  background-image: linear-gradient(160deg, #ff9e25 -18%, #ffffff 37%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.track-best-card-title {
+  margin: 0 0 10px;
+  font-size: clamp(calc(24px * 20 / 32), calc(24 * 100vw / 768), 24px);
+  line-height: clamp(calc(28.8px * 20 / 32), calc(28.8 * 100vw / 768), 28.8px);
+  letter-spacing: clamp(-0.24px, calc(-0.24 * 100vw / 768), calc(-0.24px * 20 / 32));
+  font-weight: 600;
+  color: #fff;
+}
+
+.track-best-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.track-best-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 28px 28px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background-color: rgba(0, 18, 74, 0.34);
+  box-shadow: 0 14px 32px rgba(0, 12, 48, 0.24);
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.track-best-card p {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.track-best-card:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  background-color: rgba(0, 18, 74, 0.2);
+  box-shadow: 0 18px 36px rgba(0, 12, 48, 0.3);
+}
+
+@media (width >= 768px) {
+  .track-best-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+
+@media (width >= 1024px) {
+  .track-best-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px 32px;
+  }
+}
+
+@media (width >= 768px) {
+  .track-best-title {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.4px;
+  }
+
+  .track-best-card-title {
+    font-size: 24px;
+    line-height: 28.8px;
+    letter-spacing: -0.24px;
   }
 }

@@ -26,28 +26,88 @@ import {
 import { HeroGlobe } from "@/components/hero-globe"
 import { cn } from "@/lib/utils"
 
-const CARRIERS = [
-  "USPS",
-  "DHL",
-  "FedEx",
-  "Canada Post",
-  "Deutsche Post",
-  "AliExpress",
-  "eBay",
-] as const
-
-const CARRIER_LOGOS: Record<(typeof CARRIERS)[number], string> = {
-  USPS: "/carriers/usps.svg",
-  DHL: "/carriers/dhl.svg",
-  FedEx: "/carriers/fedex.svg",
-  "Canada Post": "/carriers/canada-post.svg",
-  "Deutsche Post": "/carriers/deutsche-post.svg",
-  AliExpress: "/carriers/aliexpress.png",
-  eBay: "/carriers/ebay.svg",
+type CarrierOption = {
+  name: string
+  country: string
+  logo: string
+  popular?: boolean
 }
 
-function isCarrierName(name: string): name is (typeof CARRIERS)[number] {
-  return (CARRIERS as readonly string[]).includes(name)
+const CARRIER_OPTIONS: CarrierOption[] = [
+  { name: "USPS", country: "United States", logo: "/carriers/menu/usps.png", popular: true },
+  { name: "UPS", country: "United States", logo: "/carriers/menu/ups.png", popular: true },
+  { name: "FedEx", country: "United States", logo: "/carriers/menu/fedex.png", popular: true },
+  { name: "DHL", country: "Germany", logo: "/carriers/menu/dhl.png", popular: true },
+  { name: "Cainiao", country: "China", logo: "/carriers/menu/cainiao.png", popular: true },
+  { name: "YunExpress", country: "China", logo: "/carriers/menu/yunexpress.png", popular: true },
+  { name: "GLS", country: "United Kingdom", logo: "/carriers/menu/gls.png", popular: true },
+  { name: "4PX", country: "China", logo: "/carriers/menu/4px.png", popular: true },
+  { name: "DPD", country: "Germany", logo: "/carriers/menu/dpd.png", popular: true },
+  { name: "UBI", country: "China", logo: "/carriers/menu/ubi.png" },
+  { name: "GOFO", country: "France", logo: "/carriers/menu/gofo.png" },
+  { name: "Canada Post", country: "Canada", logo: "/carriers/menu/canada-post.png" },
+  { name: "Deutsche Post", country: "Germany", logo: "/carriers/menu/deutsche-post.png" },
+  { name: "Royal Mail", country: "United Kingdom", logo: "/carriers/menu/royal-mail.png" },
+  { name: "AliExpress", country: "China", logo: "/carriers/aliexpress.png" },
+  { name: "eBay", country: "United States", logo: "/carriers/ebay.svg" },
+]
+
+function carrierByName(name: string) {
+  return CARRIER_OPTIONS.find((item) => item.name === name)
+}
+
+function CarrierGroup({
+  title,
+  items,
+  selected,
+  onSelect,
+  empty,
+}: {
+  title: string
+  items: CarrierOption[]
+  selected: string | null
+  onSelect: (name: string) => void
+  empty?: string
+}) {
+  if (items.length === 0 && !empty) return null
+  return (
+    <div className="mb-3 last:mb-0">
+      <p className="mb-1.5 px-1 text-[13px] leading-5 font-semibold text-[#212121]">
+        {title}
+      </p>
+      {items.length === 0 ? (
+        <p className="px-1 text-[13px] leading-5 text-[#8a8f98]">{empty}</p>
+      ) : null}
+      <div className="grid grid-cols-3 gap-1">
+        {items.map((item) => (
+          <button
+            key={item.name}
+            type="button"
+            className={cn(
+              still,
+              "flex min-w-0 items-center gap-2 rounded-md p-1.5 text-left hover:bg-[#f2f2f2]",
+              selected === item.name && "bg-[#f2f2f2]",
+            )}
+            onClick={() => onSelect(item.name)}
+          >
+            <img
+              src={item.logo}
+              alt=""
+              className="size-8 shrink-0 rounded-[4px] bg-white object-contain"
+            />
+            <span className="min-w-0">
+              <span className="block truncate text-[11px] leading-4 text-[#8a8f98]">
+                {item.country}
+              </span>
+              <span className="block truncate text-[13px] leading-4 text-[#212121]">
+                {item.name}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 type TrackingLine = {
@@ -226,6 +286,7 @@ export function TrackingHero() {
   const [carrier, setCarrier] = useState<string | null>(null)
   const [carrierOpen, setCarrierOpen] = useState(false)
   const [carrierQuery, setCarrierQuery] = useState("")
+  const [carrierHistory, setCarrierHistory] = useState<string[]>([])
   const [pendingFocus, setPendingFocus] = useState<string | null>(null)
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({})
   const ignorePasteValues = useRef<Set<string> | null>(null)
@@ -247,8 +308,17 @@ export function TrackingHero() {
 
   const hasNumbers = lines.some((line) => line.value.trim().length > 0)
   const carrierQueryNormalized = carrierQuery.trim().toLowerCase()
-  const filteredCarriers = CARRIERS.filter((name) =>
-    name.toLowerCase().includes(carrierQueryNormalized),
+  const carrierMatches = (item: CarrierOption) =>
+    carrierQueryNormalized.length === 0 ||
+    `${item.name} ${item.country}`.toLowerCase().includes(carrierQueryNormalized)
+  const historyCarriers = carrierHistory
+    .map((name) => carrierByName(name))
+    .filter((item): item is CarrierOption => item != null && carrierMatches(item))
+  const popularCarriers = CARRIER_OPTIONS.filter(
+    (item) => item.popular && carrierMatches(item),
+  )
+  const allCarriers = CARRIER_OPTIONS.filter(
+    (item) => !item.popular && carrierMatches(item),
   )
 
   useLayoutEffect(() => {
@@ -559,6 +629,11 @@ export function TrackingHero() {
 
   function selectCarrier(name: string | null) {
     setCarrier(name)
+    if (name) {
+      setCarrierHistory((current) =>
+        [name, ...current.filter((item) => item !== name)].slice(0, 9),
+      )
+    }
     setCarrierOpen(false)
     setCarrierQuery("")
     carrierButtonRef.current?.blur()
@@ -606,14 +681,14 @@ export function TrackingHero() {
   }
 
   return (
-    <section className="relative flex w-full flex-col items-center overflow-hidden bg-[linear-gradient(180deg,#f7fbff_0%,#f6f6f6_100%)] px-6 py-16 text-[#212121] antialiased">
+    <section className="relative flex w-full flex-col items-center overflow-hidden bg-[linear-gradient(180deg,#eef7fd_0%,#f6f6f6_100%)] px-6 py-16 text-[#212121] antialiased">
       <HeroGlobe />
       <div className="relative z-[1] flex w-full max-w-[728px] flex-col items-center gap-6">
         <div className="flex w-full flex-col items-center gap-[10px] text-center">
           <h1 className="track-hero-title w-full font-bold text-[#212121]">
             ALL-IN-ONE GLOBAL PACKAGE TRACKING
           </h1>
-          <p className="w-full text-[14px] leading-[21px] font-normal tracking-[-0.21px] text-[#5c6370] md:text-[16px] md:leading-6 md:tracking-[-0.24px]">
+          <p className="w-full text-[14px] leading-[21px] font-medium tracking-[-0.21px] text-[#5c6370] md:text-[16px] md:leading-6 md:tracking-[-0.24px]">
             Track global packages, eCommerce orders, and air cargo from 3500+
             carriers and 190+ airlines, covering China and beyond with 17TRACK.
           </p>
@@ -621,7 +696,7 @@ export function TrackingHero() {
 
         <div className="flex w-full flex-col gap-4">
           <form
-            className="track-shell relative h-[262px] w-full overflow-hidden rounded-[24px] border border-[#e6e8ec] shadow-none focus-within:border-[#d5d8de] focus-within:shadow-[0px_4px_16px_rgba(0,0,0,0.06)]"
+            className="track-shell relative h-[262px] w-full overflow-hidden rounded-[24px] border border-[#d2d6dd] shadow-none hover:shadow-[0px_4px_16px_rgba(0,0,0,0.06)] focus-within:border-[#c8cdd6] focus-within:shadow-[0px_4px_16px_rgba(0,0,0,0.06)]"
             onMouseDown={onShellPointerDown}
             onPointerDown={onShellPointerDown}
             onSubmit={onTrack}
@@ -794,9 +869,9 @@ export function TrackingHero() {
                             "tool-sheen h-12 gap-2.5 rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-black! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-black! aria-expanded:bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] aria-expanded:text-black",
                           )}
                         >
-                          {carrier && isCarrierName(carrier) ? (
+                          {carrier && carrierByName(carrier) ? (
                             <img
-                              src={CARRIER_LOGOS[carrier]}
+                              src={carrierByName(carrier)?.logo}
                               alt=""
                               className="size-9 shrink-0 rounded-full object-cover"
                             />
@@ -813,7 +888,7 @@ export function TrackingHero() {
                     side="top"
                     align="end"
                     avoidCollisions={false}
-                    className="w-56 gap-1 p-1.5"
+                    className="w-[560px] max-w-[calc(100vw-24px)] gap-3 p-3"
                     onOpenAutoFocus={(event) => {
                       event.preventDefault()
                       searchRef.current?.focus()
@@ -836,46 +911,53 @@ export function TrackingHero() {
                       onKeyDown={(event) => {
                         if (event.key !== "Enter") return
                         event.preventDefault()
-                        const match = filteredCarriers[0]
-                        if (match) selectCarrier(match)
+                        const match =
+                          historyCarriers[0] ??
+                          popularCarriers[0] ??
+                          allCarriers[0]
+                        if (match) selectCarrier(match.name)
                       }}
                     />
-                    <div className="max-h-60 overflow-y-auto">
-                      {carrierQueryNormalized.length === 0 ? (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className={cn(
-                            still,
-                            "h-auto min-h-12 w-full items-center justify-start rounded-md p-2 text-[13px] font-normal active:bg-[#f2f2f2]",
-                            carrier === null && "bg-muted",
-                          )}
-                          onClick={() => selectCarrier(null)}
-                        >
-                          Auto detect
-                        </Button>
-                      ) : null}
-                      {filteredCarriers.map((name) => (
-                        <Button
-                          key={name}
-                          type="button"
-                          variant="ghost"
-                          className={cn(
-                            still,
-                            "h-auto w-full items-center justify-start gap-2 rounded-md p-2 text-[13px] font-normal active:bg-[#f2f2f2]",
-                            carrier === name && "bg-muted",
-                          )}
-                          onClick={() => selectCarrier(name)}
-                        >
-                          <img
-                            src={CARRIER_LOGOS[name]}
-                            alt=""
-                            className="size-8 shrink-0 rounded-[4px] object-cover"
-                          />
-                          {name}
-                        </Button>
-                      ))}
-                      {filteredCarriers.length === 0 ? (
+                    <button
+                      type="button"
+                      className={cn(
+                        still,
+                        "flex items-center gap-2 rounded-md px-1 py-1 text-left text-[13px] leading-5",
+                        carrier === null && "bg-[#f2f2f2]",
+                      )}
+                      onClick={() => selectCarrier(null)}
+                    >
+                      <span className="text-[#5c6370]">Current item :</span>
+                      <span className="flex size-5 items-center justify-center rounded-full bg-[#e8eaee]">
+                        <img src="/figma/shipment-major.svg" alt="" className="size-3.5" />
+                      </span>
+                      <span className="font-medium text-[#212121]">Auto detect</span>
+                    </button>
+                    <div className="max-h-[360px] overflow-y-auto">
+                      <CarrierGroup
+                        title="Search history"
+                        items={historyCarriers}
+                        selected={carrier}
+                        onSelect={selectCarrier}
+                        empty={
+                          carrierQueryNormalized.length === 0
+                            ? "No recent carriers"
+                            : undefined
+                        }
+                      />
+                      <CarrierGroup
+                        title="Popular Carriers"
+                        items={popularCarriers}
+                        selected={carrier}
+                        onSelect={selectCarrier}
+                      />
+                      <CarrierGroup
+                        title="All Carriers"
+                        items={allCarriers}
+                        selected={carrier}
+                        onSelect={selectCarrier}
+                      />
+                      {historyCarriers.length + popularCarriers.length + allCarriers.length === 0 ? (
                         <p className="px-2 py-2 text-[13px] text-[#5c6370]">
                           No carriers
                         </p>
