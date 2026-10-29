@@ -203,7 +203,7 @@ export function SolutionsSection() {
                 <figure
                   aria-label={item.phone ? item.imageAlt : undefined}
                   role={item.phone ? "img" : undefined}
-                  className={`relative m-0 overflow-hidden py-8 lg:py-12 ${flipped ? "lg:order-2" : `lg:order-1 ${rule}`}`}
+                  className={`relative m-0 overflow-hidden px-6 py-8 lg:px-12 lg:py-12 ${flipped ? "lg:order-2" : `lg:order-1 ${rule}`}`}
                 >
                   {item.phone ? (
                     <div
@@ -239,6 +239,20 @@ export function SolutionsSection() {
                   />
                   <h3 className="track-solution-title flex flex-wrap items-center gap-x-3 gap-y-2 font-bold">
                     {item.name}
+                    {item.name === "Shopify Order Tracking" ||
+                    item.name === "17RETURNS" ? (
+                      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#7c3aed] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
+                        <svg
+                          viewBox="0 0 16 16"
+                          className="size-3.5"
+                          fill="currentColor"
+                          aria-hidden
+                        >
+                          <path d="M8 1.2 9.3 6.7 14.8 8 9.3 9.3 8 14.8 6.7 9.3 1.2 8 6.7 6.7Z" />
+                        </svg>
+                        Powered by AI
+                      </span>
+                    ) : null}
                     {item.name === "17TRACK App" ? (
                       <span className="inline-flex shrink-0 items-center rounded-full bg-[#ff8a00] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
                         Free

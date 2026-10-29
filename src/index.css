@@ -651,11 +651,11 @@
 }
 
 ul.track-coverage-stats > li {
-  filter: blur(16px);
-  opacity: 0.45;
+  filter: blur(14px);
+  opacity: 0.35;
   transition:
-    filter 700ms ease-out,
-    opacity 700ms ease-out;
+    filter 900ms ease-out,
+    opacity 900ms ease-out;
 }
 
 ul.track-coverage-stats > li.is-shown {
@@ -786,6 +786,31 @@ ul.track-coverage-stats > li.is-shown {
   border-radius: 0;
   background-color: var(--track-best-ground);
   box-shadow: none;
+  overflow: hidden;
+}
+
+.track-best-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 62%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.62), rgba(59, 130, 246, 0) 72%);
+  transition: opacity 400ms ease;
+}
+
+.track-best-card:hover::before {
+  opacity: 1;
+}
+
+.track-best-media,
+.track-best-copy {
+  position: relative;
+  z-index: 1;
 }
 
 .track-best-joint {
@@ -821,15 +846,29 @@ ul.track-coverage-stats > li.is-shown {
   position: relative;
   width: 96px;
   height: 96px;
-  margin-left: -24px;
+  margin-left: -56px;
   flex: none;
   border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  transition:
+    margin-left 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 450ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .track-best-badge:first-child {
+  margin-left: 0;
+}
+
+.track-best-card:hover .track-best-badge {
+  width: 72px;
+  height: 72px;
+  margin-left: 20px;
+}
+
+.track-best-card:hover .track-best-badge:first-child {
   margin-left: 0;
 }
 
@@ -864,5 +903,30 @@ ul.track-coverage-stats > li.is-shown {
     font-size: 24px;
     line-height: 28.8px;
     letter-spacing: -0.24px;
+  }
+}
+
+@media (width >= 1024px) {
+  .track-best-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .track-best-media {
+    aspect-ratio: 16 / 8;
+  }
+
+  .track-best-copy {
+    padding: 18px 20px 24px;
+  }
+
+  .track-best-card-title {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.18px;
+  }
+
+  .track-best-card p {
+    font-size: 13px;
+    line-height: 20px;
   }
 }

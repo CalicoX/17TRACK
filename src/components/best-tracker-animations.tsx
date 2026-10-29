@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import "./best-tracker-animations.css"
-import { WORLD_HUBS, WORLD_MAP_PATH } from "./best-tracker-world"
+import { WORLD_HUBS, WORLD_LAND_DOTS } from "./best-tracker-world"
 
 export type TrackerVisualKind =
   | "accuracy"
@@ -69,10 +69,10 @@ function AccuracyVisual() {
       />
 
       <path d="M102 232v14M197 158v16M328 190v15M452 105v13" className="best-node-leader" />
-      <text x="102" y="257" textAnchor="middle" className="best-map-caption">LABEL CREATED</text>
+      <text x="102" y="257" textAnchor="middle" className="best-map-caption">ORDER INFO</text>
       <text x="197" y="184" textAnchor="middle" className="best-map-caption">IN TRANSIT</text>
-      <text x="328" y="216" textAnchor="middle" className="best-map-caption">CUSTOMS</text>
-      <text x="452" y="130" textAnchor="middle" className="best-map-caption">DELIVERED</text>
+      <text x="328" y="216" textAnchor="middle" className="best-map-caption">PICK UP</text>
+      <text x="452" y="130" textAnchor="middle" className="best-map-caption">DELIVERY</text>
 
       <g transform="translate(102 218)">
         <circle r="12" className="best-node-pulse" />
@@ -98,12 +98,13 @@ function AccuracyVisual() {
       </g>
 
       <g className="best-package">
+        <rect x="-40" y="-40" width="80" height="80" fill="none" />
         <path d="m-12-6 12-5 12 5v13L0 12l-12-5Z" className="best-package-shell" />
         <path d="m-12-6 12 5 12-6M0-1v13M-6-8.5l12 5v6" className="best-package-lines" />
-      </g>
-      <g className="best-scanner">
-        <path d="M0 0v42" className="best-scan-line" />
-        <path d="M-9 10v-5h5M4 5h5v5M9 31v5H4M-4 36h-5v-5" className="best-scan-corners" />
+        <g className="best-scanner">
+          <path d="M0-34v60" className="best-scan-line" />
+          <path d="M-16-20v-8h8M8-28h8v8M16 10v8H8M-8 18h-8v-8" className="best-scan-corners" />
+        </g>
       </g>
       <text x="72" y="286" className="best-svg-micro">END-TO-END VISIBILITY</text>
       <text x="488" y="286" textAnchor="end" className="best-svg-micro">UPDATED JUST NOW</text>
@@ -170,15 +171,14 @@ function WorldVisual() {
         <clipPath id="best-world-map-clip">
           <rect x="40" y="46" width="480" height="224" rx="14" />
         </clipPath>
-        <pattern id="best-world-land-dots" width="4" height="4" patternUnits="userSpaceOnUse">
-          <circle cx=".6" cy=".6" r=".35" fill="#fff" fillOpacity=".16" />
-        </pattern>
+        <filter id="best-glass-blur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="6" />
+        </filter>
       </defs>
-      <rect x="40" y="46" width="480" height="224" rx="14" className="best-map-frame" />
       <g clipPath="url(#best-world-map-clip)">
-        <path d="M40 92h480M40 138h480M40 184h480M40 230h480M116 46v224M192 46v224M268 46v224M344 46v224M420 46v224M496 46v224" className="best-map-graticule" />
-        <path d={WORLD_MAP_PATH} className="best-world-land" />
-        <path d={WORLD_MAP_PATH} fill="url(#best-world-land-dots)" />
+        {WORLD_LAND_DOTS.map(([x, y]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r="1.1" className="best-land-dot" />
+        ))}
 
         <path d={`M${laX} ${laY}Q192 48 ${londonX} ${londonY}`} className="best-world-arc" pathLength="100" />
         <path d={`M${londonX} ${londonY}Q354 52 ${shanghaiX} ${shanghaiY}`} className="best-world-arc best-world-arc-2" pathLength="100" />
@@ -197,13 +197,12 @@ function WorldVisual() {
           <circle r="2" className="best-dot" />
         </g>
       </g>
-      <g transform="translate(390 24)">
-        <rect width="126" height="34" rx="10" className="best-pill" />
-        <text x="16" y="22" className="best-svg-label">3500+ CARRIERS</text>
+      <g transform="translate(372 24)">
+        <rect width="144" height="34" rx="10" fill="#0a0a0a" filter="url(#best-glass-blur)" />
+        <rect width="144" height="34" rx="10" className="best-glass-pill" />
+        <text x="72" y="22" textAnchor="middle" className="best-svg-label">3500+ CARRIERS</text>
       </g>
-      <circle cx="54" cy="290" r="2.5" className="best-dot" />
-      <text x="65" y="294" className="best-svg-micro">LIVE ROUTES</text>
-      <text x="506" y="294" textAnchor="end" className="best-svg-micro">190+ COUNTRIES & REGIONS</text>
+      <text x="506" y="294" textAnchor="end" className="best-svg-label">190+ COUNTRIES & REGIONS</text>
     </Frame>
   )
 }
@@ -243,12 +242,14 @@ function UptimeVisual() {
         <path d="M20 58h230M20 92h230M20 126h230M20 160h230M66 58v102M112 58v102M158 58v102M204 58v102" className="best-chart-grid" />
         <g clipPath="url(#best-uptime-plot)">
           <path
-            d="M20 130h27l14-10 16 7 19-45 15 60 17-25 15 8 18-51 15 63 18-11 16 4 20-32 20 7"
+            d="M20 142C62 140 78 132 104 124C134 114 150 108 176 92C206 74 222 66 250 52"
             className="best-chart-line"
             pathLength="100"
           />
-          <circle cx="161" cy="74" r="4" className="best-chart-point" />
-          <circle cx="161" cy="74" r="9" className="best-chart-point-ring" />
+          <g className="best-chart-point-group">
+            <circle r="4" className="best-chart-point" />
+            <circle r="9" className="best-chart-point-ring" />
+          </g>
         </g>
         <path d="M20 160h230" className="best-chart-base" />
         <text x="20" y="177" className="best-chart-time">00:00</text>
@@ -306,8 +307,12 @@ function SupportVisual() {
         <text x="380" y="227" className="best-card-caption">Average reply &lt; 2 min</text>
       </g>
       <g transform="translate(57 266)">
-        <rect width="88" height="32" rx="10" className="best-pill" />
-        <text x="23" y="22" className="best-svg-number-small">24/7</text>
+        <rect width="108" height="32" rx="10" className="best-pill" />
+        <g className="best-micro-icon" transform="translate(16 9)">
+          <circle cx="7" cy="7" r="6" />
+          <path d="M7 4.5V7.5L9 9" />
+        </g>
+        <text x="36" y="22" className="best-svg-number-small">24/7</text>
       </g>
     </Frame>
   )

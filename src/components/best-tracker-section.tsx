@@ -62,7 +62,7 @@ export function BestTrackerSection() {
         <div className="track-best-grid">
           {FEATURES.map((item, index) => (
             <article key={item.title} className="track-best-card">
-              {index === 3 || index === 5 ? (
+              {index >= 3 ? (
                 <span className="track-best-joint" aria-hidden="true" />
               ) : null}
               {index === 5 ? (

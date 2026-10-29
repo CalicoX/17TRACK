@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { CoverageGlobe } from "@/components/coverage-globe"
 
 const STATS = [
@@ -9,47 +9,59 @@ const STATS = [
   { value: "16 years", label: "Industry Expertise" },
 ]
 
-export function ComplexitySection() {
-  const sectionRef = useRef<HTMLElement>(null)
+function rollValue(value: string, progress: number) {
+  return value.replace(/\d+/g, (digits) =>
+    Math.round(Number(digits) * progress).toLocaleString("en-US"),
+  )
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  const itemRef = useRef<HTMLLIElement>(null)
+  const [display, setDisplay] = useState(value)
 
   useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
+    const item = itemRef.current
+    if (!item) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-    const items = [...section.querySelectorAll("ul.track-coverage-stats > li")]
-    if (!items.length) return
-
-    let observer: IntersectionObserver | null = null
-    const revealFrames: number[] = []
-
-    const arm = requestAnimationFrame(() => {
-      observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (!entry.isIntersecting) continue
-            observer?.unobserve(entry.target)
-            const frame = requestAnimationFrame(() => {
-              entry.target.classList.add("is-shown")
-            })
-            revealFrames.push(frame)
-          }
-        },
-        { threshold: 0.5 },
-      )
-      items.forEach((item) => observer?.observe(item))
-    })
+    let frame = 0
+    let revealFrame = 0
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        observer.disconnect()
+        revealFrame = requestAnimationFrame(() => item.classList.add("is-shown"))
+        const started = performance.now()
+        const tick = (now: number) => {
+          const progress = Math.min(1, (now - started) / 1200)
+          setDisplay(rollValue(value, 1 - (1 - progress) ** 3))
+          if (progress < 1) frame = requestAnimationFrame(tick)
+        }
+        frame = requestAnimationFrame(tick)
+      },
+      { threshold: 0.5 },
+    )
+    observer.observe(item)
 
     return () => {
-      cancelAnimationFrame(arm)
-      revealFrames.forEach((frame) => cancelAnimationFrame(frame))
-      observer?.disconnect()
-      items.forEach((item) => item.classList.remove("is-shown"))
+      cancelAnimationFrame(frame)
+      cancelAnimationFrame(revealFrame)
+      observer.disconnect()
+      item.classList.remove("is-shown")
     }
-  }, [])
+  }, [value])
 
   return (
-    <section ref={sectionRef} className="track-coverage">
+    <li ref={itemRef}>
+      <strong>{display}</strong>
+      <span>{label}</span>
+    </li>
+  )
+}
+
+export function ComplexitySection() {
+  return (
+    <section className="track-coverage">
       <CoverageGlobe />
       <div className="track-coverage-inner">
         <h2 className="track-coverage-title font-bold">
@@ -57,10 +69,7 @@ export function ComplexitySection() {
         </h2>
         <ul className="track-coverage-stats">
           {STATS.map((item) => (
-            <li key={item.label}>
-              <strong>{item.value}</strong>
-              <span>{item.label}</span>
-            </li>
+            <Stat key={item.label} {...item} />
           ))}
         </ul>
       </div>
