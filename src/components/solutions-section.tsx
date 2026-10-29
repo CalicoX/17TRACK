@@ -1,3 +1,4 @@
+import { ReturnsHero } from "@/components/returns-hero"
 import { SolutionPhone } from "@/components/solution-phone"
 
 type Solution = {
@@ -8,11 +9,9 @@ type Solution = {
   points: string[]
   image: string
   imageAlt: string
-  /** Width / height, so the cell can grow with the picture and still fill if copy is taller. */
-  imageRatio?: string
+  /** Width / height of the artwork. Drives the cell height below lg, where it scales with the column. */
+  imageRatio: string
   phone?: boolean
-  /** Whole picture, padded inside the cell. */
-  framed?: boolean
   badge?: { src: string; alt: string }
   actions: {
     label: string
@@ -60,8 +59,8 @@ const SOLUTIONS: Solution[] = [
     ],
     image: "/solutions/returns-hero.webp",
     imageAlt: "17RETURNS hero with the return flow",
-    imageRatio: "1354 / 1131",
-    framed: true,
+    // Matches the live ReturnsHero frame, so the cell follows it proportionally.
+    imageRatio: "620 / 540",
     actions: [
       {
         label: "Start free trial",
@@ -103,6 +102,8 @@ const SOLUTIONS: Solution[] = [
     ],
     image: "/solutions/app-screen.png",
     imageAlt: "17TRACK mobile app",
+    // Phone poster ratio, so the cell and the 3D frame stay uncropped.
+    imageRatio: "1237 / 1280",
     phone: true,
     actions: [
       {
@@ -183,53 +184,47 @@ export function SolutionsSection() {
       <div>
           {SOLUTIONS.map((item, index) => {
             const flipped = index % 2 === 1
-            const rule = "md:border-r md:border-[#f0f2f5]"
+            const rule = "lg:border-r lg:border-[#f0f2f5]"
             return (
               <article
                 key={item.name}
                 className="border-b border-[#f0f2f5] last:border-b-0"
               >
-              <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 px-6 md:min-h-[720px] md:grid-cols-2">
+              <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 px-6 lg:grid-cols-2">
                 {index < SOLUTIONS.length - 1 ? (
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute top-full left-1/2 z-10 hidden size-[6px] -mt-[2.5px] -ml-[3.5px] bg-[#f0f2f5] md:block"
+                    className="pointer-events-none absolute top-full left-1/2 z-10 hidden size-[6px] -mt-[2.5px] -ml-[3.5px] bg-[#f0f2f5] lg:block"
                   />
                 ) : null}
+                {/* Artwork sets the cell height through its aspect ratio, plus
+                    vertical padding for breathing room. The ratio box also carries
+                    the phone's 3D canvas, which needs a sized parent. */}
                 <figure
                   aria-label={item.phone ? item.imageAlt : undefined}
                   role={item.phone ? "img" : undefined}
-                  className={
-                    item.phone
-                      ? `relative m-0 min-h-[520px] overflow-hidden md:h-full md:min-h-0 ${flipped ? "md:order-2" : `md:order-1 ${rule}`}`
-                      : `relative m-0 min-h-[380px] overflow-hidden md:h-full md:min-h-0 ${flipped ? "md:order-2" : `md:order-1 ${rule}`}`
-                  }
+                  className={`relative m-0 overflow-hidden py-8 lg:py-12 ${flipped ? "lg:order-2" : `lg:order-1 ${rule}`}`}
                 >
                   {item.phone ? (
-                    <SolutionPhone />
-                  ) : item.framed ? (
+                    <div
+                      className="relative mx-auto w-[min(560px,100%)]"
+                      style={{ aspectRatio: item.imageRatio }}
+                    >
+                      <SolutionPhone />
+                    </div>
+                  ) : item.name === "17RETURNS" ? (
+                    <ReturnsHero />
+                  ) : (
                     <img
                       src={item.image}
                       alt={item.imageAlt}
-                      className="absolute inset-6 h-[calc(100%-3rem)] w-[calc(100%-3rem)] object-contain md:inset-12 md:h-[calc(100%-6rem)] md:w-[calc(100%-6rem)]"
+                      className="block h-auto w-full object-contain"
+                      draggable={false}
                     />
-                  ) : (
-                    <>
-                      <div
-                        aria-hidden
-                        className="w-full"
-                        style={{ aspectRatio: item.imageRatio }}
-                      />
-                      <img
-                        src={item.image}
-                        alt={item.imageAlt}
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                    </>
                   )}
                 </figure>
                 <div
-                  className={`flex flex-col justify-center py-8 md:py-14 ${flipped ? `md:order-1 md:pr-14 ${rule}` : "md:order-2 md:pl-14"}`}
+                  className={`flex flex-col justify-center py-8 lg:py-14 ${flipped ? `lg:order-1 lg:pr-14 ${rule}` : "lg:order-2 lg:pl-14"}`}
                 >
                   <img
                     src={item.icon}

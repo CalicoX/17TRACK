@@ -1,0 +1,771 @@
+.best-visual {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #f5f5f5;
+}
+
+.best-visual-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.best-grid-line {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .6;
+  opacity: .14;
+}
+
+.best-soft {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: .13;
+}
+
+.best-soft rect {
+  fill: #fff;
+  fill-opacity: .025;
+}
+
+.best-route-ghost {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
+  opacity: .2;
+}
+
+.best-route-live {
+  fill: none;
+  stroke: #f5f5f5;
+  stroke-width: 1.5;
+  stroke-dasharray: 14 86;
+  animation: best-route 5s linear infinite;
+  opacity: .8;
+}
+
+.best-node,
+.best-dot {
+  fill: #f5f5f5;
+}
+
+.best-node-dim {
+  fill: #a3a3a3;
+}
+
+.best-node-pulse {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: 0;
+  animation: best-pulse 2.8s ease-out infinite;
+}
+
+.best-target-ring {
+  fill: #000;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: .35;
+}
+
+.best-target-fill {
+  fill: #f5f5f5;
+}
+
+.best-check {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.best-target-fill + .best-check {
+  stroke: #000;
+}
+
+.best-line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.2;
+}
+
+.best-panel-solid {
+  fill: #e5e5e5;
+  stroke: #fff;
+  stroke-width: .7;
+}
+
+.best-panel {
+  fill: #0a0a0a;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: .28;
+}
+
+.best-pill {
+  fill: #0a0a0a;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: .22;
+}
+
+.best-svg-label,
+.best-svg-micro,
+.best-svg-number,
+.best-svg-number-small {
+  fill: #f5f5f5;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+.best-svg-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+}
+
+.best-svg-micro {
+  fill: #a3a3a3;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.best-svg-number {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.best-svg-number-small {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.best-package {
+  offset-path: path("M102 218C153 204 126 137 197 143S271 212 328 176 377 100 452 89");
+  offset-rotate: 0deg;
+  animation: best-package-route 6s ease-in-out infinite;
+}
+
+.best-status-ring,
+.best-map-pulse,
+.best-chart-point-ring,
+.best-node-pulse,
+.best-phone {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.best-scan-line {
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+  opacity: .4;
+}
+
+.best-scan-box {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: .65;
+}
+
+.best-scanner {
+  animation: best-scan 5s ease-in-out infinite;
+}
+
+.best-phone {
+  transform-origin: center;
+  animation: best-phone-tilt 7s ease-in-out infinite;
+}
+
+.best-phone-shell {
+  fill: #090909;
+  stroke: #f5f5f5;
+  stroke-width: 1.4;
+  stroke-opacity: .75;
+}
+
+.best-phone-screen {
+  fill: #111;
+  stroke: #fff;
+  stroke-opacity: .12;
+}
+
+.best-speaker {
+  stroke: #737373;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.best-phone-track {
+  stroke: #737373;
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.best-phone-copy {
+  stroke: #d4d4d4;
+  stroke-width: 4;
+  stroke-linecap: round;
+  opacity: .65;
+}
+
+.best-phone-button {
+  fill: #f5f5f5;
+  opacity: .8;
+}
+
+.best-copy-line {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: .55;
+}
+
+.best-copy-faint {
+  fill: none;
+  stroke: #737373;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: .45;
+}
+
+.best-node-ring {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: 1;
+}
+
+.best-signal {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: .3;
+}
+
+.best-float-a {
+  animation: best-float-a 5s ease-in-out infinite;
+}
+
+.best-float-b {
+  animation: best-float-b 6s ease-in-out infinite;
+}
+
+.best-globe-line {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: .8;
+  stroke-opacity: .25;
+}
+
+.best-globe-faint {
+  fill: none;
+  stroke: #a3a3a3;
+  stroke-width: .7;
+  stroke-dasharray: 2 4;
+  stroke-opacity: .2;
+}
+
+.best-world-land {
+  fill: #d4d4d4;
+  fill-opacity: .12;
+  stroke: #e5e5e5;
+  stroke-width: .8;
+  stroke-opacity: .35;
+  stroke-linejoin: round;
+}
+
+.best-world-arc {
+  fill: none;
+  stroke: #f5f5f5;
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+  opacity: .65;
+  animation: best-world-flow 8s linear infinite;
+}
+
+.best-world-arc-2 {
+  animation-duration: 10s;
+  animation-direction: reverse;
+  opacity: .45;
+}
+
+.best-world-arc-3 {
+  animation-duration: 12s;
+  opacity: .35;
+}
+
+.best-world-points {
+  fill: #f5f5f5;
+  stroke: #000;
+  stroke-width: 3;
+}
+
+.best-dot-halo {
+  fill: #fff;
+  opacity: .14;
+}
+
+.best-orbit-dot {
+  offset-path: path("M130.2 127.7Q192 48 279.8 103.2");
+  offset-rotate: 0deg;
+  animation: best-orbit 7s linear infinite;
+}
+
+.best-server-lights {
+  fill: #e5e5e5;
+  animation: best-server-lights 3s steps(1) infinite;
+}
+
+.best-chart-grid {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .6;
+  stroke-opacity: .07;
+}
+
+.best-chart-line {
+  fill: none;
+  stroke: #f5f5f5;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: best-chart 6s ease-in-out infinite;
+}
+
+.best-chart-base {
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: .18;
+}
+
+.best-chart-point {
+  fill: #fff;
+  animation: best-point 2s ease-in-out infinite;
+}
+
+.best-server-link {
+  stroke: #737373;
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.best-clock-ring {
+  fill: #0a0a0a;
+  stroke: #d4d4d4;
+  stroke-width: 1;
+  stroke-opacity: .4;
+}
+
+.best-clock-inner {
+  fill: none;
+  stroke: #737373;
+  stroke-width: .8;
+  stroke-dasharray: 2 5;
+  stroke-opacity: .4;
+}
+
+.best-clock-ticks {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: .45;
+}
+
+.best-clock-hand {
+  transform-origin: 0 0;
+  animation: best-clock 8s linear infinite;
+}
+
+.best-clock-hand-slow {
+  transform-origin: 0 0;
+  animation: best-clock 48s linear infinite;
+}
+
+.best-hand {
+  stroke: #f5f5f5;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.best-hand-dim {
+  stroke: #a3a3a3;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.best-headset-band {
+  fill: none;
+  stroke: #e5e5e5;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.best-headset {
+  animation: best-headset 4s ease-in-out infinite;
+}
+
+.best-detail-rule {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: .1;
+}
+
+.best-status-ring {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: .25;
+  transform-origin: center;
+  animation: best-status-ring 2.6s ease-out infinite;
+}
+
+.best-micro-icon {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .8;
+}
+
+.best-node-leader {
+  fill: none;
+  stroke: #737373;
+  stroke-width: .8;
+  stroke-dasharray: 2 3;
+  opacity: .55;
+}
+
+.best-map-caption {
+  fill: #a3a3a3;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: .9px;
+}
+
+.best-node-outline {
+  fill: #050505;
+  stroke: #d4d4d4;
+  stroke-width: 1;
+}
+
+.best-target-inner {
+  fill: none;
+  stroke: #737373;
+  stroke-width: .8;
+  stroke-dasharray: 2 3;
+}
+
+.best-target-ticks {
+  stroke: #a3a3a3;
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: .55;
+}
+
+.best-package-shell {
+  fill: #e5e5e5;
+  stroke: #fff;
+  stroke-width: .8;
+  stroke-linejoin: round;
+}
+
+.best-package-lines {
+  fill: none;
+  stroke: #525252;
+  stroke-width: .8;
+  stroke-linejoin: round;
+}
+
+.best-scan-corners {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.best-phone-title {
+  fill: #f5f5f5;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.best-status-pill {
+  fill: #fff;
+  fill-opacity: .1;
+  stroke: #fff;
+  stroke-width: .6;
+  stroke-opacity: .2;
+}
+
+.best-status-text {
+  fill: #e5e5e5;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: .5px;
+}
+
+.best-phone-event,
+.best-phone-event-dim {
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 7px;
+}
+
+.best-phone-event {
+  fill: #d4d4d4;
+}
+
+.best-phone-event-dim {
+  fill: #737373;
+}
+
+.best-phone-home {
+  stroke: #737373;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: .55;
+}
+
+.best-notification-icon {
+  fill: #e5e5e5;
+}
+
+.best-notification-icon + .best-check {
+  stroke: #000;
+}
+
+.best-card-heading,
+.best-card-caption {
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+.best-card-heading {
+  fill: #e5e5e5;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.best-card-caption {
+  fill: #8a8a8a;
+  font-size: 8px;
+}
+
+.best-card-link {
+  stroke: #737373;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.best-map-frame {
+  fill: #050505;
+  fill-opacity: .3;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: .12;
+}
+
+.best-map-graticule {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .6;
+  stroke-opacity: .07;
+}
+
+.best-map-node-ring {
+  fill: #050505;
+  stroke: #e5e5e5;
+  stroke-width: 1;
+}
+
+.best-map-pulse {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .8;
+  transform-origin: center;
+  animation: best-map-pulse 3s ease-out infinite;
+}
+
+.best-server-vents {
+  fill: none;
+  stroke: #737373;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: .5;
+}
+
+.best-server-label {
+  fill: #a3a3a3;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.best-server-light {
+  fill: #e5e5e5;
+  animation: best-server-lights 3s ease-in-out infinite;
+}
+
+.best-chart-point-ring {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .8;
+  opacity: 0;
+  animation: best-chart-point-ring 6s ease-out infinite;
+}
+
+.best-chart-time {
+  fill: #737373;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 7px;
+  letter-spacing: .5px;
+}
+
+.best-clock-major,
+.best-clock-minor {
+  stroke: #d4d4d4;
+  stroke-linecap: round;
+}
+
+.best-clock-major {
+  stroke-width: 1.5;
+  opacity: .5;
+}
+
+.best-clock-minor {
+  stroke-width: .7;
+  opacity: .22;
+}
+
+.best-delay-1 {
+  animation-delay: .7s;
+}
+
+.best-delay-2 {
+  animation-delay: 1.4s;
+}
+
+@keyframes best-route {
+  to { stroke-dashoffset: -100; }
+}
+
+@keyframes best-package-route {
+  0% { offset-distance: 0%; opacity: 0; }
+  8%, 72% { opacity: 1; }
+  88%, 100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes best-pulse {
+  0% { transform: scale(.4); opacity: .7; }
+  80%, 100% { transform: scale(1.7); opacity: 0; }
+}
+
+@keyframes best-scan {
+  0%, 100% { transform: translate(214px, 76px); opacity: 0; }
+  15%, 85% { opacity: .8; }
+  50% { transform: translate(362px, 145px); opacity: .8; }
+}
+
+@keyframes best-phone-tilt {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+@keyframes best-float-a {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes best-float-b {
+  0%, 100% { transform: translateY(-4px); }
+  50% { transform: translateY(4px); }
+}
+
+@keyframes best-world-flow {
+  to { stroke-dashoffset: -100; }
+}
+
+@keyframes best-orbit {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+@keyframes best-chart {
+  0% { stroke-dashoffset: 100; opacity: 0; }
+  10% { opacity: 1; }
+  55%, 88% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes best-point {
+  0%, 38% { opacity: 0; }
+  46%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes best-server-lights {
+  0%, 100% { opacity: .35; }
+  50% { opacity: 1; }
+}
+
+@keyframes best-clock {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes best-headset {
+  0%, 100% { opacity: .75; }
+  50% { opacity: 1; }
+}
+
+@keyframes best-status-ring {
+  0% { transform: scale(.55); opacity: .5; }
+  80%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes best-map-pulse {
+  0% { transform: scale(.45); opacity: .55; }
+  80%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes best-chart-point-ring {
+  0%, 40% { transform: scale(.5); opacity: 0; }
+  46% { opacity: .4; }
+  80%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .best-visual * {
+    animation: none !important;
+  }
+
+  .best-package {
+    offset-distance: 68%;
+  }
+
+  .best-orbit-dot {
+    offset-distance: 54%;
+  }
+
+  .best-chart-line {
+    stroke-dashoffset: 0;
+  }
+}

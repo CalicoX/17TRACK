@@ -979,9 +979,12 @@ export function TrackingHero() {
                         </span>
                         <button
                           type="button"
-                          className="ml-auto shrink-0 rounded-md px-1 font-medium text-[#212121] hover:bg-[#f2f2f2]"
+                          className="ml-auto inline-flex shrink-0 items-center gap-2 rounded-md px-2 py-1 font-medium text-[#212121] hover:bg-[#f2f2f2]"
                           onClick={() => selectCarrier(null)}
                         >
+                          <span className="flex size-5 items-center justify-center rounded-full bg-[#e8eaee]">
+                            <img src="/figma/shipment-major.svg" alt="" className="size-3.5" />
+                          </span>
                           Auto detect
                         </button>
                       </div>

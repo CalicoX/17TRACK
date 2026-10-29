@@ -1,6 +1,12 @@
+import {
+  TrackerFeatureVisual,
+  type TrackerVisualKind,
+} from "@/components/best-tracker-animations"
+
 type Feature = {
   title: string
   body: string
+  visual?: TrackerVisualKind
 }
 
 const BADGES = [
@@ -14,22 +20,27 @@ const FEATURES: Feature[] = [
   {
     title: "Accurate package tracking",
     body: "Powered by intelligent carrier recognition, we achieve 99.9% tracking accuracy, auto-identifying 80%+ carriers to deliver real-time parcel updates and end-to-end delivery status.",
+    visual: "accuracy",
   },
   {
     title: "Track on the go",
     body: "Track your shipments anytime with 17TRACK using the website, mobile app, WeChat Mini Program, or Shopify app. Enjoy the same accurate tracking results as the carrier's official site, with real-time updates at every step.",
+    visual: "mobile",
   },
   {
     title: "Worldwide tracking",
     body: "17TRACK can pull tracking data from 3500+ global carriers, including USPS, DHL, FedEx, UPS, China Post, Cainiao, YunExpress, and more. This means you don't have to visit multiple carrier websites — one tracking number shows you all the latest updates in one place.",
+    visual: "world",
   },
   {
     title: "99.9%+Uptime",
     body: "Our tracking system maintains an uptime of 99.9%, ensuring uninterrupted access whenever you need it. We deliver real-time updates across thousands of global carriers, keeping you informed every step of the fulfillment journey.",
+    visual: "uptime",
   },
   {
     title: "24/7 Support",
     body: "Need help? Our professional support team is here around the clock for tracking issues, technical questions, or any unexpected problems, ensuring you get quick and accurate assistance.",
+    visual: "support",
   },
   {
     title: "GDPR Compliance",
@@ -72,7 +83,9 @@ export function BestTrackerSection() {
                   </div>
                 </div>
               ) : (
-                <div className="track-best-media" aria-hidden="true" />
+                <div className="track-best-media" aria-hidden="true">
+                  {item.visual ? <TrackerFeatureVisual kind={item.visual} /> : null}
+                </div>
               )}
               <div className="track-best-copy">
                 <h3 className="track-best-card-title">{item.title}</h3>

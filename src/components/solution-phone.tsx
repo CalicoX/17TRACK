@@ -66,7 +66,7 @@ export function SolutionPhone() {
           alt=""
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          className="pointer-events-none absolute inset-0 h-full w-full object-contain"
         />
       )}
       {near ? (
