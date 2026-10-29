@@ -28,6 +28,7 @@ function Frame({
       <defs>
         <pattern id={grid} width="22" height="22" patternUnits="userSpaceOnUse">
           <path d="M22 0H0V22" className="best-grid-line" />
+          <circle cx="0" cy="0" r=".4" fill="#fff" opacity=".16" />
         </pattern>
         <radialGradient id={glow}>
           <stop stopColor="#fff" stopOpacity=".07" />
@@ -46,13 +47,13 @@ function AccuracyVisual() {
     <Frame kind="accuracy">
       <g transform="translate(44 38)">
         <rect width="158" height="38" rx="10" className="best-pill" />
-        <circle cx="20" cy="19" r="4" className="best-dot" />
-        <circle cx="20" cy="19" r="8" className="best-status-ring" />
-        <text x="36" y="23" className="best-svg-label">99.9% ACCURACY</text>
+        <circle cx="20" cy="19" r="3" className="best-dot" />
+        <circle cx="20" cy="19" r="7" className="best-status-ring" />
+        <text x="34" y="23" className="best-svg-label">99.9% ACCURACY</text>
       </g>
       <g transform="translate(359 38)">
         <rect width="157" height="38" rx="10" className="best-pill" />
-        <path d="M18 13v12M12 19h12M14.5 15.5l7 7M21.5 15.5l-7 7" className="best-micro-icon" />
+        <path d="M14 14v10M19 14v10M24 14v10M12 19h14" className="best-micro-icon" />
         <text x="36" y="23" className="best-svg-micro">AUTO CARRIER MATCH</text>
       </g>
 
@@ -74,31 +75,31 @@ function AccuracyVisual() {
       <text x="452" y="130" textAnchor="middle" className="best-map-caption">DELIVERED</text>
 
       <g transform="translate(102 218)">
-        <circle r="13" className="best-node-pulse" />
-        <circle r="7" className="best-node-outline" />
-        <circle r="2.5" className="best-node" />
+        <circle r="12" className="best-node-pulse" />
+        <circle r="6" className="best-node-outline" />
+        <circle r="2" className="best-node" />
       </g>
       <g transform="translate(197 143)">
-        <circle r="12" className="best-node-pulse best-delay-1" />
-        <circle r="6" className="best-node-outline" />
-        <circle r="2.5" className="best-node" />
+        <circle r="11" className="best-node-pulse best-delay-1" />
+        <circle r="5.5" className="best-node-outline" />
+        <circle r="2" className="best-node" />
       </g>
       <g transform="translate(328 176)">
-        <circle r="12" className="best-node-pulse best-delay-2" />
-        <circle r="6" className="best-node-outline" />
-        <circle r="2.5" className="best-node" />
+        <circle r="11" className="best-node-pulse best-delay-2" />
+        <circle r="5.5" className="best-node-outline" />
+        <circle r="2" className="best-node" />
       </g>
       <g transform="translate(452 89)">
-        <circle r="23" className="best-target-ring" />
-        <circle r="17" className="best-target-inner" />
-        <circle r="13" className="best-target-fill" />
-        <path d="m-5 0 3.5 3.5L5-4" className="best-check" />
-        <path d="M-29 0h4M25 0h4M0-29v4M0 25v4" className="best-target-ticks" />
+        <circle r="22" className="best-target-ring" />
+        <circle r="16" className="best-target-inner" />
+        <circle r="11" className="best-target-fill" />
+        <path d="m-4 .5 2.5 2.5L4-3" className="best-check" />
+        <path d="M-27 0h3M24 0h3M0-27v3M0 24v3" className="best-target-ticks" />
       </g>
 
       <g className="best-package">
-        <path d="m-14-7 14-6 14 6v16L0 15l-14-6Z" className="best-package-shell" />
-        <path d="m-14-7 14 6 14-6M0-1v16M-7-10l14 6v7" className="best-package-lines" />
+        <path d="m-12-6 12-5 12 5v13L0 12l-12-5Z" className="best-package-shell" />
+        <path d="m-12-6 12 5 12-6M0-1v13M-6-8.5l12 5v6" className="best-package-lines" />
       </g>
       <g className="best-scanner">
         <path d="M0 0v42" className="best-scan-line" />
@@ -115,38 +116,38 @@ function MobileVisual() {
     <Frame kind="mobile">
       <g className="best-phone">
         <rect x="211" y="25" width="140" height="265" rx="25" className="best-phone-shell" />
-        <rect x="218" y="33" width="126" height="249" rx="19" className="best-phone-screen" />
-        <path d="M259 44h44" className="best-speaker" />
-        <text x="232" y="68" className="best-phone-title">17TRACK</text>
-        <text x="232" y="89" className="best-svg-micro">YQTRACK123456</text>
-        <rect x="232" y="101" width="68" height="19" rx="9.5" className="best-status-pill" />
-        <text x="242" y="114" className="best-status-text">IN TRANSIT</text>
-        <path d="M238 139v98" className="best-phone-track" />
-        <circle cx="238" cy="140" r="4" className="best-node" />
-        <circle cx="238" cy="172" r="4" className="best-node" />
-        <circle cx="238" cy="204" r="4" className="best-node-dim" />
-        <circle cx="238" cy="236" r="4" className="best-node-dim" />
-        <text x="251" y="142" className="best-phone-event">Shipment picked up</text>
-        <text x="251" y="174" className="best-phone-event">Arrived at facility</text>
-        <text x="251" y="206" className="best-phone-event-dim">Out for delivery</text>
-        <text x="251" y="238" className="best-phone-event-dim">Delivered</text>
-        <path d="M252 261h58" className="best-phone-home" />
+        <rect x="219" y="34" width="124" height="247" rx="18" className="best-phone-screen" />
+        <path d="M260 44h42" className="best-speaker" />
+        <text x="233" y="68" className="best-phone-title">17TRACK</text>
+        <text x="233" y="88" className="best-svg-micro">YQTRACK123456</text>
+        <rect x="233" y="99" width="64" height="17" rx="8.5" className="best-status-pill" />
+        <text x="242" y="111" className="best-status-text">IN TRANSIT</text>
+        <path d="M239 137v100" className="best-phone-track" />
+        <circle cx="239" cy="138" r="3" className="best-node" />
+        <circle cx="239" cy="170" r="3" className="best-node" />
+        <circle cx="239" cy="202" r="3" className="best-node-dim" />
+        <circle cx="239" cy="234" r="3" className="best-node-dim" />
+        <text x="250" y="140" className="best-phone-event">Shipment picked up</text>
+        <text x="250" y="172" className="best-phone-event">Arrived at facility</text>
+        <text x="250" y="204" className="best-phone-event-dim">Out for delivery</text>
+        <text x="250" y="236" className="best-phone-event-dim">Delivered</text>
+        <path d="M254 261h54" className="best-phone-home" />
       </g>
 
       <g className="best-float-a">
         <rect x="61" y="84" width="157" height="68" rx="13" className="best-panel" />
-        <circle cx="82" cy="105" r="9" className="best-notification-icon" />
-        <path d="m78 105 3 3 5-6" className="best-check" />
-        <text x="99" y="108" className="best-card-heading">Package delivered</text>
-        <text x="78" y="132" className="best-card-caption">Today, 14:32</text>
+        <circle cx="81" cy="104" r="8" className="best-notification-icon" />
+        <path d="m77.5 104 2.5 2.5 4.5-5" className="best-check" />
+        <text x="97" y="107" className="best-card-heading">Package delivered</text>
+        <text x="78" y="131" className="best-card-caption">Today, 14:32</text>
         <path d="M174 130h25" className="best-card-link" />
       </g>
       <g className="best-float-b">
         <rect x="344" y="171" width="153" height="66" rx="13" className="best-panel" />
-        <path d="M359 192h15v10h-15zM374 195h7l4 4v3h-11z" className="best-micro-icon" />
-        <text x="392" y="198" className="best-card-heading">In transit</text>
-        <text x="360" y="221" className="best-card-caption">Arriving today</text>
-        <circle cx="477" cy="218" r="3" className="best-dot" />
+        <path d="M359 190h14v9h-14zM373 193h6l3.5 3.5v2.5h-9.5z" className="best-micro-icon" />
+        <text x="390" y="197" className="best-card-heading">In transit</text>
+        <text x="360" y="220" className="best-card-caption">Arriving today</text>
+        <circle cx="477" cy="217" r="2.5" className="best-dot" />
       </g>
       <path d="M189 176c-28-6-38-14-40-24M371 149c29-6 40-17 44-32" className="best-signal" />
       <circle cx="149" cy="152" r="2.5" className="best-dot" />
@@ -169,8 +170,8 @@ function WorldVisual() {
         <clipPath id="best-world-map-clip">
           <rect x="40" y="46" width="480" height="224" rx="14" />
         </clipPath>
-        <pattern id="best-world-land-dots" width="5" height="5" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r=".55" fill="#fff" fillOpacity=".2" />
+        <pattern id="best-world-land-dots" width="4" height="4" patternUnits="userSpaceOnUse">
+          <circle cx=".6" cy=".6" r=".35" fill="#fff" fillOpacity=".16" />
         </pattern>
       </defs>
       <rect x="40" y="46" width="480" height="224" rx="14" className="best-map-frame" />
@@ -186,21 +187,21 @@ function WorldVisual() {
 
         {Object.values(WORLD_HUBS).map(([x, y], index) => (
           <g key={`${x}-${y}`} transform={`translate(${x} ${y})`}>
-            {index === 1 || index === 2 ? <circle r="10" className="best-map-pulse" /> : null}
-            <circle r="5" className="best-map-node-ring" />
-            <circle r="2" className="best-node" />
+            {index === 1 || index === 2 ? <circle r="9" className="best-map-pulse" /> : null}
+            <circle r="4.5" className="best-map-node-ring" />
+            <circle r="1.5" className="best-node" />
           </g>
         ))}
         <g className="best-orbit-dot">
-          <circle r="6" className="best-dot-halo" />
-          <circle r="2.5" className="best-dot" />
+          <circle r="5" className="best-dot-halo" />
+          <circle r="2" className="best-dot" />
         </g>
       </g>
       <g transform="translate(390 24)">
         <rect width="126" height="34" rx="10" className="best-pill" />
         <text x="16" y="22" className="best-svg-label">3500+ CARRIERS</text>
       </g>
-      <circle cx="54" cy="290" r="3" className="best-dot" />
+      <circle cx="54" cy="290" r="2.5" className="best-dot" />
       <text x="65" y="294" className="best-svg-micro">LIVE ROUTES</text>
       <text x="506" y="294" textAnchor="end" className="best-svg-micro">190+ COUNTRIES & REGIONS</text>
     </Frame>
@@ -219,9 +220,16 @@ function UptimeVisual() {
         {["API", "EDGE", "CORE"].map((label, index) => (
           <g key={label} transform={`translate(76 ${91 + index * 53})`}>
             <rect width="108" height="43" rx="8" className="best-panel" />
-            <path d="M12 13h17M12 20h26M12 27h12" className="best-server-vents" />
-            <text x="48" y="25" className="best-server-label">{label}</text>
-            <circle cx="94" cy="21.5" r="3" className="best-server-light" />
+            <g className="best-server-vents" transform="translate(12 13)">
+              <rect width="5" height="3" rx="1" />
+              <rect y="6" width="5" height="3" rx="1" />
+              <rect y="12" width="5" height="3" rx="1" />
+              <rect x="8" width="5" height="3" rx="1" />
+              <rect x="8" y="6" width="5" height="3" rx="1" />
+              <rect x="8" y="12" width="5" height="3" rx="1" />
+            </g>
+            <text x="46" y="25" className="best-server-label">{label}</text>
+            <circle cx="93" cy="21.5" r="2.5" className="best-server-light" />
           </g>
         ))}
       </g>
@@ -231,7 +239,7 @@ function UptimeVisual() {
         <rect width="270" height="185" rx="16" className="best-panel" />
         <text x="20" y="35" className="best-svg-number">99.9%</text>
         <text x="176" y="32" className="best-svg-micro">UPTIME</text>
-        <circle cx="239" cy="28" r="3" className="best-dot" />
+        <circle cx="239" cy="28" r="2.5" className="best-dot" />
         <path d="M20 58h230M20 92h230M20 126h230M20 160h230M66 58v102M112 58v102M158 58v102M204 58v102" className="best-chart-grid" />
         <g clipPath="url(#best-uptime-plot)">
           <path
@@ -239,17 +247,17 @@ function UptimeVisual() {
             className="best-chart-line"
             pathLength="100"
           />
-          <circle cx="161" cy="74" r="5" className="best-chart-point" />
-          <circle cx="161" cy="74" r="10" className="best-chart-point-ring" />
+          <circle cx="161" cy="74" r="4" className="best-chart-point" />
+          <circle cx="161" cy="74" r="9" className="best-chart-point-ring" />
         </g>
         <path d="M20 160h230" className="best-chart-base" />
         <text x="20" y="177" className="best-chart-time">00:00</text>
         <text x="250" y="177" textAnchor="end" className="best-chart-time">NOW</text>
       </g>
       <g transform="translate(365 272)">
-        <circle r="4" className="best-dot" />
-        <circle r="8" className="best-status-ring" />
-        <text x="14" y="4" className="best-svg-micro">ALL SYSTEMS OPERATIONAL</text>
+        <circle r="3" className="best-dot" />
+        <circle r="7" className="best-status-ring" />
+        <text x="13" y="4" className="best-svg-micro">ALL SYSTEMS OPERATIONAL</text>
       </g>
     </Frame>
   )
@@ -264,33 +272,33 @@ function SupportVisual() {
         {Array.from({ length: 60 }, (_, index) => (
           <path
             key={index}
-            d={index % 5 === 0 ? "M0-88v7" : "M0-88v3"}
+            d={index % 5 === 0 ? "M0-87v6" : "M0-87v2.5"}
             className={index % 5 === 0 ? "best-clock-major" : "best-clock-minor"}
             transform={`rotate(${index * 6})`}
           />
         ))}
         <g className="best-clock-hand">
-          <path d="M0 8V-57" className="best-hand" />
+          <path d="M0 7V-56" className="best-hand" />
         </g>
         <g className="best-clock-hand-slow">
-          <path d="M-5 3 38 24" className="best-hand-dim" />
+          <path d="M-4 2 37 23" className="best-hand-dim" />
         </g>
-        <circle r="5" className="best-node" />
+        <circle r="4" className="best-node" />
       </g>
 
       <g className="best-headset">
-        <path d="M245 156v-13a35 35 0 0 1 70 0v13" className="best-headset-band" />
-        <rect x="237" y="149" width="18" height="35" rx="8" className="best-panel-solid" />
-        <rect x="305" y="149" width="18" height="35" rx="8" className="best-panel-solid" />
-        <path d="M314 184c0 19-12 26-30 26" className="best-headset-band" />
-        <rect x="274" y="204" width="17" height="10" rx="5" className="best-panel-solid" />
+        <path d="M246 155v-12a34 34 0 0 1 68 0v12" className="best-headset-band" />
+        <rect x="239" y="149" width="15" height="33" rx="7" className="best-panel-solid" />
+        <rect x="306" y="149" width="15" height="33" rx="7" className="best-panel-solid" />
+        <path d="M313.5 182c0 17-11 24-28 24" className="best-headset-band" />
+        <rect x="276" y="201" width="15" height="8" rx="4" className="best-panel-solid" />
       </g>
 
       <g className="best-float-a">
         <path d="M65 82h132a12 12 0 0 1 12 12v43a12 12 0 0 1-12 12h-76l-22 17 3-17H65a12 12 0 0 1-12-12V94a12 12 0 0 1 12-12Z" className="best-panel" />
         <text x="70" y="108" className="best-card-heading">How can we help?</text>
         <text x="70" y="129" className="best-card-caption">Support is online now</text>
-        <circle cx="70" cy="140" r="2.5" className="best-dot" />
+        <circle cx="70" cy="140" r="2" className="best-dot" />
       </g>
       <g className="best-float-b">
         <path d="M374 180h112a12 12 0 0 1 12 12v37a12 12 0 0 1-12 12h-13l3 17-22-17h-80a12 12 0 0 1-12-12v-37a12 12 0 0 1 12-12Z" className="best-panel" />

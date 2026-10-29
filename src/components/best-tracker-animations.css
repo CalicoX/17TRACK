@@ -14,14 +14,14 @@
 .best-grid-line {
   fill: none;
   stroke: #fff;
-  stroke-width: .6;
-  opacity: .14;
+  stroke-width: .4;
+  opacity: .1;
 }
 
 .best-soft {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: .7;
   opacity: .13;
 }
 
@@ -33,16 +33,16 @@
 .best-route-ghost {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
-  stroke-dasharray: 3 6;
-  opacity: .2;
+  stroke-width: .7;
+  stroke-dasharray: 1.5 5;
+  opacity: .16;
 }
 
 .best-route-live {
   fill: none;
   stroke: #f5f5f5;
-  stroke-width: 1.5;
-  stroke-dasharray: 14 86;
+  stroke-width: 1.2;
+  stroke-dasharray: 10 90;
   animation: best-route 5s linear infinite;
   opacity: .8;
 }
@@ -59,7 +59,7 @@
 .best-node-pulse {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: .7;
   opacity: 0;
   animation: best-pulse 2.8s ease-out infinite;
 }
@@ -67,7 +67,7 @@
 .best-target-ring {
   fill: #000;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: .7;
   stroke-opacity: .35;
 }
 
@@ -78,7 +78,7 @@
 .best-check {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 1.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -96,21 +96,21 @@
 .best-panel-solid {
   fill: #e5e5e5;
   stroke: #fff;
-  stroke-width: .7;
+  stroke-width: .5;
 }
 
 .best-panel {
   fill: #0a0a0a;
   stroke: #fff;
-  stroke-width: 1;
-  stroke-opacity: .28;
+  stroke-width: .7;
+  stroke-opacity: .22;
 }
 
 .best-pill {
   fill: #0a0a0a;
   stroke: #fff;
-  stroke-width: 1;
-  stroke-opacity: .22;
+  stroke-width: .7;
+  stroke-opacity: .18;
 }
 
 .best-svg-label,
@@ -122,16 +122,16 @@
 }
 
 .best-svg-label {
-  font-size: 10px;
+  font-size: 8.5px;
   font-weight: 500;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.4px;
 }
 
 .best-svg-micro {
   fill: #a3a3a3;
-  font-size: 9px;
+  font-size: 7.5px;
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
 .best-svg-number {
@@ -163,15 +163,15 @@
 
 .best-scan-line {
   stroke: #fff;
-  stroke-width: 1;
-  stroke-dasharray: 2 4;
-  opacity: .4;
+  stroke-width: .7;
+  stroke-dasharray: 1 4;
+  opacity: .35;
 }
 
 .best-scan-box {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: .7;
   opacity: .65;
 }
 
@@ -187,31 +187,32 @@
 .best-phone-shell {
   fill: #090909;
   stroke: #f5f5f5;
-  stroke-width: 1.4;
-  stroke-opacity: .75;
+  stroke-width: 1;
+  stroke-opacity: .6;
 }
 
 .best-phone-screen {
   fill: #111;
   stroke: #fff;
-  stroke-opacity: .12;
+  stroke-width: .5;
+  stroke-opacity: .1;
 }
 
 .best-speaker {
   stroke: #737373;
-  stroke-width: 3;
+  stroke-width: 2;
   stroke-linecap: round;
 }
 
 .best-phone-track {
   stroke: #737373;
-  stroke-width: 1;
-  stroke-dasharray: 2 3;
+  stroke-width: .7;
+  stroke-dasharray: 1 3;
 }
 
 .best-phone-copy {
   stroke: #d4d4d4;
-  stroke-width: 4;
+  stroke-width: 2.5;
   stroke-linecap: round;
   opacity: .65;
 }
@@ -224,7 +225,7 @@
 .best-copy-line {
   fill: none;
   stroke: #d4d4d4;
-  stroke-width: 3;
+  stroke-width: 2;
   stroke-linecap: round;
   opacity: .55;
 }
@@ -232,7 +233,7 @@
 .best-copy-faint {
   fill: none;
   stroke: #737373;
-  stroke-width: 2;
+  stroke-width: 1.2;
   stroke-linecap: round;
   opacity: .45;
 }
@@ -240,15 +241,15 @@
 .best-node-ring {
   fill: none;
   stroke: #d4d4d4;
-  stroke-width: 1;
+  stroke-width: .7;
 }
 
 .best-signal {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
-  stroke-dasharray: 3 4;
-  opacity: .3;
+  stroke-width: .7;
+  stroke-dasharray: 1.5 3.5;
+  opacity: .25;
 }
 
 .best-float-a {
@@ -262,33 +263,33 @@
 .best-globe-line {
   fill: none;
   stroke: #d4d4d4;
-  stroke-width: .8;
+  stroke-width: .5;
   stroke-opacity: .25;
 }
 
 .best-globe-faint {
   fill: none;
   stroke: #a3a3a3;
-  stroke-width: .7;
-  stroke-dasharray: 2 4;
+  stroke-width: .5;
+  stroke-dasharray: 1 3;
   stroke-opacity: .2;
 }
 
 .best-world-land {
   fill: #d4d4d4;
-  fill-opacity: .12;
+  fill-opacity: .1;
   stroke: #e5e5e5;
-  stroke-width: .8;
-  stroke-opacity: .35;
+  stroke-width: .5;
+  stroke-opacity: .3;
   stroke-linejoin: round;
 }
 
 .best-world-arc {
   fill: none;
   stroke: #f5f5f5;
-  stroke-width: 1.2;
-  stroke-dasharray: 3 3;
-  opacity: .65;
+  stroke-width: .8;
+  stroke-dasharray: 1.5 2.5;
+  opacity: .6;
   animation: best-world-flow 8s linear infinite;
 }
 
@@ -306,7 +307,7 @@
 .best-world-points {
   fill: #f5f5f5;
   stroke: #000;
-  stroke-width: 3;
+  stroke-width: 2;
 }
 
 .best-dot-halo {
@@ -328,14 +329,14 @@
 .best-chart-grid {
   fill: none;
   stroke: #fff;
-  stroke-width: .6;
-  stroke-opacity: .07;
+  stroke-width: .4;
+  stroke-opacity: .06;
 }
 
 .best-chart-line {
   fill: none;
   stroke: #f5f5f5;
-  stroke-width: 1.8;
+  stroke-width: 1.3;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 100;
@@ -345,8 +346,8 @@
 
 .best-chart-base {
   stroke: #fff;
-  stroke-width: 1;
-  stroke-opacity: .18;
+  stroke-width: .7;
+  stroke-opacity: .16;
 }
 
 .best-chart-point {
@@ -356,29 +357,29 @@
 
 .best-server-link {
   stroke: #737373;
-  stroke-width: 1;
-  stroke-dasharray: 2 3;
+  stroke-width: .7;
+  stroke-dasharray: 1 3;
 }
 
 .best-clock-ring {
   fill: #0a0a0a;
   stroke: #d4d4d4;
-  stroke-width: 1;
-  stroke-opacity: .4;
+  stroke-width: .7;
+  stroke-opacity: .35;
 }
 
 .best-clock-inner {
   fill: none;
   stroke: #737373;
-  stroke-width: .8;
-  stroke-dasharray: 2 5;
-  stroke-opacity: .4;
+  stroke-width: .5;
+  stroke-dasharray: 1 4;
+  stroke-opacity: .35;
 }
 
 .best-clock-ticks {
   fill: none;
   stroke: #d4d4d4;
-  stroke-width: 2;
+  stroke-width: 1.2;
   stroke-linecap: round;
   opacity: .45;
 }
@@ -395,20 +396,20 @@
 
 .best-hand {
   stroke: #f5f5f5;
-  stroke-width: 1.5;
+  stroke-width: 1.2;
   stroke-linecap: round;
 }
 
 .best-hand-dim {
   stroke: #a3a3a3;
-  stroke-width: 1.5;
+  stroke-width: 1.2;
   stroke-linecap: round;
 }
 
 .best-headset-band {
   fill: none;
   stroke: #e5e5e5;
-  stroke-width: 3;
+  stroke-width: 2;
   stroke-linecap: round;
 }
 
@@ -419,7 +420,7 @@
 .best-detail-rule {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: .7;
   stroke-linecap: round;
   opacity: .1;
 }
@@ -427,7 +428,7 @@
 .best-status-ring {
   fill: none;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: .7;
   opacity: .25;
   transform-origin: center;
   animation: best-status-ring 2.6s ease-out infinite;
@@ -436,7 +437,7 @@
 .best-micro-icon {
   fill: none;
   stroke: #d4d4d4;
-  stroke-width: 1;
+  stroke-width: .8;
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: .8;
@@ -445,57 +446,57 @@
 .best-node-leader {
   fill: none;
   stroke: #737373;
-  stroke-width: .8;
-  stroke-dasharray: 2 3;
-  opacity: .55;
+  stroke-width: .6;
+  stroke-dasharray: 1 2.5;
+  opacity: .5;
 }
 
 .best-map-caption {
   fill: #a3a3a3;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 7px;
+  font-size: 6.5px;
   font-weight: 500;
-  letter-spacing: .9px;
+  letter-spacing: 1.1px;
 }
 
 .best-node-outline {
   fill: #050505;
   stroke: #d4d4d4;
-  stroke-width: 1;
+  stroke-width: .7;
 }
 
 .best-target-inner {
   fill: none;
   stroke: #737373;
-  stroke-width: .8;
-  stroke-dasharray: 2 3;
+  stroke-width: .6;
+  stroke-dasharray: 1 2.5;
 }
 
 .best-target-ticks {
   stroke: #a3a3a3;
-  stroke-width: 1;
+  stroke-width: .8;
   stroke-linecap: round;
-  opacity: .55;
+  opacity: .5;
 }
 
 .best-package-shell {
   fill: #e5e5e5;
   stroke: #fff;
-  stroke-width: .8;
+  stroke-width: .6;
   stroke-linejoin: round;
 }
 
 .best-package-lines {
   fill: none;
   stroke: #525252;
-  stroke-width: .8;
+  stroke-width: .6;
   stroke-linejoin: round;
 }
 
 .best-scan-corners {
   fill: none;
   stroke: #d4d4d4;
-  stroke-width: 1;
+  stroke-width: .8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -503,17 +504,17 @@
 .best-phone-title {
   fill: #f5f5f5;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: .5px;
+  letter-spacing: .8px;
 }
 
 .best-status-pill {
   fill: #fff;
-  fill-opacity: .1;
+  fill-opacity: .08;
   stroke: #fff;
-  stroke-width: .6;
-  stroke-opacity: .2;
+  stroke-width: .5;
+  stroke-opacity: .16;
 }
 
 .best-status-text {
@@ -527,7 +528,7 @@
 .best-phone-event,
 .best-phone-event-dim {
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 7px;
+  font-size: 6.5px;
 }
 
 .best-phone-event {
@@ -540,9 +541,9 @@
 
 .best-phone-home {
   stroke: #737373;
-  stroke-width: 2;
+  stroke-width: 1.5;
   stroke-linecap: round;
-  opacity: .55;
+  opacity: .5;
 }
 
 .best-notification-icon {
@@ -560,18 +561,18 @@
 
 .best-card-heading {
   fill: #e5e5e5;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 500;
 }
 
 .best-card-caption {
   fill: #8a8a8a;
-  font-size: 8px;
+  font-size: 7px;
 }
 
 .best-card-link {
   stroke: #737373;
-  stroke-width: 1.5;
+  stroke-width: 1;
   stroke-linecap: round;
 }
 
@@ -579,45 +580,42 @@
   fill: #050505;
   fill-opacity: .3;
   stroke: #fff;
-  stroke-width: 1;
-  stroke-opacity: .12;
+  stroke-width: .7;
+  stroke-opacity: .1;
 }
 
 .best-map-graticule {
   fill: none;
   stroke: #fff;
-  stroke-width: .6;
-  stroke-opacity: .07;
+  stroke-width: .4;
+  stroke-opacity: .06;
 }
 
 .best-map-node-ring {
   fill: #050505;
   stroke: #e5e5e5;
-  stroke-width: 1;
+  stroke-width: .7;
 }
 
 .best-map-pulse {
   fill: none;
   stroke: #fff;
-  stroke-width: .8;
+  stroke-width: .6;
   transform-origin: center;
   animation: best-map-pulse 3s ease-out infinite;
 }
 
 .best-server-vents {
-  fill: none;
-  stroke: #737373;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  opacity: .5;
+  fill: #737373;
+  opacity: .45;
 }
 
 .best-server-label {
   fill: #a3a3a3;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 8px;
+  font-size: 7px;
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
 .best-server-light {
@@ -628,7 +626,7 @@
 .best-chart-point-ring {
   fill: none;
   stroke: #fff;
-  stroke-width: .8;
+  stroke-width: .6;
   opacity: 0;
   animation: best-chart-point-ring 6s ease-out infinite;
 }
@@ -636,8 +634,8 @@
 .best-chart-time {
   fill: #737373;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 7px;
-  letter-spacing: .5px;
+  font-size: 6.5px;
+  letter-spacing: .8px;
 }
 
 .best-clock-major,
@@ -647,13 +645,13 @@
 }
 
 .best-clock-major {
-  stroke-width: 1.5;
-  opacity: .5;
+  stroke-width: 1.2;
+  opacity: .45;
 }
 
 .best-clock-minor {
-  stroke-width: .7;
-  opacity: .22;
+  stroke-width: .5;
+  opacity: .18;
 }
 
 .best-delay-1 {
