@@ -49,7 +49,7 @@ function loadAssets() {
   return assetsPromise
 }
 
-function findScreenMesh(root: THREE.Object3D) {
+function findScreenMesh(root: THREE.Object3D): THREE.Mesh | null {
   let found: THREE.Mesh | null = null
   root.traverse((obj) => {
     if (found) return

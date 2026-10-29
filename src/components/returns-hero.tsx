@@ -237,7 +237,7 @@ export function ReturnsHero({ className }: { className?: string }) {
           width={864}
           height={1152}
           draggable={false}
-          className="pointer-events-none absolute inset-0 h-full w-full scale-[0.92] rounded-[22px] bg-[#f4f1ec] object-cover shadow-[0_24px_48px_-28px_rgba(15,23,42,0.18)]"
+          className="pointer-events-none absolute inset-0 h-full w-full scale-[0.88] rounded-[22px] bg-[#f4f1ec] object-cover shadow-[0_24px_48px_-28px_rgba(15,23,42,0.18)]"
           style={{ objectPosition: "68% 36%" }}
         />
 
