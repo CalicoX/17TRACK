@@ -15,33 +15,46 @@ const routeType = {
 } as const
 
 const BARS = [
-  { x: 287.6, y: 87.6, w: 3.9, h: 1.95, color: "#00ff1a" },
-  { x: 287.6, y: 102.3, w: 14.6, h: 1.95, color: "#a6a7be" },
-  { x: 305.1, y: 102.3, w: 5.6, h: 1.95, color: "#00c2ff" },
-  { x: 432.7, y: 102.3, w: 1.95, h: 1.95, color: "#00ff1a" },
-  { x: 287.6, y: 106.2, w: 14.6, h: 1.95, color: "#a6a7be" },
-  { x: 432.7, y: 106.2, w: 1.95, h: 1.95, color: "#0c0d29" },
-  { x: 287.6, y: 110.1, w: 14.6, h: 1.95, color: "#a6a7be" },
-  { x: 305.1, y: 110.1, w: 5.6, h: 1.95, color: "#aaabc2" },
-  { x: 432.7, y: 110.1, w: 1.95, h: 1.95, color: "#00ff1a" },
+  { x: 309.97, y: 86.08, w: 2.799, h: 1.399, color: "#00ff1a" },
+  { x: 309.97, y: 96.57, w: 10.495, h: 1.399, color: "#a6a7be" },
+  { x: 322.56, y: 96.57, w: 4.023, h: 1.399, color: "#00c2ff" },
+  { x: 414.22, y: 96.57, w: 1.399, h: 1.399, color: "#00ff1a" },
+  { x: 309.97, y: 99.37, w: 10.495, h: 1.399, color: "#a6a7be" },
+  { x: 414.22, y: 99.37, w: 1.399, h: 1.399, color: "#0c0d29" },
+  { x: 309.97, y: 102.17, w: 10.495, h: 1.399, color: "#a6a7be" },
+  { x: 322.56, y: 102.17, w: 4.023, h: 1.399, color: "#aaabc2" },
+  { x: 414.22, y: 102.17, w: 1.399, h: 1.399, color: "#00ff1a" },
 ] as const
 
-// Hub→carrier spokes from Figma node 281:1221 (exported SVGs, rotated into
-// the 523×304 artboard). Endpoints sit on each logo's top-center.
-const CURVES = [
-  // FedEx
-  "M361.99 114.94 C361.99 139.45 376.78 161.52 399.39 170.74 L443.79 188.86 C452.75 192.51 458.60 201.24 458.60 210.95",
-  // UPS
-  "M361.99 114.94 C361.99 122.14 365.64 128.83 371.67 132.69 L399.17 150.28 C407.55 155.64 412.63 164.95 412.63 174.95",
-  // USPS (vertical)
-  "M363.01 249.01 L363.01 115.00",
-  // DHL (asset file is misnamed line-china-post.svg in public/)
-  "M362.63 114.94 C362.63 122.13 359.01 128.83 353.02 132.73 L336.43 143.54 C321.81 153.06 312.98 169.40 312.98 186.93",
-  // China Post (asset file is misnamed line-dhl.svg in public/)
-  "M266.96 240.95 L266.96 219.53 C266.96 188.26 285.89 160.12 314.79 148.42 L349.57 134.35 C357.46 131.16 362.63 123.48 362.63 114.94",
+// Hub→carrier spokes: Figma node 281:1221 SVG insets + rotate(90deg).
+// Repo filenames for dhl/china-post SVGs are swapped vs carrier logos.
+const HUB_LINES = [
+  {
+    src: "/solutions/api-visual/line-fedex.svg",
+    inset: { top: "37.81%", right: "12.28%", bottom: "30.61%", left: "69.18%" },
+  },
+  {
+    src: "/solutions/api-visual/line-ups.svg",
+    inset: { top: "37.81%", right: "21.07%", bottom: "42.45%", left: "69.18%" },
+  },
+  {
+    src: "/solutions/api-visual/line-usps.svg",
+    inset: { top: "37.83%", right: "30.59%", bottom: "18.09%", left: "69.41%" },
+    zeroHeight: true,
+  },
+  {
+    src: "/solutions/api-visual/line-china-post.svg", // Vector8 → DHL tip
+    inset: { top: "37.81%", right: "30.63%", bottom: "38.51%", left: "59.81%" },
+    flipX: true,
+  },
+  {
+    src: "/solutions/api-visual/line-dhl.svg", // Vector9 → China Post tip
+    inset: { top: "37.81%", right: "30.63%", bottom: "20.74%", left: "51.01%" },
+    flipX: true,
+  },
 ] as const
 
-// Half-disc caps: OrangeCap centers on (x+2.099, y); flat edge on logo top.
+// Half-disc caps at Figma ellipse insets (box top-left; tip = top-center of logo).
 const CAPS = [
   { x: 456.501, y: 210.95 }, // FedEx
   { x: 410.531, y: 174.95 }, // UPS
@@ -50,16 +63,67 @@ const CAPS = [
   { x: 264.861, y: 240.95 }, // China Post
 ] as const
 
-function OrangeCap({ x, y }: { x: number; y: number }) {
+function HubLine({
+  src,
+  inset,
+  flipX = false,
+  zeroHeight = false,
+}: {
+  src: string
+  inset: { top: string; right: string; bottom: string; left: string }
+  flipX?: boolean
+  zeroHeight?: boolean
+}) {
   return (
-    <img
-      src="/solutions/api-visual/line-dot.svg"
-      alt=""
-      width={2.099}
-      height={4.198}
-      className="absolute max-w-none"
-      style={{ left: x, top: y - 2.099, width: 4.198, height: 2.099 }}
-    />
+    <div
+      className="pointer-events-none absolute flex items-center justify-center"
+      style={{ ...inset, containerType: "size", zIndex: 1 }}
+    >
+      <div
+        className="relative"
+        style={{
+          flex: "none",
+          height: zeroHeight ? 0 : "100cqw",
+          width: "100cqh",
+          transform: flipX ? "scaleX(-1) rotate(90deg)" : "rotate(90deg)",
+        }}
+      >
+        <div
+          className="absolute"
+          style={{ inset: zeroHeight ? "-0.175px 0" : "-0.18% 0" }}
+        >
+          <img alt="" className="block size-full max-w-none" src={src} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function OrangeCap({ x, y }: { x: number; y: number }) {
+  // x = tip center − 2.099; y = tip (logo top). Matches Figma ellipse + rotate(90deg).
+  return (
+    <div
+      className="pointer-events-none absolute flex items-center justify-center"
+      style={{ left: x, top: y, width: 4.198, height: 2.099, containerType: "size" }}
+    >
+      <div
+        className="relative"
+        style={{
+          flex: "none",
+          width: "100cqh",
+          height: "100cqw",
+          transform: "rotate(90deg)",
+        }}
+      >
+        <img
+          src="/solutions/api-visual/line-dot.svg"
+          alt=""
+          width={2.099}
+          height={4.198}
+          className="absolute inset-0 size-full max-w-none"
+        />
+      </div>
+    </div>
   )
 }
 
@@ -257,18 +321,9 @@ export function ApiVisual() {
           <span style={routeType}>United States..</span>
         </div>
 
-        <svg
-          className="pointer-events-none absolute top-0 left-0"
-          width={W}
-          height={H}
-          viewBox={`0 0 ${W} ${H}`}
-          fill="none"
-          style={{ zIndex: 1 }}
-        >
-          {CURVES.map((d) => (
-            <path key={d} d={d} stroke="#dacdff" strokeWidth={0.35} />
-          ))}
-        </svg>
+        {HUB_LINES.map((line) => (
+          <HubLine key={line.src} {...line} />
+        ))}
         <div className="absolute inset-0" style={{ zIndex: 1 }}>
           {CAPS.map((cap) => (
             <OrangeCap key={`${cap.x}-${cap.y}`} {...cap} />
@@ -342,54 +397,60 @@ export function ApiVisual() {
           width={6.29708}
           height={6.29708}
           className="absolute max-w-none"
-          style={{ left: 359.45, top: 124.85, width: 6.29708, height: 6.29708 }}
+          style={{ left: 359.47, top: 111.59, width: 6.29708, height: 6.29708, zIndex: 2 }}
         />
 
         <div
           className="absolute border-white bg-[#f5f6ff]"
           style={{
-            left: 275,
-            top: 6,
-            width: 175,
-            height: 117,
-            borderRadius: 11.66,
+            left: 300,
+            top: 34.99,
+            width: 125.942,
+            height: 78.37,
+            borderRadius: 8.396,
             borderWidth: 0.7,
-            boxShadow: "0 26px 52px -16px rgba(46, 13, 181, 0.3), 0 10px 22px -10px rgba(112, 0, 255, 0.18)",
+            boxShadow:
+              "0 0 10.495px rgba(112, 0, 255, 0.08), 0 0 27.987px rgba(153, 128, 255, 0.03)",
+            zIndex: 2,
           }}
         />
-        <img
-          src="/solutions/api-visual/logo-17track.svg"
-          alt=""
-          width={101.2}
-          height={15.57}
-          className="absolute max-w-none"
-          style={{ left: 290.3, top: 31.1, width: 101.2, height: 15.57 }}
-        />
-        <p
-          className="absolute m-0 text-center whitespace-nowrap"
-          style={{
-            left: 398.3,
-            top: 27.1,
-            fontFamily: '"Geist Variable", Inter, sans-serif',
-            fontSize: 21.4,
-            fontWeight: 900,
-            lineHeight: "23.4px",
-            letterSpacing: -0.16,
-            color: "#2e0db5",
-          }}
+        <div
+          className="absolute flex items-center justify-center"
+          style={{ left: 310.845, top: 48.99, width: 104.951, height: 16.792, gap: 4.898, zIndex: 2 }}
         >
-          API
-        </p>
+          <img
+            src="/solutions/api-visual/logo-17track.svg"
+            alt=""
+            width={72.766}
+            height={11.195}
+            className="max-w-none"
+            style={{ width: 72.766, height: 11.195 }}
+          />
+          <p
+            className="m-0 text-center whitespace-nowrap"
+            style={{
+              fontFamily: '"Geist Variable", Inter, sans-serif',
+              fontSize: 15.393,
+              fontWeight: 900,
+              lineHeight: "16.792px",
+              letterSpacing: -0.14,
+              color: "#2e0db5",
+            }}
+          >
+            API
+          </p>
+        </div>
         <div
           className="absolute border-white"
           style={{
-            left: 285,
-            top: 76.6,
-            width: 155.8,
-            height: 35.6,
-            borderRadius: 4.87,
+            left: 307.176,
+            top: 82.58,
+            width: 111.948,
+            height: 23.789,
+            borderRadius: 3.498,
             borderWidth: 0.35,
             backgroundImage: "linear-gradient(to bottom, #e8edff, #fff)",
+            zIndex: 2,
           }}
         />
         {BARS.map((bar) => (
@@ -403,20 +464,22 @@ export function ApiVisual() {
               height: bar.h,
               borderRadius: 0.7,
               background: bar.color,
+              zIndex: 2,
             }}
           />
         ))}
         <p
           className="absolute m-0 -translate-x-1/2 text-center whitespace-nowrap"
           style={{
-            left: 379.1,
-            top: 103.2,
+            left: 375.75,
+            top: 97.27,
             fontFamily: "Inter, sans-serif",
-            fontSize: 6.76,
+            fontSize: 5.597,
             fontWeight: 500,
             lineHeight: "5.597px",
             letterSpacing: -0.14,
             color: "#e5e9ff",
+            zIndex: 2,
           }}
         >
           Powered by 17TRACK
