@@ -219,9 +219,11 @@ export function ReturnsHero({ className }: { className?: string }) {
     <div
       className={`relative flex w-full items-center justify-center ${className ?? ""}`}
     >
+      {/* Below lg the frame is short of the cell so the -4% / -24px cards
+          land on the cell edges. lg keeps the 90% cap. */}
       <div
         ref={frameRef}
-        className="relative aspect-[620/540] w-[min(620px,90%)]"
+        className="relative aspect-[620/540] w-[calc(100%*620/(620+24.8+24))] lg:w-[min(620px,90%)]"
       >
         <div
           className="absolute top-0 left-0 origin-top-left"

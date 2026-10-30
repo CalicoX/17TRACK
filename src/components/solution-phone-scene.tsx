@@ -4,11 +4,11 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 
 const MODEL_URL = "/solutions/iphone-17-pro.glb"
-const SCREEN_URL = "/solutions/app-screen.png"
+const SCREEN_URL = "/solutions/app-screen-tracking.png"
 const SCREEN_MATERIAL = "OLED"
 /** Screen toward the camera, a little of the right edge showing. Static. */
-const REST_YAW = 0.32
-const REST_TILT_X = 0.06
+const REST_YAW = -0.32
+const REST_TILT_X = 0.03
 
 type UvBounds = { min: [number, number]; span: [number, number] }
 
@@ -198,7 +198,7 @@ export function mountSolutionPhone(canvas: HTMLCanvasElement, onReady: () => voi
     })
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.05
+    renderer.toneMappingExposure = 1.3
     renderer.setClearColor(0x000000, 0)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
 
@@ -211,14 +211,15 @@ export function mountSolutionPhone(canvas: HTMLCanvasElement, onReady: () => voi
     const envMap = pmrem.fromScene(room, 0.04).texture
     room.dispose()
     scene.environment = envMap
-    scene.environmentIntensity = 0.62
+    scene.environmentIntensity = 1.0
 
-    scene.add(new THREE.DirectionalLight(0xfff4ea, 1.15).translateX(1.8).translateY(3.4).translateZ(2.4))
-    const fill = new THREE.DirectionalLight(0xd5deea, 0.45)
-    fill.position.set(-2.8, 1.2, 2.4)
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9))
+    scene.add(new THREE.DirectionalLight(0xffffff, 2.0).translateX(0.5).translateY(2.0).translateZ(4.0))
+    const fill = new THREE.DirectionalLight(0xffffff, 1.2)
+    fill.position.set(-3.0, 0.8, 3.0)
     scene.add(fill)
-    const rim = new THREE.DirectionalLight(0xf7f8fb, 0.7)
-    rim.position.set(-1.4, 2.2, -3.2)
+    const rim = new THREE.DirectionalLight(0xffffff, 1.0)
+    rim.position.set(-1.0, 2.0, -3.0)
     scene.add(rim)
 
     const rig = new THREE.Group()
@@ -252,7 +253,7 @@ export function mountSolutionPhone(canvas: HTMLCanvasElement, onReady: () => voi
       const distance = camera.position.z
       const visibleH = 2 * Math.tan((camera.fov * Math.PI) / 360) * distance
       const visibleW = visibleH * camera.aspect
-      const scale = Math.min((visibleH * 0.67) / baseSize.y, (visibleW * 0.5) / baseSize.x)
+      const scale = Math.min((visibleH * 0.88) / baseSize.y, (visibleW * 0.62) / baseSize.x)
       model.scale.setScalar(scale)
       const foot = (baseSize.y * scale) / 2
       shadow.position.y = -foot + 0.02
@@ -297,6 +298,21 @@ export function mountSolutionPhone(canvas: HTMLCanvasElement, onReady: () => voi
             screenMaterial = createScreenMaterial(screenTexture, uv)
             screen.material = screenMaterial
           }
+          // Dim the glass layer so the screen texture reads at full brightness.
+          root.traverse((obj) => {
+            const mesh = obj as THREE.Mesh
+            if (!mesh.isMesh) return
+            const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+            mats.forEach((mat) => {
+              if (mat?.name === "Glass" && "opacity" in mat) {
+                const m = mat as THREE.MeshPhysicalMaterial
+                m.opacity = 0.05
+                m.transparent = true
+                m.depthWrite = false
+                m.needsUpdate = true
+              }
+            })
+          })
         }
 
         model = root

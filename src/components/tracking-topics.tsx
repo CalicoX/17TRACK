@@ -260,7 +260,7 @@ function TopicCardView({ card }: { card: TopicCard }) {
   }
 
   return (
-    <a href={card.href} className={`${className} transition-colors hover:bg-[#eeeeee]`}>
+    <a href={card.href} className={`${className} transition-colors hover:bg-[#fafafa]`}>
       {body}
     </a>
   )

@@ -17,7 +17,6 @@ function Frame({
   children: ReactNode
 }) {
   const grid = `best-${kind}-grid`
-  const glow = `best-${kind}-glow`
   return (
     <svg
       className="best-visual-svg"
@@ -28,15 +27,9 @@ function Frame({
       <defs>
         <pattern id={grid} width="22" height="22" patternUnits="userSpaceOnUse">
           <path d="M22 0H0V22" className="best-grid-line" />
-          <circle cx="0" cy="0" r=".4" fill="#fff" opacity=".16" />
         </pattern>
-        <radialGradient id={glow}>
-          <stop stopColor="#fff" stopOpacity=".07" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </radialGradient>
       </defs>
-      <rect width="560" height="315" fill={`url(#${grid})`} opacity=".26" />
-      <ellipse cx="280" cy="152" rx="230" ry="150" fill={`url(#${glow})`} />
+      <rect width="560" height="315" fill={`url(#${grid})`} opacity=".12" />
       {children}
     </svg>
   )
@@ -48,7 +41,6 @@ function AccuracyVisual() {
       <g transform="translate(44 38)">
         <rect width="158" height="38" rx="10" className="best-pill" />
         <circle cx="20" cy="19" r="3" className="best-dot" />
-        <circle cx="20" cy="19" r="7" className="best-status-ring" />
         <text x="34" y="23" className="best-svg-label">99.9% ACCURACY</text>
       </g>
       <g transform="translate(359 38)">
@@ -75,17 +67,14 @@ function AccuracyVisual() {
       <text x="452" y="130" textAnchor="middle" className="best-map-caption">DELIVERY</text>
 
       <g transform="translate(102 218)">
-        <circle r="12" className="best-node-pulse" />
         <circle r="6" className="best-node-outline" />
         <circle r="2" className="best-node" />
       </g>
       <g transform="translate(197 143)">
-        <circle r="11" className="best-node-pulse best-delay-1" />
         <circle r="5.5" className="best-node-outline" />
         <circle r="2" className="best-node" />
       </g>
       <g transform="translate(328 176)">
-        <circle r="11" className="best-node-pulse best-delay-2" />
         <circle r="5.5" className="best-node-outline" />
         <circle r="2" className="best-node" />
       </g>
@@ -171,9 +160,6 @@ function WorldVisual() {
         <clipPath id="best-world-map-clip">
           <rect x="40" y="46" width="480" height="224" rx="14" />
         </clipPath>
-        <filter id="best-glass-blur" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="6" />
-        </filter>
       </defs>
       <g clipPath="url(#best-world-map-clip)">
         {WORLD_LAND_DOTS.map(([x, y]) => (
@@ -185,20 +171,17 @@ function WorldVisual() {
         <path d={`M${laX} ${laY}Q152 199 ${saoPauloX} ${saoPauloY}`} className="best-world-arc best-world-arc-3" pathLength="100" />
         <path d={`M${shanghaiX} ${shanghaiY}Q474 166 ${sydneyX} ${sydneyY}`} className="best-world-arc best-world-arc-2" pathLength="100" />
 
-        {Object.values(WORLD_HUBS).map(([x, y], index) => (
+        {Object.values(WORLD_HUBS).map(([x, y]) => (
           <g key={`${x}-${y}`} transform={`translate(${x} ${y})`}>
-            {index === 1 || index === 2 ? <circle r="9" className="best-map-pulse" /> : null}
             <circle r="4.5" className="best-map-node-ring" />
             <circle r="1.5" className="best-node" />
           </g>
         ))}
         <g className="best-orbit-dot">
-          <circle r="5" className="best-dot-halo" />
           <circle r="2" className="best-dot" />
         </g>
       </g>
       <g transform="translate(372 24)">
-        <rect width="144" height="34" rx="10" fill="#0a0a0a" filter="url(#best-glass-blur)" />
         <rect width="144" height="34" rx="10" className="best-glass-pill" />
         <text x="72" y="22" textAnchor="middle" className="best-svg-label">3500+ CARRIERS</text>
       </g>
@@ -248,7 +231,6 @@ function UptimeVisual() {
           />
           <g className="best-chart-point-group">
             <circle r="4" className="best-chart-point" />
-            <circle r="9" className="best-chart-point-ring" />
           </g>
         </g>
         <path d="M20 160h230" className="best-chart-base" />
@@ -257,7 +239,6 @@ function UptimeVisual() {
       </g>
       <g transform="translate(365 272)">
         <circle r="3" className="best-dot" />
-        <circle r="7" className="best-status-ring" />
         <text x="13" y="4" className="best-svg-micro">ALL SYSTEMS OPERATIONAL</text>
       </g>
     </Frame>

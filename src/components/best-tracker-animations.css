@@ -3,12 +3,6 @@
   inset: 0;
   overflow: hidden;
   color: #f5f5f5;
-  opacity: .45;
-  transition: opacity 400ms ease;
-}
-
-.track-best-card:hover .best-visual {
-  opacity: 1;
 }
 
 .best-visual-svg {
@@ -162,6 +156,8 @@
 .best-package {
   offset-path: path("M102 218C153 204 126 137 197 143S271 212 328 176 377 100 452 89");
   offset-rotate: 0deg;
+  offset-distance: 30.4%;
+  opacity: 1;
   animation: best-package-route 6s ease-in-out infinite;
 }
 
@@ -291,7 +287,7 @@
 
 .best-land-dot {
   fill: #d4d4d4;
-  fill-opacity: .55;
+  fill-opacity: .22;
 }
 
 .best-world-arc {
@@ -682,9 +678,9 @@
 }
 
 @keyframes best-package-route {
-  0% { offset-distance: 0%; opacity: 0; }
-  8%, 72% { opacity: 1; }
-  88%, 100% { offset-distance: 100%; opacity: 0; }
+  0%, 18% { offset-distance: 30.4%; opacity: 1; }
+  78% { offset-distance: 100%; opacity: 1; }
+  92%, 100% { offset-distance: 100%; opacity: 0; }
 }
 
 @keyframes best-pulse {
@@ -779,7 +775,7 @@
   }
 
   .best-package {
-    offset-distance: 68%;
+    offset-distance: 30.4%;
   }
 
   .best-orbit-dot {

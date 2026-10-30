@@ -1,4 +1,5 @@
 import { ApiVisual } from "@/components/api-visual"
+import { OrderTrackingVisual } from "@/components/order-tracking-visual"
 import { ReturnsHero } from "@/components/returns-hero"
 import { SolutionPhone } from "@/components/solution-phone"
 
@@ -34,8 +35,8 @@ const SOLUTIONS: Solution[] = [
       "Returns handled in the same app",
     ],
     image: "/solutions/shopify.webp",
-    imageAlt: "Shopify order tracking list and a package timeline",
-    imageRatio: "820 / 465",
+    imageAlt: "Shopper checking a branded tracking page on her phone",
+    imageRatio: "488 / 456",
     badge: {
       src: "/solutions/built-for-shopify.svg",
       alt: "Built for Shopify",
@@ -185,50 +186,30 @@ export function SolutionsSection() {
       <div>
           {SOLUTIONS.map((item, index) => {
             const flipped = index % 2 === 1
-            const rule = "lg:border-r lg:border-[#f0f2f5]"
+            const textCol = flipped ? "lg:order-1 lg:pr-14" : "lg:order-2 lg:pl-14"
             return (
               <article
                 key={item.name}
-                className="border-b border-[#f0f2f5] last:border-b-0"
+                className="border-[#f0f2f5] max-lg:mb-16 max-lg:border-b-0 max-lg:last:mb-0 lg:border-b lg:last:border-b-0"
               >
               <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 px-6 lg:grid-cols-2">
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 left-1/2 z-[1] hidden w-px -translate-x-1/2 bg-[#f0f2f5] lg:block"
+                />
                 {index < SOLUTIONS.length - 1 ? (
                   <span
                     aria-hidden
                     className="pointer-events-none absolute top-full left-1/2 z-10 hidden size-[6px] -mt-[2.5px] -ml-[3.5px] bg-[#f0f2f5] lg:block"
                   />
                 ) : null}
-                {/* Artwork sets the cell height through its aspect ratio, plus
-                    vertical padding for breathing room. The ratio box also carries
-                    the phone's 3D canvas, which needs a sized parent. */}
-                <figure
-                  aria-label={item.phone ? item.imageAlt : undefined}
-                  role={item.phone ? "img" : undefined}
-                  className={`relative m-0 overflow-hidden px-6 py-8 lg:px-12 lg:py-12 ${flipped ? "lg:order-2" : `lg:order-1 ${rule}`}`}
-                >
-                  {item.phone ? (
-                    <div
-                      className="relative mx-auto w-[min(560px,100%)]"
-                      style={{ aspectRatio: item.imageRatio }}
-                    >
-                      <SolutionPhone />
-                    </div>
-                  ) : item.name === "17RETURNS" ? (
-                    <ReturnsHero />
-                  ) : item.name === "Tracking API" ? (
-                    <ApiVisual />
-                  ) : (
-                    <img
-                      src={item.image}
-                      alt={item.imageAlt}
-                      className="block h-auto w-full object-contain"
-                      draggable={false}
-                    />
-                  )}
-                </figure>
+                {/* contents below lg so the figure can sit between these two
+                    blocks; one centered column from lg up. */}
                 <div
-                  className={`flex flex-col justify-center py-8 lg:py-14 ${flipped ? `lg:order-1 lg:pr-14 ${rule}` : "lg:order-2 lg:pl-14"}`}
+                  className={`contents lg:flex lg:min-w-0 lg:flex-col lg:justify-center lg:py-14 ${textCol}`}
                 >
+                <div className="order-1 min-w-0 pt-8 lg:pt-0">
+                  <div className="flex items-start gap-2.5 lg:flex-col lg:gap-4">
                   <img
                     src={item.icon}
                     alt=""
@@ -236,15 +217,15 @@ export function SolutionsSection() {
                     height={64}
                     className={
                       item.name === "17RETURNS" || item.name === "Tracking API"
-                        ? "block size-[64px] overflow-hidden rounded-[14px] object-cover"
-                        : "block size-[64px] object-contain object-left"
+                        ? "mt-0.5 block size-8 shrink-0 overflow-hidden rounded-lg object-cover lg:mt-0 lg:size-[64px] lg:rounded-[14px]"
+                        : "mt-0.5 block size-8 shrink-0 object-contain object-left lg:mt-0 lg:size-[64px]"
                     }
                   />
-                  <h3 className="track-solution-title mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-bold">
+                  <h3 className="track-solution-title flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 font-bold">
                     {item.name}
                     {item.name === "Shopify Order Tracking" ||
                     item.name === "17RETURNS" ? (
-                      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#7c3aed] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
+                      <span className="badge-sheen inline-flex shrink-0 items-center gap-1 rounded-full bg-[#7c3aed] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
                         <svg
                           viewBox="0 0 16 16"
                           className="size-3.5"
@@ -270,10 +251,13 @@ export function SolutionsSection() {
                       />
                     ) : null}
                   </h3>
+                  </div>
                   <p className="mt-1 text-[16px] leading-6 text-[#5c6370]">
                     {item.description}
                   </p>
-                  <ul className="mt-5 flex flex-col gap-2">
+                </div>
+                <div className="order-3 min-w-0 pb-8 lg:mt-5 lg:pb-0">
+                  <ul className="flex flex-col gap-2">
                     {item.points.map((point) => (
                       <li
                         key={point}
@@ -293,6 +277,31 @@ export function SolutionsSection() {
                     ))}
                   </div>
                 </div>
+                </div>
+                <figure
+                  aria-label={item.phone ? item.imageAlt : undefined}
+                  role={item.phone ? "img" : undefined}
+                  className={`relative order-2 my-0 min-w-0 py-6 lg:px-12 lg:py-12 ${item.phone ? "max-lg:overflow-x-clip" : "overflow-hidden"} ${flipped ? "lg:order-2" : "lg:order-1"}`}
+                >
+                  {item.phone ? (
+                    <div className="mx-auto w-full lg:w-[min(560px,100%)] lg:translate-x-8">
+                      <SolutionPhone />
+                    </div>
+                  ) : item.name === "Shopify Order Tracking" ? (
+                    <OrderTrackingVisual />
+                  ) : item.name === "17RETURNS" ? (
+                    <ReturnsHero />
+                  ) : item.name === "Tracking API" ? (
+                    <ApiVisual />
+                  ) : (
+                    <img
+                      src={item.image}
+                      alt={item.imageAlt}
+                      className="block h-auto w-full object-contain"
+                      draggable={false}
+                    />
+                  )}
+                </figure>
               </div>
               </article>
             )

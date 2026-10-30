@@ -1,0 +1,238 @@
+// Fixed artboard. The frame keeps the ratio; the board scales with the column.
+$board-w: 488px;
+$board-h: 456px;
+$below: 28px;
+// Person frame is the red box. The street plate is that tall, and wider.
+$shot-w: 268px;
+$shot-h: 356px;
+$bg-w: 354px;
+$bg-h: 424px;
+
+.frame {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  aspect-ratio: calc($board-w / $board-h);
+  container-type: inline-size;
+}
+
+.board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $board-w;
+  height: $board-h;
+  transform-origin: top left;
+  transform: scale(calc(100cqw / #{$board-w}));
+}
+
+.bg {
+  position: absolute;
+  z-index: 0;
+  bottom: $below;
+  width: $bg-w;
+  height: $bg-h;
+  border-radius: 22px;
+  object-fit: cover;
+  object-position: 68% 42%;
+  pointer-events: none;
+  right: 0;
+  box-shadow: 0 16px 32px -22px rgba(80, 48, 24, 0.45);
+}
+
+.card {
+  position: absolute;
+  z-index: 1;
+  top: 28px;
+  left: 0;
+  width: 268px;
+  transform: scale(1.01);
+  transform-origin: top left;
+  padding: 10px 12px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  border-radius: 16px;
+  color: #171717;
+  background-color: rgba(255, 255, 255, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 14px 32px -18px rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(18px) saturate(1.55);
+  -webkit-backdrop-filter: blur(18px) saturate(1.55);
+}
+
+.title {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.date {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 16px;
+  color: #5c6370;
+  text-align: center;
+}
+
+.edd {
+  margin-right: 4px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #171717;
+}
+
+.carrier {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.name {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.number {
+  margin: 0;
+  font-size: 11px;
+  line-height: 16px;
+  color: #5c6370;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #2c3f50;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.event {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-size: 11px;
+  line-height: 16px;
+  color: #5c6370;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 1.5px solid #c5cad1;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.picks {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 18px;
+  width: 232px;
+  transform: scale(1.01);
+  transform-origin: bottom right;
+  padding: 8px 10px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 16px;
+  color: #171717;
+  background-color: rgba(255, 255, 255, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 14px 32px -18px rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+}
+
+.picksTitle {
+  margin: 0;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product {
+  min-width: 0;
+}
+
+.productImg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #ececee;
+}
+
+.productName {
+  margin: 6px 0 0;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.productPrice {
+  margin: 1px 0 0;
+  font-size: 11px;
+  line-height: 14px;
+  color: #5c6370;
+}
+
+.person {
+  position: absolute;
+  z-index: 2;
+  right: 126px;
+  bottom: $below;
+  width: $shot-w;
+  max-width: none;
+  object-fit: contain;
+  object-position: bottom;
+  pointer-events: none;
+}
