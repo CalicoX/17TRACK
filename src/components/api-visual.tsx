@@ -26,23 +26,28 @@ const BARS = [
   { x: 432.7, y: 110.1, w: 1.95, h: 1.95, color: "#00ff1a" },
 ] as const
 
-// Curves run from the hub dot down to the top-center of each carrier logo.
-const HUB = { x: 362.6, y: 128 }
+// Hub→carrier spokes from Figma node 281:1221 (exported SVGs, rotated into
+// the 523×304 artboard). Endpoints sit on each logo's top-center.
 const CURVES = [
-  `M${HUB.x} ${HUB.y} C362.6 175 400 214 430 232 C444 240 456 242 468.5 242`,
-  `M${HUB.x} ${HUB.y} C362.6 150 388 176 408 190 C418 197 426 200 436.6 200`,
-  `M${HUB.x} ${HUB.y} V272`,
-  `M${HUB.x} ${HUB.y} C330 128 278 162 252 196 C240 212 232 224 226 236 H219.6`,
-  `M${HUB.x} ${HUB.y} C330 150 292 196 262 230 C250 244 240 252 228 258 H207.6`,
+  // FedEx
+  "M361.99 114.94 C361.99 139.45 376.78 161.52 399.39 170.74 L443.79 188.86 C452.75 192.51 458.60 201.24 458.60 210.95",
+  // UPS
+  "M361.99 114.94 C361.99 122.14 365.64 128.83 371.67 132.69 L399.17 150.28 C407.55 155.64 412.63 164.95 412.63 174.95",
+  // USPS (vertical)
+  "M363.01 249.01 L363.01 115.00",
+  // DHL (asset file is misnamed line-china-post.svg in public/)
+  "M362.63 114.94 C362.63 122.13 359.01 128.83 353.02 132.73 L336.43 143.54 C321.81 153.06 312.98 169.40 312.98 186.93",
+  // China Post (asset file is misnamed line-dhl.svg in public/)
+  "M266.96 240.95 L266.96 219.53 C266.96 188.26 285.89 160.12 314.79 148.42 L349.57 134.35 C357.46 131.16 362.63 123.48 362.63 114.94",
 ] as const
 
-// Half-disc caps, flat edge down, sitting on each logo's top edge.
+// Half-disc caps: OrangeCap centers on (x+2.099, y); flat edge on logo top.
 const CAPS = [
-  { x: 466.4, y: 242 },
-  { x: 434.5, y: 200 },
-  { x: 360.5, y: 272 },
-  { x: 217.5, y: 236 },
-  { x: 205.5, y: 258 },
+  { x: 456.501, y: 210.95 }, // FedEx
+  { x: 410.531, y: 174.95 }, // UPS
+  { x: 360.911, y: 249.01 }, // USPS
+  { x: 310.881, y: 186.93 }, // DHL
+  { x: 264.861, y: 240.95 }, // China Post
 ] as const
 
 function OrangeCap({ x, y }: { x: number; y: number }) {
@@ -185,6 +190,7 @@ export function ApiVisual() {
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
             boxShadow: "0 28px 36px -18px rgba(0, 16, 164, 0.22)",
+            zIndex: 3,
           }}
         />
         <p
@@ -198,13 +204,14 @@ export function ApiVisual() {
             lineHeight: "11.75px",
             letterSpacing: -0.21,
             color: "#000",
+            zIndex: 3,
           }}
         >
           YQTRACK12345DEMO
         </p>
         <div
           className="absolute bg-[#0094ff]"
-          style={{ left: 3.9, top: 199.4, width: 34.18, height: 34.18, borderRadius: 5.34 }}
+          style={{ left: 3.9, top: 199.4, width: 34.18, height: 34.18, borderRadius: 5.34, zIndex: 3 }}
         />
         <img
           src="/solutions/api-visual/plane.svg"
@@ -212,7 +219,7 @@ export function ApiVisual() {
           width={25.63}
           height={25.63}
           className="absolute max-w-none"
-          style={{ left: 8.2, top: 203.7, width: 25.63, height: 25.63 }}
+          style={{ left: 8.2, top: 203.7, width: 25.63, height: 25.63, zIndex: 3 }}
         />
         <p
           className="absolute m-0 whitespace-nowrap"
@@ -225,13 +232,14 @@ export function ApiVisual() {
             lineHeight: "18.2px",
             letterSpacing: -0.21,
             color: "#000",
+            zIndex: 3,
           }}
         >
           In Transit
         </p>
         <div
           className="absolute flex items-center"
-          style={{ left: 46.9, top: 222.5, gap: 3.2 }}
+          style={{ left: 46.9, top: 222.5, gap: 3.2, zIndex: 3 }}
         >
           <div className="flex items-start" style={{ gap: 1.232 }}>
             <span style={routeType}>United States</span>
@@ -255,18 +263,21 @@ export function ApiVisual() {
           height={H}
           viewBox={`0 0 ${W} ${H}`}
           fill="none"
+          style={{ zIndex: 1 }}
         >
           {CURVES.map((d) => (
             <path key={d} d={d} stroke="#dacdff" strokeWidth={0.35} />
           ))}
         </svg>
-        {CAPS.map((cap) => (
-          <OrangeCap key={`${cap.x}-${cap.y}`} {...cap} />
-        ))}
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
+          {CAPS.map((cap) => (
+            <OrangeCap key={`${cap.x}-${cap.y}`} {...cap} />
+          ))}
+        </div>
 
         <div
           className="absolute overflow-hidden"
-          style={{ left: 193, top: 260, width: 29.386, height: 29.386, borderRadius: 5.597 }}
+          style={{ left: 251.981, top: 241.315, width: 29.393, height: 29.366, borderRadius: 5.597, zIndex: 1 }}
         >
           <img
             src="/solutions/api-visual/china-post.png"
@@ -277,7 +288,7 @@ export function ApiVisual() {
         </div>
         <div
           className="absolute overflow-hidden bg-[#3f1d79]"
-          style={{ left: 454, top: 244, width: 29.386, height: 29.386, borderRadius: 5.597 }}
+          style={{ left: 443.818, top: 212.222, width: 29.393, height: 29.397, borderRadius: 5.597, zIndex: 1 }}
         >
           <img
             src="/solutions/api-visual/fedex.png"
@@ -288,7 +299,7 @@ export function ApiVisual() {
         </div>
         <div
           className="absolute overflow-hidden bg-[#333366]"
-          style={{ left: 348, top: 274, width: 29.386, height: 29.386, borderRadius: 5.597 }}
+          style={{ left: 348.58, top: 251.104, width: 29.393, height: 29.366, borderRadius: 5.597, zIndex: 1 }}
         >
           <img
             src="/solutions/api-visual/usps.svg"
@@ -303,17 +314,18 @@ export function ApiVisual() {
           src="/solutions/api-visual/dhl.png"
           alt=""
           className="absolute max-w-none object-cover"
-          style={{ left: 205, top: 238, width: 29.386, height: 29.386, borderRadius: 5.597 }}
+          style={{ left: 298.005, top: 187.842, width: 29.393, height: 29.366, borderRadius: 5.597, zIndex: 1 }}
         />
         <div
           className="absolute overflow-hidden border-[#f5c142] bg-white"
           style={{
-            left: 422,
-            top: 202,
-            width: 29.386,
-            height: 29.386,
+            left: 397.951,
+            top: 177.141,
+            width: 29.393,
+            height: 29.397,
             borderRadius: 5.597,
             borderWidth: 0.7,
+            zIndex: 1,
           }}
         >
           <img
