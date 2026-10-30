@@ -1,6 +1,7 @@
 import { BestTrackerSection } from "@/components/best-tracker-section"
 import { CarriersSection } from "@/components/carriers-section"
 import { ComplexitySection } from "@/components/complexity-section"
+import { CtaSection } from "@/components/cta-section"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteNav } from "@/components/site-nav"
 import { SolutionsSection } from "@/components/solutions-section"
@@ -25,6 +26,7 @@ export default function App() {
         <CarrierTrackingSection />
         <OrderTrackingSection />
         <CargoTrackingSection />
+        <CtaSection />
       </main>
       <SiteFooter />
     </TooltipProvider>

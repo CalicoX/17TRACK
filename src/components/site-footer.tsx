@@ -144,7 +144,7 @@ export function SiteFooter() {
   }, [langOpen, menuId])
 
   return (
-    <footer className="bg-[#050505] text-white shadow-[0_100vh_0_100vh_#050505] tracking-normal">
+    <footer className="bg-black text-white shadow-[0_100vh_0_100vh_#000] tracking-normal">
       <div className="mx-auto w-full max-w-[1440px] px-6 pt-16 max-[640px]:px-5 max-[640px]:pt-12">
         <div className="grid grid-cols-[minmax(260px,1.2fr)_minmax(0,2fr)] gap-24 max-[900px]:grid-cols-1 max-[900px]:gap-12">
           <section className="min-w-0">

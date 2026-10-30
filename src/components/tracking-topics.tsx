@@ -280,7 +280,7 @@ function TopicModule({
   action?: TopicAction
 }) {
   return (
-    <section id={id} className="w-full bg-[#f6f6f6] py-12 text-[#212121] antialiased md:py-24">
+    <section id={id} className="w-full bg-[#f6f6f6] py-10 text-[#212121] antialiased md:py-14">
       <div className="mx-auto w-full max-w-[1440px] px-6">
         <h2 className="track-solutions-title mb-[5px] text-center font-bold text-[#212121]">
           {heading}

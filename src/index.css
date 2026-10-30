@@ -786,7 +786,6 @@ ul.track-coverage-stats > li.is-shown {
   border-radius: 0;
   background-color: var(--track-best-ground);
   box-shadow: none;
-  overflow: hidden;
 }
 
 .track-best-card::before {

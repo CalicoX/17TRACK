@@ -1,3 +1,4 @@
+import { ApiVisual } from "@/components/api-visual"
 import { ReturnsHero } from "@/components/returns-hero"
 import { SolutionPhone } from "@/components/solution-phone"
 
@@ -71,9 +72,9 @@ const SOLUTIONS: Solution[] = [
   },
   {
     name: "Tracking API",
-    icon: "/solutions/api-logo.svg",
+    icon: "/solutions/api-logo.png",
     description:
-      "Built for logistics providers, eCommerce platforms, SaaS companies, and payment platforms. One tracking API covers 3,500+ carriers and sends reliable, real-time updates to your users.",
+      "One tracking API covers 3,500+ carriers and sends reliable, real-time updates to your users.",
     points: [
       "One integration for 3,500+ carriers",
       "Real-time updates for end users",
@@ -214,6 +215,8 @@ export function SolutionsSection() {
                     </div>
                   ) : item.name === "17RETURNS" ? (
                     <ReturnsHero />
+                  ) : item.name === "Tracking API" ? (
+                    <ApiVisual />
                   ) : (
                     <img
                       src={item.image}
@@ -232,12 +235,12 @@ export function SolutionsSection() {
                     width={64}
                     height={64}
                     className={
-                      item.name === "17RETURNS"
-                        ? "mb-4 block size-[64px] shrink-0 self-start overflow-hidden rounded-[14px] object-cover"
-                        : "mb-4 block size-[64px] shrink-0 self-start object-contain object-left"
+                      item.name === "17RETURNS" || item.name === "Tracking API"
+                        ? "block size-[64px] overflow-hidden rounded-[14px] object-cover"
+                        : "block size-[64px] object-contain object-left"
                     }
                   />
-                  <h3 className="track-solution-title flex flex-wrap items-center gap-x-3 gap-y-2 font-bold">
+                  <h3 className="track-solution-title mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-bold">
                     {item.name}
                     {item.name === "Shopify Order Tracking" ||
                     item.name === "17RETURNS" ? (
@@ -248,7 +251,8 @@ export function SolutionsSection() {
                           fill="currentColor"
                           aria-hidden
                         >
-                          <path d="M8 1.2 9.3 6.7 14.8 8 9.3 9.3 8 14.8 6.7 9.3 1.2 8 6.7 6.7Z" />
+                          <path d="M7.2.8 8.2 5l4.2 1-4.2 1-1 4.2-1-4.2-4.2-1 4.2-1Z" />
+                          <path d="M12.6 9.2 13.1 11l1.8.5-1.8.5-.5 1.8-.5-1.8-1.8-.5 1.8-.5Z" />
                         </svg>
                         Powered by AI
                       </span>
