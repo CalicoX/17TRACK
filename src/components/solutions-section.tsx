@@ -24,6 +24,11 @@ type Solution = {
   }[]
 }
 
+const APP_DOWNLOAD = {
+  label: "Download now",
+  href: "https://www.17track.net/en/app",
+} as const
+
 const SOLUTIONS: Solution[] = [
   {
     name: "Shopify Order Tracking",
@@ -248,6 +253,16 @@ export function SolutionsSection() {
                         <Action key={action.label} {...action} />
                       ))}
                     </div>
+                    {item.phone ? (
+                      <a
+                        href={APP_DOWNLOAD.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${styles.button} ${styles.buttonSolid} ${styles.downloadNow}`}
+                      >
+                        {APP_DOWNLOAD.label}
+                      </a>
+                    ) : null}
                   </div>
                 </div>
                 <figure
