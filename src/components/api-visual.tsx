@@ -1,7 +1,14 @@
 import "@fontsource-variable/geist/wght.css"
+import styles from "@/components/solutions-section.module.scss"
 
 const W = 523
 const H = 304
+// The map and the card shadows sit outside the 523×304 artboard. This
+// padding keeps that bleed inside the frame so the figure can clip without
+// cutting the shadow or the space above and below the cards.
+const BLEED = { left: 22, right: 18, top: 40, bottom: 48 }
+const OUTER_W = W + BLEED.left + BLEED.right
+const OUTER_H = H + BLEED.top + BLEED.bottom
 
 const SANS = '"SF Pro Text", "SF Pro", Inter, sans-serif'
 
@@ -131,21 +138,21 @@ export function ApiVisual() {
   return (
     <div
       aria-hidden
-      className="relative w-full"
+      className={styles.api}
       style={{
-        maxWidth: `min(100%, calc(var(--solution-visual-max, 470px) * ${W} / ${H}))`,
-        aspectRatio: `${W} / ${H}`,
+        aspectRatio: `${OUTER_W} / ${OUTER_H}`,
         containerType: "inline-size",
-        borderRadius: "calc(8 / 523 * 100cqw)",
       }}
     >
       <div
-        className="absolute top-0 left-0"
+        className="absolute"
         style={{
+          left: `calc(100cqw * ${BLEED.left} / ${OUTER_W})`,
+          top: `calc(100cqw * ${BLEED.top} / ${OUTER_W})`,
           width: W,
           height: H,
           transformOrigin: "top left",
-          transform: "scale(calc(100cqw / 523px))",
+          transform: `scale(calc(100cqw / ${OUTER_W}px))`,
         }}
       >
         <div className="pointer-events-none absolute" style={{ left: -10, top: -98, width: 544, height: 544 }}>

@@ -51,7 +51,7 @@ const FEATURES: Feature[] = [
 export function BestTrackerSection() {
   return (
     <section className="track-best-section w-full antialiased">
-      <div className="mx-auto w-full max-w-[1440px] px-6 pt-[60px] pb-20">
+      <div className="mx-auto w-full max-w-[1440px] px-6 pt-24 pb-20">
         <h2 className="track-best-title text-center font-bold">
           Best package & order tracker
         </h2>
@@ -62,9 +62,6 @@ export function BestTrackerSection() {
         <div className="track-best-grid">
           {FEATURES.map((item, index) => (
             <article key={item.title} className="track-best-card">
-              {index >= 3 ? (
-                <span className="track-best-joint" aria-hidden="true" />
-              ) : null}
               {index === 5 ? (
                 <div className="track-best-media">
                   <div className="track-best-badges">

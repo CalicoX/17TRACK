@@ -802,14 +802,10 @@ ul.track-coverage-stats > li.is-shown {
 
 .track-best-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: auto;
+  gap: 20px;
   margin-top: 48px;
-  overflow: hidden;
-  border: 1px solid var(--track-best-stroke);
-  border-radius: 24px;
-  corner-shape: squircle;
-  background-color: var(--track-best-stroke);
 }
 
 .track-best-card {
@@ -818,22 +814,19 @@ ul.track-coverage-stats > li.is-shown {
   flex-direction: column;
   min-width: 0;
   height: 100%;
-  border: 0;
-  border-radius: 0;
-  background-color: var(--track-best-ground);
-  box-shadow: none;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid var(--track-best-stroke);
+  border-radius: 22px;
+  background:
+    radial-gradient(140% 90% at 100% 0%, rgba(255, 255, 255, 0.055), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 240ms ease;
 }
 
-.track-best-joint {
-  display: none;
-  position: absolute;
-  top: -3.5px;
-  left: -3.5px;
-  z-index: 1;
-  width: 6px;
-  height: 6px;
-  background-color: var(--track-best-joint);
-  pointer-events: none;
+.track-best-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .track-best-media {
@@ -842,7 +835,12 @@ ul.track-coverage-stats > li.is-shown {
   width: 100%;
   aspect-ratio: 16 / 9;
   flex: none;
-  background-color: transparent;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  background:
+    radial-gradient(100% 120% at 50% 0%, rgba(255, 255, 255, 0.035), transparent 70%),
+    #050607;
 }
 
 .track-best-badges {
@@ -873,35 +871,28 @@ ul.track-coverage-stats > li.is-shown {
   margin-left: 0;
 }
 
-.track-best-card:hover .track-best-badge {
-  width: 72px;
-  height: 72px;
-  margin-left: 20px;
-}
-
-.track-best-card:hover .track-best-badge:first-child {
-  margin-left: 0;
-}
-
 .track-best-copy {
-  padding: 24px 24px 28px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 12px 14px;
 }
 
 .track-best-card p {
   color: rgba(245, 247, 250, 0.55);
+  font-size: 15px;
+  line-height: 23px;
+  text-wrap: pretty;
 }
 
 @media (width >= 768px) {
   .track-best-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .track-best-joint {
-    display: block;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
   }
 
   .track-best-copy {
-    padding: 28px 32px 36px;
+    padding: 18px 12px 14px;
   }
 
   .track-best-title {
@@ -911,23 +902,32 @@ ul.track-coverage-stats > li.is-shown {
   }
 
   .track-best-card-title {
-    font-size: 24px;
-    line-height: 28.8px;
-    letter-spacing: -0.24px;
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: -0.2px;
+  }
+
+  .track-best-card p {
+    font-size: 14px;
+    line-height: 22px;
   }
 }
 
-@media (width >= 1024px) {
+@media (hover: hover) and (width >= 768px) {
+  .track-best-card:hover .track-best-badge {
+    width: 72px;
+    height: 72px;
+    margin-left: 20px;
+  }
+
+  .track-best-card:hover .track-best-badge:first-child {
+    margin-left: 0;
+  }
+}
+
+@media (width >= 1200px) {
   .track-best-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .track-best-media {
-    aspect-ratio: 16 / 8;
-  }
-
-  .track-best-copy {
-    padding: 18px 20px 24px;
   }
 
   .track-best-card-title {
@@ -937,7 +937,7 @@ ul.track-coverage-stats > li.is-shown {
   }
 
   .track-best-card p {
-    font-size: 13px;
-    line-height: 20px;
+    font-size: 13.5px;
+    line-height: 20.5px;
   }
 }

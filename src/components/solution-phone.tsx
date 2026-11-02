@@ -1,19 +1,17 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
-const POSTER_URL = "/solutions/iphone-app-poster.webp"
 /** Design size of the phone + cards. The stage stays this size and scales as one unit. */
 const DESIGN_WIDTH = 560
 const DESIGN_HEIGHT = (DESIGN_WIDTH * 1280) / 1237
 
 /**
- * Static poster first. three.js, GLTFLoader, and the glb stay unloaded until
- * this cell is about 200px from the viewport. Pose stays fixed after the swap.
+ * New phone model with the tracking screen. three.js and the glb stay
+ * unloaded until this cell is about 200px from the viewport.
  */
 export function SolutionPhone() {
   const frameRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [near, setNear] = useState(false)
-  const [live, setLive] = useState(false)
   const [scale, setScale] = useState(1)
 
   useLayoutEffect(() => {
@@ -61,9 +59,7 @@ export function SolutionPhone() {
     void import("./solution-phone-scene")
       .then(({ mountSolutionPhone }) => {
         if (cancelled) return
-        release = mountSolutionPhone(canvas, () => {
-          if (!cancelled) setLive(true)
-        })
+        release = mountSolutionPhone(canvas, () => {})
       })
       .catch((error) => {
         console.error("solution phone failed to load", error)
@@ -89,15 +85,6 @@ export function SolutionPhone() {
           transform: `scale(${scale})`,
         }}
       >
-      {live ? null : (
-        <img
-          src={POSTER_URL}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute inset-0 h-full w-full object-contain"
-        />
-      )}
       {near ? (
         <canvas
           ref={canvasRef}

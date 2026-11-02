@@ -1,0 +1,411 @@
+@use "./solution-visual" as sv;
+
+// One token for the whole solutions section. Art frames read it and stay
+// under this height without changing ratio.
+:global(:root) {
+  --solution-visual-max: #{sv.$solution-visual-max};
+}
+
+$lg: 1024px;
+$md: 768px;
+$wide: 1360px;
+
+.section {
+  width: 100%;
+  padding-block: 6rem;
+  color: #212121;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.headingWrap {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.heading {
+  margin-bottom: 3rem;
+  text-align: center;
+  font-weight: 700;
+
+  @media (min-width: $md) {
+    margin-bottom: 4rem;
+  }
+}
+
+.article {
+  border-color: #f0f2f5;
+
+  @media (max-width: #{$lg - 1px}) {
+    margin-bottom: 4rem;
+    border-bottom-width: 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (min-width: $lg) {
+    border-bottom: 1px solid #f0f2f5;
+
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+
+  @media (min-width: $lg) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.rule {
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  z-index: 1;
+  display: none;
+  width: 1px;
+  background: #f0f2f5;
+  transform: translateX(-50%);
+  pointer-events: none;
+
+  @media (min-width: $lg) {
+    display: block;
+  }
+}
+
+.joint {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 10;
+  display: none;
+  width: 6px;
+  height: 6px;
+  margin-top: -2.5px;
+  margin-left: -3.5px;
+  background: #f0f2f5;
+  pointer-events: none;
+
+  @media (min-width: $lg) {
+    display: block;
+  }
+}
+
+// contents below lg so the figure can sit between the two text blocks.
+.copy {
+  @media (max-width: #{$lg - 1px}) {
+    display: contents;
+  }
+
+  @media (min-width: $lg) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding-block: 3.5rem;
+  }
+}
+
+.copyStart {
+  @media (min-width: $lg) {
+    order: 1;
+    padding-right: 3.5rem;
+  }
+}
+
+.copyEnd {
+  @media (min-width: $lg) {
+    order: 2;
+    padding-left: 3.5rem;
+  }
+}
+
+.intro {
+  order: 1;
+  min-width: 0;
+  padding-top: 2rem;
+
+  @media (min-width: $lg) {
+    padding-top: 0;
+  }
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+
+  @media (min-width: $lg) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.icon {
+  display: block;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0.125rem;
+  object-fit: contain;
+  object-position: left;
+
+  @media (min-width: $lg) {
+    width: 64px;
+    height: 64px;
+    margin-top: 0;
+  }
+}
+
+.iconCover {
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 0.5rem;
+
+  @media (min-width: $lg) {
+    border-radius: 14px;
+  }
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-width: 0;
+  font-weight: 700;
+}
+
+.pill {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: normal;
+  color: #fff;
+}
+
+.pillAi {
+  background: #7c3aed;
+}
+
+.pillFree {
+  background: #ff8a00;
+}
+
+.spark {
+  width: 0.875rem;
+  height: 0.875rem;
+  fill: currentColor;
+}
+
+.builtFor {
+  width: auto;
+  height: 25px;
+}
+
+.description {
+  margin-top: 0.25rem;
+  color: #5c6370;
+  font-size: 16px;
+  line-height: 1.5rem;
+}
+
+.details {
+  order: 3;
+  min-width: 0;
+  padding-bottom: 2rem;
+
+  @media (min-width: $lg) {
+    margin-top: 1.25rem;
+    padding-bottom: 0;
+  }
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.point {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: #212121;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.storeLink {
+  display: inline-flex;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.storeBadge {
+  display: block;
+  width: 154px;
+  height: 2.75rem;
+  object-fit: contain;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25rem;
+  text-decoration: none;
+}
+
+.buttonSolid {
+  color: #fff;
+  background: #003a9b;
+
+  &:hover {
+    background: #002f7d;
+  }
+}
+
+.buttonReturns {
+  color: #fff;
+  background: #15b497;
+
+  &:hover {
+    background: #11927a;
+  }
+}
+
+.buttonOutline {
+  color: #212121;
+  background: #fff;
+  border: 1px solid #d2d6dd;
+
+  &:hover {
+    background: #f6f6f6;
+  }
+}
+
+.figure {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  order: 2;
+  min-width: 0;
+  margin: 0;
+  padding-block: 1.5rem;
+
+  // iPad portrait is still one column. Keep the artwork under one width
+  // so it does not grow with the text. Phones are narrower than the cap.
+  @media (max-width: #{$lg - 1px}) {
+    width: min(100%, #{sv.$solution-visual-tablet-max});
+    justify-self: center;
+  }
+
+  @media (min-width: $lg) {
+    padding: 3rem;
+  }
+
+  @media (min-width: $wide) {
+    min-height: calc(var(--solution-visual-max) + 6rem);
+  }
+}
+
+.figureStart {
+  @media (min-width: $lg) {
+    order: 1;
+  }
+}
+
+.figureEnd {
+  @media (min-width: $lg) {
+    order: 2;
+  }
+}
+
+.figureClip {
+  overflow: hidden;
+}
+
+.figurePhone {
+  @media (max-width: #{$lg - 1px}) {
+    overflow-x: clip;
+  }
+}
+
+.phone {
+  width: 100%;
+  max-width: min(100%, 560px, calc(var(--solution-visual-max) * 1237 / 1280));
+  margin-inline: auto;
+
+  @media (min-width: $lg) {
+    transform: translateX(2rem);
+  }
+}
+
+.returns {
+  position: relative;
+  width: calc(100% * 620 / (620 + 24.8 + 24));
+  aspect-ratio: 620 / 540;
+
+  @media (min-width: $lg) {
+    width: min(620px, 90%, calc(var(--solution-visual-max) * 620 / 540));
+  }
+}
+
+.api {
+  position: relative;
+  width: 100%;
+  // 563×392 is the 523×304 artboard plus the shadow bleed in ApiVisual.
+  max-width: min(100%, calc(var(--solution-visual-max) * 563 / 392));
+}
+
+.fallback {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

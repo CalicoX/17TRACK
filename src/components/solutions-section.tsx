@@ -2,6 +2,7 @@ import { ApiVisual } from "@/components/api-visual"
 import { OrderTrackingVisual } from "@/components/order-tracking-visual"
 import { ReturnsHero } from "@/components/returns-hero"
 import { SolutionPhone } from "@/components/solution-phone"
+import styles from "@/components/solutions-section.module.scss"
 
 type Solution = {
   name: string
@@ -22,12 +23,6 @@ type Solution = {
     badge?: { src: string; alt: string }
   }[]
 }
-
-// One ceiling for every solution artwork. Tall frames shrink to it and keep
-// their ratio; the wide API diagram stays shorter because the column cannot
-// fit it at this height. Wide desktops also give the figure this slot so the
-// four rows line up.
-const SOLUTION_VISUAL_MAX = "470px"
 
 const SOLUTIONS: Solution[] = [
   {
@@ -148,33 +143,31 @@ function Action({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex shrink-0 no-underline"
+        className={styles.storeLink}
       >
         <img
           src={badge.src}
           alt={badge.alt}
           width={154}
           height={44}
-          className="block h-11 w-[154px] object-contain"
+          className={styles.storeBadge}
         />
       </a>
     )
   }
 
-  const size =
-    "inline-flex h-10 items-center justify-center rounded-full px-4 py-0 text-[16px] leading-5 font-medium no-underline"
+  const toneClass =
+    tone === "returns"
+      ? styles.buttonReturns
+      : tone === "solid"
+        ? styles.buttonSolid
+        : styles.buttonOutline
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={
-        tone === "returns"
-          ? `${size} bg-[#15b497] text-white hover:bg-[#11927a]`
-          : tone === "solid"
-            ? `${size} bg-[#003a9b] text-white hover:bg-[#002f7d]`
-            : `${size} border border-[#d2d6dd] bg-white text-[#212121] hover:bg-[#f6f6f6]`
-      }
+      className={`${styles.button} ${toneClass}`}
     >
       {label}
     </a>
@@ -183,123 +176,85 @@ function Action({
 
 export function SolutionsSection() {
   return (
-    <section
-      className="w-full bg-white py-24 text-[#212121] antialiased"
-      style={{ ["--solution-visual-max" as string]: SOLUTION_VISUAL_MAX }}
-    >
-      <div className="mx-auto w-full max-w-[1440px] px-6">
-        <h2 className="track-solutions-title mb-12 text-center font-bold md:mb-16">
+    <section className={styles.section}>
+      <div className={styles.headingWrap}>
+        <h2 className={`track-solutions-title ${styles.heading}`}>
           Multiple package tracking solutions in one
         </h2>
       </div>
       <div>
-          {SOLUTIONS.map((item, index) => {
-            const flipped = index % 2 === 1
-            const textCol = flipped ? "lg:order-1 lg:pr-14" : "lg:order-2 lg:pl-14"
-            return (
-              <article
-                key={item.name}
-                className="border-[#f0f2f5] max-lg:mb-16 max-lg:border-b-0 max-lg:last:mb-0 lg:border-b lg:last:border-b-0"
-              >
-              <div className="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 px-6 lg:grid-cols-2">
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 left-1/2 z-[1] hidden w-px -translate-x-1/2 bg-[#f0f2f5] lg:block"
-                />
+        {SOLUTIONS.map((item, index) => {
+          const flipped = index % 2 === 1
+          const coveredIcon =
+            item.name === "17RETURNS" || item.name === "Tracking API"
+          return (
+            <article key={item.name} className={styles.article}>
+              <div className={styles.row}>
+                <span aria-hidden className={styles.rule} />
                 {index < SOLUTIONS.length - 1 ? (
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-full left-1/2 z-10 hidden size-[6px] -mt-[2.5px] -ml-[3.5px] bg-[#f0f2f5] lg:block"
-                  />
+                  <span aria-hidden className={styles.joint} />
                 ) : null}
-                {/* contents below lg so the figure can sit between these two
-                    blocks; one centered column from lg up. */}
                 <div
-                  className={`contents lg:flex lg:min-w-0 lg:flex-col lg:justify-center lg:py-14 ${textCol}`}
+                  className={`${styles.copy} ${flipped ? styles.copyStart : styles.copyEnd}`}
                 >
-                <div className="order-1 min-w-0 pt-8 lg:pt-0">
-                  <div className="flex items-start gap-2.5 lg:flex-col lg:gap-4">
-                  <img
-                    src={item.icon}
-                    alt=""
-                    width={64}
-                    height={64}
-                    className={
-                      item.name === "17RETURNS" || item.name === "Tracking API"
-                        ? "mt-0.5 block size-8 shrink-0 overflow-hidden rounded-lg object-cover lg:mt-0 lg:size-[64px] lg:rounded-[14px]"
-                        : "mt-0.5 block size-8 shrink-0 object-contain object-left lg:mt-0 lg:size-[64px]"
-                    }
-                  />
-                  <h3 className="track-solution-title flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 font-bold">
-                    {item.name}
-                    {item.name === "Shopify Order Tracking" ||
-                    item.name === "17RETURNS" ? (
-                      <span className="badge-sheen inline-flex shrink-0 items-center gap-1 rounded-full bg-[#7c3aed] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
-                        <svg
-                          viewBox="0 0 16 16"
-                          className="size-3.5"
-                          fill="currentColor"
-                          aria-hidden
-                        >
-                          <path d="M7.2.8 8.2 5l4.2 1-4.2 1-1 4.2-1-4.2-4.2-1 4.2-1Z" />
-                          <path d="M12.6 9.2 13.1 11l1.8.5-1.8.5-.5 1.8-.5-1.8-1.8-.5 1.8-.5Z" />
-                        </svg>
-                        Powered by AI
-                      </span>
-                    ) : null}
-                    {item.name === "17TRACK App" ? (
-                      <span className="inline-flex shrink-0 items-center rounded-full bg-[#ff8a00] px-2.5 py-0.5 text-[13px] leading-[18px] font-medium tracking-normal text-white">
-                        Free
-                      </span>
-                    ) : null}
-                    {item.badge ? (
+                  <div className={styles.intro}>
+                    <div className={styles.titleRow}>
                       <img
-                        src={item.badge.src}
-                        alt={item.badge.alt}
-                        className="h-[25px] w-auto"
+                        src={item.icon}
+                        alt=""
+                        width={64}
+                        height={64}
+                        className={`${styles.icon} ${coveredIcon ? styles.iconCover : ""}`}
                       />
-                    ) : null}
-                  </h3>
+                      <h3 className={`track-solution-title ${styles.title}`}>
+                        {item.name}
+                        {item.name === "Shopify Order Tracking" ||
+                        item.name === "17RETURNS" ? (
+                          <span className={`badge-sheen ${styles.pill} ${styles.pillAi}`}>
+                            <svg viewBox="0 0 16 16" className={styles.spark} aria-hidden>
+                              <path d="M7.2.8 8.2 5l4.2 1-4.2 1-1 4.2-1-4.2-4.2-1 4.2-1Z" />
+                              <path d="M12.6 9.2 13.1 11l1.8.5-1.8.5-.5 1.8-.5-1.8-1.8-.5 1.8-.5Z" />
+                            </svg>
+                            Powered by AI
+                          </span>
+                        ) : null}
+                        {item.name === "17TRACK App" ? (
+                          <span className={`${styles.pill} ${styles.pillFree}`}>Free</span>
+                        ) : null}
+                        {item.badge ? (
+                          <img
+                            src={item.badge.src}
+                            alt={item.badge.alt}
+                            className={styles.builtFor}
+                          />
+                        ) : null}
+                      </h3>
+                    </div>
+                    <p className={styles.description}>{item.description}</p>
                   </div>
-                  <p className="mt-1 text-[16px] leading-6 text-[#5c6370]">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="order-3 min-w-0 pb-8 lg:mt-5 lg:pb-0">
-                  <ul className="flex flex-col gap-2">
-                    {item.points.map((point) => (
-                      <li
-                        key={point}
-                        className="flex items-start gap-2.5 text-[15px] leading-6 font-medium"
-                      >
-                        <span
-                          aria-hidden
-                          className="mt-[9px] size-1.5 shrink-0 rounded-full bg-[#212121]"
-                        />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    {item.actions.map((action) => (
-                      <Action key={action.label} {...action} />
-                    ))}
+                  <div className={styles.details}>
+                    <ul className={styles.points}>
+                      {item.points.map((point) => (
+                        <li key={point} className={styles.point}>
+                          <span aria-hidden className={styles.dot} />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className={styles.actions}>
+                      {item.actions.map((action) => (
+                        <Action key={action.label} {...action} />
+                      ))}
+                    </div>
                   </div>
-                </div>
                 </div>
                 <figure
                   aria-label={item.phone ? item.imageAlt : undefined}
                   role={item.phone ? "img" : undefined}
-                  className={`relative order-2 my-0 flex min-w-0 items-center justify-center py-6 lg:px-12 lg:py-12 min-[1360px]:min-h-[calc(var(--solution-visual-max)+6rem)] ${item.phone ? "max-lg:overflow-x-clip" : "overflow-hidden"} ${flipped ? "lg:order-2" : "lg:order-1"}`}
+                  className={`${styles.figure} ${item.phone ? styles.figurePhone : styles.figureClip} ${flipped ? styles.figureEnd : styles.figureStart}`}
                 >
                   {item.phone ? (
-                    <div
-                      className="mx-auto w-full lg:translate-x-8"
-                      style={{
-                        maxWidth:
-                          "min(100%, 560px, calc(var(--solution-visual-max) * 1237 / 1280))",
-                      }}
-                    >
+                    <div className={styles.phone}>
                       <SolutionPhone />
                     </div>
                   ) : item.name === "Shopify Order Tracking" ? (
@@ -312,15 +267,15 @@ export function SolutionsSection() {
                     <img
                       src={item.image}
                       alt={item.imageAlt}
-                      className="block h-auto w-full object-contain"
+                      className={styles.fallback}
                       draggable={false}
                     />
                   )}
                 </figure>
               </div>
-              </article>
-            )
-          })}
+            </article>
+          )
+        })}
       </div>
     </section>
   )

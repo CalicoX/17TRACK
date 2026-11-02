@@ -1,0 +1,8 @@
+// Shared ceiling for the four solution artworks. Wide frames shrink to this
+// height and keep their ratio. The API diagram is too wide to reach it.
+$solution-visual-max: 470px;
+
+// Single-column tablet. The column is the full page there, so an uncapped
+// artwork grows past the desktop artboard. Phones stay full width because
+// the column is already narrower than this.
+$solution-visual-tablet-max: 560px;
