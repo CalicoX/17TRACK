@@ -4,7 +4,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 
 const MODEL_URL = "/solutions/iphone-17-pro.glb"
-const SCREEN_URL = "/solutions/app-screen-tracking.png"
+const SCREEN_URL = "/solutions/app-screen-tracking.webp"
 const SCREEN_MATERIAL = "OLED"
 /** Screen toward the camera, a little of the right edge showing. Static. */
 const REST_YAW = -0.32

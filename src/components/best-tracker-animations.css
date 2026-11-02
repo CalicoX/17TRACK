@@ -33,18 +33,18 @@
 .best-route-ghost {
   fill: none;
   stroke: #fff;
-  stroke-width: .7;
-  stroke-dasharray: 1.5 5;
-  opacity: .16;
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: .32;
 }
 
 .best-route-live {
   fill: none;
   stroke: #f5f5f5;
-  stroke-width: 1.2;
-  stroke-dasharray: 10 90;
-  animation: best-route 5s linear infinite;
-  opacity: .8;
+  stroke-width: 1.8;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  opacity: 1;
 }
 
 .best-node,
@@ -136,9 +136,9 @@
 
 .best-svg-micro {
   fill: #a3a3a3;
-  font-size: 7.5px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 1.2px;
+  letter-spacing: .5px;
 }
 
 .best-svg-number {
@@ -154,11 +154,29 @@
 }
 
 .best-package {
-  offset-path: path("M102 218C153 204 126 137 197 143S271 212 328 176 377 100 452 89");
+  offset-path: path("M92 170H488");
   offset-rotate: 0deg;
-  offset-distance: 30.4%;
+  offset-distance: 100%;
+  opacity: 0;
+}
+
+.best-step-base {
+  fill: #050607;
+  stroke: #8a8a8a;
+  stroke-width: 1;
+}
+
+.best-step-on {
+  fill: #f5f5f5;
   opacity: 1;
-  animation: best-package-route 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.best-delivered {
+  opacity: 1;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .best-status-ring,
@@ -327,6 +345,22 @@
   animation: best-orbit 7s linear infinite;
 }
 
+.best-plane {
+  offset-path: path("M279.8 103.2Q354 52 433.9 131.7");
+  offset-rotate: auto;
+  animation: best-plane 13s linear infinite;
+}
+
+.best-plane-halo {
+  fill: #f5f5f5;
+  opacity: .06;
+}
+
+.best-plane-body {
+  fill: #f5f5f5;
+  fill-opacity: .92;
+}
+
 .best-server-lights {
   fill: #e5e5e5;
   animation: best-server-lights 3s steps(1) infinite;
@@ -465,9 +499,9 @@
 .best-map-caption {
   fill: #a3a3a3;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 6.5px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 1.1px;
+  letter-spacing: .4px;
 }
 
 .best-node-outline {
@@ -515,9 +549,9 @@
 .best-phone-title {
   fill: #f5f5f5;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: .8px;
+  letter-spacing: .4px;
 }
 
 .best-status-pill {
@@ -531,15 +565,15 @@
 .best-status-text {
   fill: #e5e5e5;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 7px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: .5px;
+  letter-spacing: .2px;
 }
 
 .best-phone-event,
 .best-phone-event-dim {
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 6.5px;
+  font-size: 11px;
 }
 
 .best-phone-event {
@@ -578,7 +612,7 @@
 
 .best-card-caption {
   fill: #8a8a8a;
-  font-size: 9.5px;
+  font-size: 11px;
 }
 
 .best-card-link {
@@ -624,9 +658,9 @@
 .best-server-label {
   fill: #a3a3a3;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 7px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 1.2px;
+  letter-spacing: .4px;
 }
 
 .best-server-light {
@@ -645,8 +679,8 @@
 .best-chart-time {
   fill: #737373;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 6.5px;
-  letter-spacing: .8px;
+  font-size: 11px;
+  letter-spacing: .4px;
 }
 
 .best-clock-major,
@@ -673,14 +707,181 @@
   animation-delay: 1.4s;
 }
 
-@keyframes best-route {
-  to { stroke-dashoffset: -100; }
+/* Readability pass. The 560-unit artboard renders at roughly 0.75× in the
+   cards, so labels sit at 13–14px in its own units and the linework is
+   reinforced rather than left at hairline weights. */
+.best-visual-svg text {
+  font-weight: 600;
 }
 
+.best-svg-label,
+.best-svg-micro,
+.best-map-caption,
+.best-phone-title,
+.best-status-text,
+.best-phone-event,
+.best-phone-event-dim,
+.best-card-heading,
+.best-card-caption,
+.best-server-label,
+.best-chart-time {
+  font-size: 14px;
+}
+
+.best-svg-label {
+  font-size: 14px;
+  letter-spacing: .7px;
+  fill: #fff;
+}
+
+.best-phone-id {
+  font-size: 12px;
+  letter-spacing: .1px;
+}
+
+.best-svg-micro,
+.best-map-caption {
+  fill: #d4d4d4;
+  letter-spacing: .25px;
+}
+
+.best-phone-title,
+.best-status-text,
+.best-phone-event,
+.best-card-heading {
+  fill: #f5f5f5;
+}
+
+.best-phone-event-dim,
+.best-card-caption,
+.best-chart-time,
+.best-server-label {
+  fill: #bdbdbd;
+}
+
+.best-route-ghost {
+  stroke-width: 1;
+  opacity: .32;
+}
+
+.best-route-live {
+  stroke-width: 1.8;
+  opacity: 1;
+}
+
+.best-node-outline {
+  stroke-width: 1;
+  stroke: #f5f5f5;
+}
+
+.best-target-ring {
+  stroke-width: 1.2;
+  stroke-opacity: .65;
+}
+
+.best-target-inner {
+  stroke-width: .9;
+}
+
+.best-panel {
+  stroke-width: 1;
+  stroke-opacity: .4;
+}
+
+.best-pill {
+  stroke-width: 1;
+  stroke-opacity: .35;
+}
+
+.best-phone-shell {
+  stroke-width: 1.5;
+  stroke-opacity: .9;
+}
+
+.best-phone-track {
+  stroke-width: 1;
+}
+
+.best-world-land {
+  fill-opacity: .16;
+  stroke-width: .8;
+  stroke-opacity: .45;
+}
+
+.best-world-arc {
+  stroke-width: 1.2;
+  opacity: .78;
+}
+
+.best-map-graticule {
+  stroke-width: .5;
+  stroke-opacity: .1;
+}
+
+.best-chart-grid {
+  stroke-width: .6;
+  stroke-opacity: .1;
+}
+
+.best-chart-line {
+  stroke-width: 1.8;
+}
+
+.best-chart-base {
+  stroke-width: .8;
+  stroke-opacity: .25;
+}
+
+.best-server-vents {
+  opacity: .65;
+}
+
+.best-headset-band {
+  stroke-width: 2.4;
+}
+
+.best-clock-major {
+  stroke-width: 1.4;
+  opacity: .6;
+}
+
+.best-clock-minor {
+  stroke-width: .8;
+  opacity: .3;
+}
+
+.best-micro-icon {
+  stroke-width: 1.2;
+  opacity: .95;
+}
+
+.best-signal {
+  stroke-width: .9;
+  opacity: .35;
+}
+
+@keyframes best-route {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Constant speed from Order to Delivered, matching the route drawing below so
+   the parcel always sits on the tip of the line. */
 @keyframes best-package-route {
-  0%, 18% { offset-distance: 30.4%; opacity: 1; }
-  78% { offset-distance: 100%; opacity: 1; }
-  92%, 100% { offset-distance: 100%; opacity: 0; }
+  0% { offset-distance: 0%; opacity: 0; }
+  4% { offset-distance: 4%; opacity: 1; }
+  93% { offset-distance: 93%; opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes best-step-on {
+  0% { transform: scale(.45); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes best-delivered {
+  0% { transform: scale(.55); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes best-pulse {
@@ -715,6 +916,12 @@
 @keyframes best-orbit {
   from { offset-distance: 0%; }
   to { offset-distance: 100%; }
+}
+
+@keyframes best-plane {
+  0% { offset-distance: 0%; opacity: 0; }
+  8%, 92% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
 }
 
 @keyframes best-chart {
@@ -769,6 +976,62 @@
   animation-play-state: running;
 }
 
+/* The accuracy scene rests on Delivered. Hovering replays the route from
+   Order; leaving the card returns to the completed state. */
+@media (hover: hover) {
+  .track-best-card:hover .best-visual-accuracy .best-route-live {
+    stroke-dashoffset: 100;
+    animation: best-route 5.4s linear both;
+  }
+
+  .track-best-card:hover .best-visual-accuracy .best-package {
+    animation: best-package-route 5.4s linear both;
+  }
+
+  .track-best-card:hover .best-visual-accuracy .best-step-on {
+    animation: best-step-on 320ms ease-out both;
+  }
+
+  .track-best-card:hover .best-visual-accuracy .best-delivered {
+    animation: best-delivered 420ms ease-out both;
+  }
+}
+
+/* Touch screens can't hover, so a card that is on screen takes the hovered
+   card's place. The accuracy scene keeps its replay declared at all times and
+   only stops through animation-play-state, so leaving the viewport freezes the
+   frame instead of snapping to the finished scene. */
+@media (width < 768px) and (prefers-reduced-motion: no-preference) {
+  .track-best-card .best-visual-accuracy .best-route-live {
+    stroke-dashoffset: 100;
+    animation: best-route 5.4s linear both;
+  }
+
+  .track-best-card .best-visual-accuracy .best-package {
+    animation: best-package-route 5.4s linear both;
+  }
+
+  .track-best-card .best-visual-accuracy .best-step-on {
+    animation: best-step-on 320ms ease-out both;
+  }
+
+  .track-best-card .best-visual-accuracy .best-delivered {
+    animation: best-delivered 420ms ease-out both;
+  }
+}
+
+/* Declared after the replay above: the shorthand would otherwise reset the
+   play state back to running on cards that have never been on screen. */
+@media (width < 768px) {
+  .track-best-card.is-active .best-visual * {
+    animation-play-state: running;
+  }
+
+  .track-best-card:not(.is-active) .best-visual * {
+    animation-play-state: paused;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .best-visual * {
     animation: none !important;
@@ -780,6 +1043,11 @@
 
   .best-orbit-dot {
     offset-distance: 54%;
+  }
+
+  .best-plane {
+    offset-distance: 58%;
+    opacity: 1;
   }
 
   .best-chart-line {

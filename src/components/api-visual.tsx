@@ -157,7 +157,7 @@ export function ApiVisual() {
       >
         <div className="pointer-events-none absolute" style={{ left: -10, top: -98, width: 544, height: 544 }}>
           <img
-            src="/solutions/api-visual/map.png"
+            src="/solutions/api-visual/map.webp"
             alt=""
             className="size-full max-w-none object-fill opacity-10"
           />
@@ -343,7 +343,7 @@ export function ApiVisual() {
           style={{ left: 251.981, top: 241.315, width: 29.393, height: 29.366, borderRadius: 5.597, zIndex: 1 }}
         >
           <img
-            src="/solutions/api-visual/china-post.png"
+            src="/solutions/api-visual/china-post.webp"
             alt=""
             className="absolute top-0 h-full max-w-none"
             style={{ left: "-2.45%", width: "308.7%" }}
@@ -354,7 +354,7 @@ export function ApiVisual() {
           style={{ left: 443.818, top: 212.222, width: 29.393, height: 29.397, borderRadius: 5.597, zIndex: 1 }}
         >
           <img
-            src="/solutions/api-visual/fedex.png"
+            src="/solutions/api-visual/fedex.webp"
             alt=""
             className="absolute max-w-none"
             style={{ left: 1.4, top: 11.195, width: 26.588, height: 7.445 }}
@@ -374,7 +374,7 @@ export function ApiVisual() {
           />
         </div>
         <img
-          src="/solutions/api-visual/dhl.png"
+          src="/solutions/api-visual/dhl.webp"
           alt=""
           className="absolute max-w-none object-cover"
           style={{ left: 298.005, top: 187.842, width: 29.393, height: 29.366, borderRadius: 5.597, zIndex: 1 }}
@@ -392,7 +392,7 @@ export function ApiVisual() {
           }}
         >
           <img
-            src="/solutions/api-visual/ups.png"
+            src="/solutions/api-visual/ups.webp"
             alt=""
             className="absolute max-w-none"
             style={{ left: 6.297, top: 4.898, width: 16.792, height: 20.291 }}

@@ -19,17 +19,17 @@ const ITEMS = [
   {
     name: "Olive Green Sports Set",
     meta: ["Olive | xxl", "$80.00", "x2"],
-    src: "/solutions/returns-set.jpg",
+    src: "/solutions/returns-set.webp",
   },
   {
     name: "Athletic Zip-Up Jacket",
     meta: ["White | xxl", "$60.00", "x1"],
-    src: "/solutions/returns-jacket.jpg",
+    src: "/solutions/returns-jacket.webp",
   },
   {
     name: "Beige Athletic Sneakers",
     meta: ["US 9.5", "$90.00", "x1"],
-    src: "/solutions/returns-sneaker.jpg",
+    src: "/solutions/returns-sneaker.webp",
   },
 ] as const
 
@@ -235,7 +235,7 @@ export function ReturnsHero({ className }: { className?: string }) {
           }}
         >
         <img
-          src="/solutions/returns-court.jpg"
+          src="/solutions/returns-court.webp"
           alt=""
           width={864}
           height={1152}

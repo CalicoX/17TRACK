@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import {
   TrackerFeatureVisual,
   type TrackerVisualKind,
@@ -10,10 +11,10 @@ type Feature = {
 }
 
 const BADGES = [
-  { src: "/credentials/soc2.png", alt: "AICPA SOC 2" },
-  { src: "/credentials/iso27001.png", alt: "DNV ISO/IEC 27001" },
-  { src: "/credentials/iso27701.png", alt: "DNV ISO/IEC 27701" },
-  { src: "/credentials/gdpr.png", alt: "EU GDPR" },
+  { src: "/credentials/soc2.webp", alt: "AICPA SOC 2" },
+  { src: "/credentials/iso27001.webp", alt: "DNV ISO/IEC 27001" },
+  { src: "/credentials/iso27701.webp", alt: "DNV ISO/IEC 27701" },
+  { src: "/credentials/gdpr.webp", alt: "EU GDPR" },
 ]
 
 const FEATURES: Feature[] = [
@@ -49,6 +50,33 @@ const FEATURES: Feature[] = [
 ]
 
 export function BestTrackerSection() {
+  const gridRef = useRef<HTMLDivElement>(null)
+
+  // Cards play their visuals only while on screen. The class is purely a hook:
+  // the mobile stylesheet turns hover-like brightness and playback on for it.
+  useEffect(() => {
+    const grid = gridRef.current
+    if (!grid) return
+    const cards = Array.from(
+      grid.querySelectorAll<HTMLElement>(".track-best-card"),
+    )
+    if (typeof IntersectionObserver === "undefined") {
+      cards.forEach((card) => card.classList.add("is-active"))
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-active", entry.isIntersecting)
+        })
+      },
+      { threshold: 0.35 },
+    )
+    cards.forEach((card) => observer.observe(card))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section className="track-best-section w-full antialiased">
       <div className="mx-auto w-full max-w-[1440px] px-6 pt-24 pb-20">
@@ -59,7 +87,7 @@ export function BestTrackerSection() {
           Track every shipment with ease — discover why 17TRACK is the most
           reliable package tracker for all your orders and packages worldwide.
         </p>
-        <div className="track-best-grid">
+        <div className="track-best-grid" ref={gridRef}>
           {FEATURES.map((item, index) => (
             <article key={item.title} className="track-best-card">
               {index === 5 ? (

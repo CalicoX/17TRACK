@@ -34,21 +34,21 @@ type CarrierOption = {
 }
 
 const CARRIER_OPTIONS: CarrierOption[] = [
-  { name: "USPS", country: "United States", logo: "/carriers/menu/usps.png", popular: true },
-  { name: "UPS", country: "United States", logo: "/carriers/menu/ups.png", popular: true },
-  { name: "FedEx", country: "United States", logo: "/carriers/menu/fedex.png", popular: true },
-  { name: "DHL", country: "Germany", logo: "/carriers/menu/dhl.png", popular: true },
-  { name: "Cainiao", country: "China", logo: "/carriers/menu/cainiao.png", popular: true },
-  { name: "YunExpress", country: "China", logo: "/carriers/menu/yunexpress.png", popular: true },
-  { name: "GLS", country: "United Kingdom", logo: "/carriers/menu/gls.png", popular: true },
-  { name: "4PX", country: "China", logo: "/carriers/menu/4px.png", popular: true },
-  { name: "DPD", country: "Germany", logo: "/carriers/menu/dpd.png", popular: true },
-  { name: "UBI", country: "China", logo: "/carriers/menu/ubi.png" },
-  { name: "GOFO", country: "France", logo: "/carriers/menu/gofo.png" },
-  { name: "Canada Post", country: "Canada", logo: "/carriers/menu/canada-post.png" },
-  { name: "Deutsche Post", country: "Germany", logo: "/carriers/menu/deutsche-post.png" },
-  { name: "Royal Mail", country: "United Kingdom", logo: "/carriers/menu/royal-mail.png" },
-  { name: "AliExpress", country: "China", logo: "/carriers/aliexpress.png" },
+  { name: "USPS", country: "United States", logo: "/carriers/menu/usps.webp", popular: true },
+  { name: "UPS", country: "United States", logo: "/carriers/menu/ups.webp", popular: true },
+  { name: "FedEx", country: "United States", logo: "/carriers/menu/fedex.webp", popular: true },
+  { name: "DHL", country: "Germany", logo: "/carriers/menu/dhl.webp", popular: true },
+  { name: "Cainiao", country: "China", logo: "/carriers/menu/cainiao.webp", popular: true },
+  { name: "YunExpress", country: "China", logo: "/carriers/menu/yunexpress.webp", popular: true },
+  { name: "GLS", country: "United Kingdom", logo: "/carriers/menu/gls.webp", popular: true },
+  { name: "4PX", country: "China", logo: "/carriers/menu/4px.webp", popular: true },
+  { name: "DPD", country: "Germany", logo: "/carriers/menu/dpd.webp", popular: true },
+  { name: "UBI", country: "China", logo: "/carriers/menu/ubi.webp" },
+  { name: "GOFO", country: "France", logo: "/carriers/menu/gofo.webp" },
+  { name: "Canada Post", country: "Canada", logo: "/carriers/menu/canada-post.webp" },
+  { name: "Deutsche Post", country: "Germany", logo: "/carriers/menu/deutsche-post.webp" },
+  { name: "Royal Mail", country: "United Kingdom", logo: "/carriers/menu/royal-mail.webp" },
+  { name: "AliExpress", country: "China", logo: "/carriers/aliexpress.webp" },
   { name: "eBay", country: "United States", logo: "/carriers/ebay.svg" },
 ]
 
@@ -709,6 +709,14 @@ export function TrackingHero() {
     <section className="track-hero relative flex w-full flex-col items-center overflow-hidden px-6 py-16 text-[#212121] antialiased">
       <HeroGlobe />
       <div className="relative z-[1] flex w-full max-w-[728px] flex-col items-center gap-6">
+        <img
+          src="/figma/banner.webp"
+          alt="17RETURNS DTC 品牌退换货售后解决方案。挽回20%+收入，7×24h自动处理，降低80%客服工作量，18%+节省逆向物流费。"
+          width={728}
+          height={90}
+          className="h-[90px] w-full object-cover md:hidden"
+        />
+
         <div className="flex w-full flex-col items-center gap-[10px] text-center">
           <h1 className="track-hero-title w-full font-bold text-[#212121]">
             ALL-IN-ONE GLOBAL PACKAGE TRACKING
@@ -1109,11 +1117,11 @@ export function TrackingHero() {
         </div>
 
         <img
-          src="/figma/banner.png"
+          src="/figma/banner.webp"
           alt="17RETURNS DTC 品牌退换货售后解决方案。挽回20%+收入，7×24h自动处理，降低80%客服工作量，18%+节省逆向物流费。"
           width={728}
           height={90}
-          className="h-[90px] w-full object-cover"
+          className="hidden h-[90px] w-full object-cover md:block"
         />
       </div>
     </section>

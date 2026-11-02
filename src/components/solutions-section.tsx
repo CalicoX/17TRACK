@@ -6,6 +6,8 @@ import styles from "@/components/solutions-section.module.scss"
 
 type Solution = {
   name: string
+  /** Large solution headline shown under the product name. */
+  headline?: string
   /** Official product mark, shown in a 64px square above the title. */
   icon: string
   description: string
@@ -31,14 +33,15 @@ const APP_DOWNLOAD = {
 
 const SOLUTIONS: Solution[] = [
   {
-    name: "Shopify Order Tracking",
+    name: "17TRACK Order Tracking",
+    headline: "Order Tracking Solution for DTC Brands",
     icon: "/solutions/shopify-logo.svg",
     description:
-      "Centralize all shipment data in a single dashboard, keep customers informed at every stage with automated email notifications, and streamline returns — all within one 17TRACK Shopify app.",
+      "Improve the post-purchase journey with branded order tracking, proactive delivery updates, and customer experience management to boost satisfaction and drive repeat purchases.",
     points: [
-      "Every shipment in one dashboard",
-      "Automated email updates at each stage",
-      "Returns handled in the same app",
+      "95% Lower WISMO",
+      "16% Higher repurchase rate",
+      "70%+ open rate for branded shipping emails",
     ],
     image: "/solutions/shopify.webp",
     imageAlt: "Shopper checking a branded tracking page on her phone",
@@ -49,7 +52,7 @@ const SOLUTIONS: Solution[] = [
     },
     actions: [
       {
-        label: "Get started free",
+        label: "Try for Free",
         href: "https://www.17track.com/en?utm_source=www.17track.net&utm_medium=home_page&utm_campaign=Get-started-free",
         tone: "solid",
       },
@@ -57,13 +60,14 @@ const SOLUTIONS: Solution[] = [
   },
   {
     name: "17RETURNS",
-    icon: "/solutions/returns-icon.png",
+    headline: "Returns & Exchanges Solution",
+    icon: "/solutions/returns-icon.webp",
     description:
-      "AI-powered returns that run around the clock, recover revenue, and take the repeat work off your support team.",
+      "AI-powered automation helps DTC brands manage returns and exchanges more efficiently, recover revenue, and reduce reverse logistics costs to drive continued growth.",
     points: [
-      "Recover 20%+ of revenue",
-      "Cut reverse logistics cost by 18%+",
-      "Automate returns 24/7 and reduce support work by 80%",
+      "↓ 80% Support Workload",
+      "20%+ Recover Revenue",
+      "18%+ Reduce Reverse Logistics Costs",
     ],
     image: "/solutions/returns-hero.webp",
     imageAlt: "17RETURNS hero with the return flow",
@@ -71,28 +75,29 @@ const SOLUTIONS: Solution[] = [
     imageRatio: "620 / 540",
     actions: [
       {
-        label: "Start free trial",
+        label: "Try for Free",
         href: "https://www.17returns.com?utm_source=www.17track.com&utm_medium=products&utm_campaign=button",
         tone: "returns",
       },
     ],
   },
   {
-    name: "Tracking API",
-    icon: "/solutions/api-logo.png",
+    name: "17TRACK API",
+    headline: "Global Shipment Tracking Solution",
+    icon: "/solutions/api-logo.webp",
     description:
-      "One tracking API covers 3,500+ carriers and sends reliable, real-time updates to your users.",
+      "Access reliable, accurate global shipment data and actionable insights through a scalable API to improve service quality and operation efficiency. Built for marketplace, SaaS providers, financial services, and DTC brands.",
     points: [
-      "One integration for 3,500+ carriers",
-      "Real-time updates for end users",
-      "Made for logistics, eCommerce, SaaS, and payments",
+      "3,500+ carriers worldwide",
+      "99.9% tracking accuracy",
+      "95%+ carrier auto-detection rate",
     ],
     image: "/solutions/api.webp",
-    imageAlt: "17TRACK Tracking API illustration",
+    imageAlt: "17TRACK API illustration",
     imageRatio: "1440 / 1120",
     actions: [
       {
-        label: "Try for free",
+        label: "Try for Free",
         href: "https://www.17track.net/en/api",
         tone: "api",
       },
@@ -108,7 +113,7 @@ const SOLUTIONS: Solution[] = [
       "Real-time delivery notifications",
       "Free on iOS and Android",
     ],
-    image: "/solutions/app-screen.png",
+    image: "/solutions/app-screen.webp",
     imageAlt: "17TRACK mobile app",
     // Phone poster ratio, so the cell and the 3D frame stay uncropped.
     imageRatio: "1237 / 1280",
@@ -119,7 +124,7 @@ const SOLUTIONS: Solution[] = [
         href: "https://itunes.apple.com/app/id1004956012",
         tone: "badge",
         badge: {
-          src: "/footer/badge-appstore.png",
+          src: "/footer/badge-appstore.webp",
           alt: "Download on the App Store",
         },
       },
@@ -128,7 +133,7 @@ const SOLUTIONS: Solution[] = [
         href: "https://play.google.com/store/apps/details?id=yqtrack.app",
         tone: "badge",
         badge: {
-          src: "/footer/badge-googleplay.png",
+          src: "/footer/badge-googleplay.webp",
           alt: "Get it on Google Play",
         },
       },
@@ -193,7 +198,10 @@ export function SolutionsSection() {
         {SOLUTIONS.map((item, index) => {
           const flipped = index % 2 === 1
           const coveredIcon =
-            item.name === "17RETURNS" || item.name === "Tracking API"
+            item.name === "17RETURNS" || item.name === "17TRACK API"
+          // Each product exposes exactly one H2: the solution headline where
+          // one exists, otherwise the product name itself.
+          const ProductName = item.headline ? "p" : "h2"
           return (
             <article key={item.name} className={styles.article}>
               <div className={styles.row}>
@@ -209,13 +217,13 @@ export function SolutionsSection() {
                       <img
                         src={item.icon}
                         alt=""
-                        width={64}
-                        height={64}
+                        width={48}
+                        height={48}
                         className={`${styles.icon} ${coveredIcon ? styles.iconCover : ""}`}
                       />
-                      <h3 className={`track-solution-title ${styles.title}`}>
+                      <ProductName className={styles.title}>
                         {item.name}
-                        {item.name === "Shopify Order Tracking" ||
+                        {item.name === "17TRACK Order Tracking" ||
                         item.name === "17RETURNS" ? (
                           <span className={`badge-sheen ${styles.pill} ${styles.pillAi}`}>
                             <svg viewBox="0 0 16 16" className={styles.spark} aria-hidden>
@@ -235,8 +243,11 @@ export function SolutionsSection() {
                             className={styles.builtFor}
                           />
                         ) : null}
-                      </h3>
+                      </ProductName>
                     </div>
+                    {item.headline ? (
+                      <h2 className={styles.headline}>{item.headline}</h2>
+                    ) : null}
                     <p className={styles.description}>{item.description}</p>
                   </div>
                   <div className={styles.details}>
@@ -274,12 +285,12 @@ export function SolutionsSection() {
                     <div className={styles.phone}>
                       <SolutionPhone />
                     </div>
-                  ) : item.name === "Shopify Order Tracking" ? (
-                    <OrderTrackingVisual />
-                  ) : item.name === "17RETURNS" ? (
-                    <ReturnsHero />
-                  ) : item.name === "Tracking API" ? (
-                    <ApiVisual />
+) : item.name === "17TRACK Order Tracking" ? (
+                      <OrderTrackingVisual />
+                    ) : item.name === "17RETURNS" ? (
+                      <ReturnsHero />
+                    ) : item.name === "17TRACK API" ? (
+                      <ApiVisual />
                   ) : (
                     <img
                       src={item.image}

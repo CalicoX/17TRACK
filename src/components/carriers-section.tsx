@@ -65,7 +65,7 @@ const ROW_THREE: CarrierLogo[] = [
   },
   {
     name: "DHL",
-    src: "/carriers/dhl-express.png",
+    src: "/carriers/dhl-express.webp",
     href: "https://www.17track.net/en/carriers/dhl-express",
   },
   {

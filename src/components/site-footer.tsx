@@ -159,15 +159,15 @@ export function SiteFooter() {
             </div>
             <div className="mt-7 flex flex-wrap gap-4" aria-label="17TRACK apps">
               <ExternalLink href="https://apps.apple.com/cn/app/17track-%E5%9B%BD%E9%99%85%E7%89%A9%E6%B5%81%E8%BD%A8%E8%BF%B9%E6%9F%A5%E8%AF%A2/id6761287858">
-                <img src="/footer/badge-appstore.png" alt="Download on the App Store" width={154} height={44} className="block h-11 w-[154px] object-contain" />
+                <img src="/footer/badge-appstore.webp" alt="Download on the App Store" width={154} height={44} className="block h-11 w-[154px] object-contain" />
               </ExternalLink>
               <ExternalLink href="https://play.google.com/store/apps/details?id=yqtrack.app">
-                <img src="/footer/badge-googleplay.png" alt="Get it on Google Play" width={154} height={44} className="block h-11 w-[154px] object-contain" />
+                <img src="/footer/badge-googleplay.webp" alt="Get it on Google Play" width={154} height={44} className="block h-11 w-[154px] object-contain" />
               </ExternalLink>
             </div>
             <div className="mt-7 flex flex-wrap items-center gap-3" aria-label="Social links">
-              <QrSocial label="WeChat" icon="/footer/wechat.svg" qr="/footer/wechat-qr.png" color="#2aae67" />
-              <QrSocial label="Weibo" icon="/footer/weibo.svg" qr="/footer/weibo-qr.png" color="#e6162d" />
+              <QrSocial label="WeChat" icon="/footer/wechat.svg" qr="/footer/wechat-qr.webp" color="#2aae67" />
+              <QrSocial label="Weibo" icon="/footer/weibo.svg" qr="/footer/weibo-qr.webp" color="#e6162d" />
               <SocialLink href="https://www.facebook.com/17track" label="Facebook">
                 <span className="inline-flex size-6 items-center justify-center rounded-full bg-[#365899]">
                   <img src="/footer/facebook.svg" alt="" className="size-4" />

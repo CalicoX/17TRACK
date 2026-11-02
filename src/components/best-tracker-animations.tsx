@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import "./best-tracker-animations.css"
+import "./best-tracker-channels.css"
 import { WORLD_HUBS, WORLD_LAND_DOTS } from "./best-tracker-world"
 
 export type TrackerVisualKind =
@@ -36,113 +37,136 @@ function Frame({
 }
 
 function AccuracyVisual() {
+  const steps = [
+    { label: "ORDER", x: 92 },
+    { label: "IN TRANSIT", x: 224 },
+    { label: "PICK UP", x: 356 },
+    { label: "DELIVERED", x: 488 },
+  ]
+
   return (
     <Frame kind="accuracy">
       <g transform="translate(44 38)">
-        <rect width="158" height="38" rx="10" className="best-pill" />
+        <rect width="190" height="38" rx="10" className="best-pill" />
         <circle cx="20" cy="19" r="3" className="best-dot" />
         <text x="34" y="23" className="best-svg-label">99.9% ACCURACY</text>
       </g>
-      <g transform="translate(359 38)">
-        <rect width="157" height="38" rx="10" className="best-pill" />
-        <path d="M14 14v10M19 14v10M24 14v10M12 19h14" className="best-micro-icon" />
-        <text x="36" y="23" className="best-svg-micro">AUTO CARRIER MATCH</text>
-      </g>
 
-      <path d="M72 247h67M408 247h93M72 253h42M456 253h45" className="best-detail-rule" />
-      <path
-        d="M102 218C153 204 126 137 197 143S271 212 328 176 377 100 452 89"
-        className="best-route-ghost"
-      />
-      <path
-        d="M102 218C153 204 126 137 197 143S271 212 328 176 377 100 452 89"
-        className="best-route-live"
-        pathLength="100"
-      />
+      <path d="M92 170H488" className="best-route-ghost" />
+      <path d="M92 170H488" className="best-route-live" pathLength="100" />
 
-      <path d="M102 232v14M197 158v16M328 190v15M452 105v13" className="best-node-leader" />
-      <text x="102" y="257" textAnchor="middle" className="best-map-caption">ORDER INFO</text>
-      <text x="197" y="184" textAnchor="middle" className="best-map-caption">IN TRANSIT</text>
-      <text x="328" y="216" textAnchor="middle" className="best-map-caption">PICK UP</text>
-      <text x="452" y="130" textAnchor="middle" className="best-map-caption">DELIVERY</text>
-
-      <g transform="translate(102 218)">
-        <circle r="6" className="best-node-outline" />
-        <circle r="2" className="best-node" />
-      </g>
-      <g transform="translate(197 143)">
-        <circle r="5.5" className="best-node-outline" />
-        <circle r="2" className="best-node" />
-      </g>
-      <g transform="translate(328 176)">
-        <circle r="5.5" className="best-node-outline" />
-        <circle r="2" className="best-node" />
-      </g>
-      <g transform="translate(452 89)">
-        <circle r="22" className="best-target-ring" />
-        <circle r="16" className="best-target-inner" />
-        <circle r="11" className="best-target-fill" />
-        <path d="m-4 .5 2.5 2.5L4-3" className="best-check" />
-        <path d="M-27 0h3M24 0h3M0-27v3M0 24v3" className="best-target-ticks" />
-      </g>
+      {steps.map((step, index) => (
+        <g key={step.label} transform={`translate(${step.x} 170)`}>
+          <circle r="7" className="best-step-base" />
+          {index < steps.length - 1 ? (
+            <circle
+              r="7"
+              className="best-step-on"
+              style={{ animationDelay: `${index * 1.8}s` }}
+            />
+          ) : (
+            <g
+              className="best-delivered"
+              style={{ animationDelay: `${index * 1.8}s` }}
+            >
+              <circle r="14" className="best-target-ring" />
+              <circle r="10" className="best-target-fill" />
+              <path d="m-4 .5 2.5 2.5L4-3" className="best-check" />
+            </g>
+          )}
+          <text y="34" textAnchor="middle" className="best-map-caption">
+            {step.label}
+          </text>
+        </g>
+      ))}
 
       <g className="best-package">
-        <rect x="-40" y="-40" width="80" height="80" fill="none" />
-        <path d="m-12-6 12-5 12 5v13L0 12l-12-5Z" className="best-package-shell" />
-        <path d="m-12-6 12 5 12-6M0-1v13M-6-8.5l12 5v6" className="best-package-lines" />
-        <g className="best-scanner">
-          <path d="M0-34v60" className="best-scan-line" />
-          <path d="M-16-20v-8h8M8-28h8v8M16 10v8H8M-8 18h-8v-8" className="best-scan-corners" />
+        <g transform="translate(0 -26)">
+          <path d="m-12-6 12-5 12 5v13L0 12l-12-5Z" className="best-package-shell" />
+          <path d="m-12-6 12 5 12-6M0-1v13M-6-8.5l12 5v6" className="best-package-lines" />
         </g>
       </g>
-      <text x="72" y="286" className="best-svg-micro">END-TO-END VISIBILITY</text>
-      <text x="488" y="286" textAnchor="end" className="best-svg-micro">UPDATED JUST NOW</text>
+      <g transform="translate(488 258)">
+        <rect x="-190" width="190" height="28" rx="14" className="best-pill" />
+        <text x="-95" y="18" textAnchor="middle" className="best-svg-micro">AUTO CARRIER MATCH</text>
+      </g>
     </Frame>
   )
 }
 
 function MobileVisual() {
+  const channels = [
+    { label: "Web Tracking", y: 72 },
+    { label: "Mobile App", y: 121 },
+    { label: "WeChat Mini Program", y: 170 },
+    { label: "Shopify App", y: 219 },
+  ]
+
   return (
     <Frame kind="mobile">
-      <g className="best-phone">
-        <rect x="211" y="25" width="140" height="265" rx="25" className="best-phone-shell" />
-        <rect x="219" y="34" width="124" height="247" rx="18" className="best-phone-screen" />
-        <path d="M260 44h42" className="best-speaker" />
-        <text x="233" y="68" className="best-phone-title">17TRACK</text>
-        <text x="233" y="88" className="best-svg-micro">YQTRACK123456</text>
-        <rect x="233" y="99" width="64" height="17" rx="8.5" className="best-status-pill" />
-        <text x="242" y="111" className="best-status-text">IN TRANSIT</text>
-        <path d="M239 137v100" className="best-phone-track" />
-        <circle cx="239" cy="138" r="3" className="best-node" />
-        <circle cx="239" cy="170" r="3" className="best-node" />
-        <circle cx="239" cy="202" r="3" className="best-node-dim" />
-        <circle cx="239" cy="234" r="3" className="best-node-dim" />
-        <text x="250" y="140" className="best-phone-event">Shipment picked up</text>
-        <text x="250" y="172" className="best-phone-event">Arrived at facility</text>
-        <text x="250" y="204" className="best-phone-event-dim">Out for delivery</text>
-        <text x="250" y="236" className="best-phone-event-dim">Delivered</text>
-        <path d="M254 261h54" className="best-phone-home" />
+      <g transform="translate(40 72)">
+        <rect width="222" height="176" rx="14" className="best-panel" />
+        <text x="16" y="26" className="best-svg-micro">LIVE TRACKING</text>
+        <text x="16" y="56" className="best-svg-label">YQTRACK123456</text>
+        <path d="M16 92H206" className="best-route-ghost" />
+        <path d="M16 92H143" className="best-mini-progress" />
+        <circle cx="16" cy="92" r="3.5" className="best-node" />
+        <circle cx="79" cy="92" r="3.5" className="best-node" />
+        <circle cx="143" cy="92" r="3.5" className="best-node" />
+        <circle cx="206" cy="92" r="3.5" className="best-node-dim" />
+        <text x="16" y="122" className="best-svg-micro">München → Tirana</text>
+        <rect x="16" y="134" width="116" height="24" rx="12" className="best-status-pill" />
+        <text x="28" y="150" className="best-status-text">IN TRANSIT</text>
       </g>
 
-      <g className="best-float-a">
-        <rect x="61" y="84" width="157" height="68" rx="13" className="best-panel" />
-        <circle cx="81" cy="104" r="8" className="best-notification-icon" />
-        <path d="m77.5 104 2.5 2.5 4.5-5" className="best-check" />
-        <text x="97" y="107" className="best-card-heading">Package delivered</text>
-        <text x="78" y="131" className="best-card-caption">Today, 14:32</text>
-        <path d="M174 130h25" className="best-card-link" />
-      </g>
-      <g className="best-float-b">
-        <rect x="344" y="171" width="153" height="66" rx="13" className="best-panel" />
-        <path d="M359 190h14v9h-14zM373 193h6l3.5 3.5v2.5h-9.5z" className="best-micro-icon" />
-        <text x="390" y="197" className="best-card-heading">In transit</text>
-        <text x="360" y="220" className="best-card-caption">Arriving today</text>
-        <circle cx="477" cy="217" r="2.5" className="best-dot" />
-      </g>
-      <path d="M189 176c-28-6-38-14-40-24M371 149c29-6 40-17 44-32" className="best-signal" />
-      <circle cx="149" cy="152" r="2.5" className="best-dot" />
-      <circle cx="415" cy="117" r="2.5" className="best-dot" />
-      <text x="280" y="307" textAnchor="middle" className="best-svg-micro">WEB · APP · MINI PROGRAM</text>
+      <circle cx="262" cy="160" r="4" className="best-sync-hub" />
+      <circle cx="262" cy="160" r="9" className="best-sync-hub-ring" />
+
+      {channels.map((channel, index) => {
+        const cy = channel.y + 21
+        return (
+          <g key={channel.label}>
+            <path
+              d={`M262 160Q295 160 328 ${cy}`}
+              className="best-sync-link"
+            />
+            <g transform={`translate(328 ${channel.y})`}>
+              <rect width="200" height="42" rx="12" className="best-channel" />
+              <g transform="translate(16 12)" className="best-channel-glyph">
+                {index === 0 ? (
+                  <>
+                    <circle cx="9" cy="9" r="7" />
+                    <path d="M2 9h14M9 2c3.5 4 3.5 10 0 14M9 2c-3.5 4-3.5 10 0 14" />
+                  </>
+                ) : index === 1 ? (
+                  <>
+                    <rect x="2" y="2" width="14" height="14" rx="4" />
+                    <circle cx="9" cy="9" r="2.2" fill="#f5f5f5" stroke="none" />
+                  </>
+                ) : index === 2 ? (
+                  <path d="M3 3h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                ) : (
+                  <>
+                    <path d="M4 5h10l1 9H3Z" />
+                    <path d="M6.5 5V3.5a2.5 2.5 0 0 1 5 0V5" />
+                  </>
+                )}
+              </g>
+              <text x="44" y="26" className="best-channel-label">
+                {channel.label}
+              </text>
+              <circle cx="184" cy="21" r="2.5" className="best-dot" />
+              <circle
+                cx="184"
+                cy="21"
+                r="7"
+                className="best-channel-pulse"
+                style={{ animationDelay: `${index * 0.45}s` }}
+              />
+            </g>
+          </g>
+        )
+      })}
     </Frame>
   )
 }
@@ -171,6 +195,16 @@ function WorldVisual() {
         <path d={`M${laX} ${laY}Q152 199 ${saoPauloX} ${saoPauloY}`} className="best-world-arc best-world-arc-3" pathLength="100" />
         <path d={`M${shanghaiX} ${shanghaiY}Q474 166 ${sydneyX} ${sydneyY}`} className="best-world-arc best-world-arc-2" pathLength="100" />
 
+        <g className="best-plane">
+          <g transform="scale(.95)">
+            <circle r="13" className="best-plane-halo" />
+            <path
+              d="M10 0 3.6-1.7H.9L-3-6.9h-2.4l1.6 5.2h-2.6l-1.6-1.5h-1.4l.6 3.2-.6 3.2h1.4l1.6-1.5h2.6l-1.6 5.2H-3l3.9-5.2h2.7L10 0Z"
+              className="best-plane-body"
+            />
+          </g>
+        </g>
+
         {Object.values(WORLD_HUBS).map(([x, y]) => (
           <g key={`${x}-${y}`} transform={`translate(${x} ${y})`}>
             <circle r="4.5" className="best-map-node-ring" />
@@ -185,7 +219,6 @@ function WorldVisual() {
         <rect width="144" height="34" rx="10" className="best-glass-pill" />
         <text x="72" y="22" textAnchor="middle" className="best-svg-label">3500+ CARRIERS</text>
       </g>
-      <text x="506" y="294" textAnchor="end" className="best-svg-label">190+ COUNTRIES & REGIONS</text>
     </Frame>
   )
 }
@@ -237,10 +270,6 @@ function UptimeVisual() {
         <text x="20" y="177" className="best-chart-time">00:00</text>
         <text x="250" y="177" textAnchor="end" className="best-chart-time">NOW</text>
       </g>
-      <g transform="translate(365 272)">
-        <circle r="3" className="best-dot" />
-        <text x="13" y="4" className="best-svg-micro">ALL SYSTEMS OPERATIONAL</text>
-      </g>
     </Frame>
   )
 }
@@ -279,13 +308,13 @@ function SupportVisual() {
       <g className="best-float-a">
         <path d="M65 82h132a12 12 0 0 1 12 12v43a12 12 0 0 1-12 12h-76l-22 17 3-17H65a12 12 0 0 1-12-12V94a12 12 0 0 1 12-12Z" className="best-panel" />
         <text x="70" y="108" className="best-card-heading">How can we help?</text>
-        <text x="70" y="129" className="best-card-caption">Support is online now</text>
+        <text x="70" y="129" className="best-card-caption">Support online now</text>
         <circle cx="70" cy="140" r="2" className="best-dot" />
       </g>
       <g className="best-float-b">
         <path d="M374 180h112a12 12 0 0 1 12 12v37a12 12 0 0 1-12 12h-13l3 17-22-17h-80a12 12 0 0 1-12-12v-37a12 12 0 0 1 12-12Z" className="best-panel" />
         <text x="380" y="207" className="best-card-heading">Issue resolved</text>
-        <text x="380" y="227" className="best-card-caption">Average reply &lt; 2 min</text>
+        <text x="380" y="227" className="best-card-caption">Reply &lt; 2 min</text>
       </g>
       <g transform="translate(57 266)">
         <rect width="108" height="32" rx="10" className="best-pill" />

@@ -149,8 +149,8 @@ $wide: 1360px;
   gap: 0.625rem;
 
   @media (min-width: $lg) {
-    flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.875rem;
   }
 }
 
@@ -164,8 +164,8 @@ $wide: 1360px;
   object-position: left;
 
   @media (min-width: $lg) {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     margin-top: 0;
   }
 }
@@ -176,7 +176,7 @@ $wide: 1360px;
   border-radius: 0.5rem;
 
   @media (min-width: $lg) {
-    border-radius: 14px;
+    border-radius: 12px;
   }
 }
 
@@ -186,7 +186,31 @@ $wide: 1360px;
   align-items: center;
   gap: 0.5rem 0.75rem;
   min-width: 0;
+  margin: 0;
+  font-size: 18px;
   font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+
+  @media (min-width: $lg) {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+.headline {
+  margin: 0.75rem 0 0;
+  font-size: clamp(calc(28px * 20 / 32), calc(28 * 100vw / 768), 28px);
+  font-weight: 700;
+  line-height: clamp(calc(36px * 20 / 32), calc(36 * 100vw / 768), 36px);
+  letter-spacing: clamp(-0.3px, calc(-0.3 * 100vw / 768), calc(-0.3px * 20 / 32));
+  color: #212121;
+
+  @media (min-width: 768px) {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.3px;
+  }
 }
 
 .pill {

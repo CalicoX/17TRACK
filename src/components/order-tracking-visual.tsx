@@ -1,9 +1,9 @@
 import styles from "./order-tracking-visual.module.scss"
 
 const PICKS = [
-  { src: "/solutions/pick-vest.jpg", name: "Quilted vest", price: "$89" },
-  { src: "/solutions/pick-coffee.jpg", name: "Coffee cup", price: "$18" },
-  { src: "/solutions/pick-tote.jpg", name: "Canvas tote", price: "$32" },
+  { src: "/solutions/pick-vest.webp", name: "Quilted vest", price: "$89" },
+  { src: "/solutions/pick-coffee.webp", name: "Coffee cup", price: "$18" },
+  { src: "/solutions/pick-tote.webp", name: "Canvas tote", price: "$32" },
 ] as const
 
 export function OrderTrackingVisual() {
@@ -11,7 +11,7 @@ export function OrderTrackingVisual() {
     <div className={styles.frame}>
       <div className={styles.board}>
         <img
-          src="/solutions/order-scene-bg.jpg"
+          src="/solutions/order-scene-bg.webp"
           alt=""
           draggable={false}
           className={styles.bg}
@@ -22,7 +22,7 @@ export function OrderTrackingVisual() {
             <span className={styles.edd}>EDD</span> 7 Apr
           </p>
           <div className={styles.carrier}>
-            <img src="/carriers/menu/usps.png" alt="" className={styles.logo} />
+            <img src="/carriers/menu/usps.webp" alt="" className={styles.logo} />
             <div>
               <p className={styles.name}>USPS</p>
               <p className={styles.number}>936 ···· 7352</p>
@@ -60,7 +60,7 @@ export function OrderTrackingVisual() {
           </ul>
         </article>
         <img
-          src="/solutions/order-scene-person.png"
+          src="/solutions/order-scene-person.webp"
           alt="Shopper checking a delivered-order tracking page on her phone"
           draggable={false}
           className={styles.person}

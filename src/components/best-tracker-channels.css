@@ -1,0 +1,85 @@
+.best-mini-progress {
+  fill: none;
+  stroke: #f5f5f5;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.best-sync-hub {
+  fill: #f5f5f5;
+}
+
+.best-sync-hub-ring {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: .3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: best-pulse 2.8s ease-out infinite;
+}
+
+.best-sync-link {
+  fill: none;
+  stroke: #9a9a9a;
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  opacity: .6;
+  animation: best-sync 3s linear infinite;
+}
+
+.best-channel {
+  fill: #0a0a0a;
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-opacity: .28;
+}
+
+.best-channel-label {
+  fill: #f5f5f5;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+}
+
+.best-channel-glyph {
+  fill: none;
+  stroke: #d4d4d4;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.best-channel-pulse {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: best-channel-pulse 2.4s ease-out infinite;
+}
+
+@keyframes best-sync {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+@keyframes best-channel-pulse {
+  0% {
+    transform: scale(.7);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: .55;
+  }
+
+  80%,
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
