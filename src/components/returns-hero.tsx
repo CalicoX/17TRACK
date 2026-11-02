@@ -223,7 +223,7 @@ export function ReturnsHero({ className }: { className?: string }) {
           land on the cell edges. lg keeps the 90% cap. */}
       <div
         ref={frameRef}
-        className="relative aspect-[620/540] w-[calc(100%*620/(620+24.8+24))] lg:w-[min(620px,90%)]"
+        className="relative aspect-[620/540] w-[calc(100%*620/(620+24.8+24))] lg:w-[min(620px,90%,calc(var(--solution-visual-max,470px)*620/540))]"
       >
         <div
           className="absolute top-0 left-0 origin-top-left"

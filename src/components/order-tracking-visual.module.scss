@@ -11,7 +11,11 @@ $bg-h: 424px;
 .frame {
   position: relative;
   width: 100%;
-  max-width: 560px;
+  // 560px cap, and also the shared solution max-height (default 470px).
+  max-width: min(
+    560px,
+    calc(var(--solution-visual-max, 470px) * #{$board-w} / #{$board-h})
+  );
   margin-inline: auto;
   aspect-ratio: calc($board-w / $board-h);
   container-type: inline-size;

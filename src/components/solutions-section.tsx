@@ -23,6 +23,12 @@ type Solution = {
   }[]
 }
 
+// One ceiling for every solution artwork. Tall frames shrink to it and keep
+// their ratio; the wide API diagram stays shorter because the column cannot
+// fit it at this height. Wide desktops also give the figure this slot so the
+// four rows line up.
+const SOLUTION_VISUAL_MAX = "470px"
+
 const SOLUTIONS: Solution[] = [
   {
     name: "Shopify Order Tracking",
@@ -177,7 +183,10 @@ function Action({
 
 export function SolutionsSection() {
   return (
-    <section className="w-full bg-white py-24 text-[#212121] antialiased">
+    <section
+      className="w-full bg-white py-24 text-[#212121] antialiased"
+      style={{ ["--solution-visual-max" as string]: SOLUTION_VISUAL_MAX }}
+    >
       <div className="mx-auto w-full max-w-[1440px] px-6">
         <h2 className="track-solutions-title mb-12 text-center font-bold md:mb-16">
           Multiple package tracking solutions in one
@@ -281,10 +290,16 @@ export function SolutionsSection() {
                 <figure
                   aria-label={item.phone ? item.imageAlt : undefined}
                   role={item.phone ? "img" : undefined}
-                  className={`relative order-2 my-0 min-w-0 py-6 lg:px-12 lg:py-12 ${item.phone ? "max-lg:overflow-x-clip" : "overflow-hidden"} ${flipped ? "lg:order-2" : "lg:order-1"}`}
+                  className={`relative order-2 my-0 flex min-w-0 items-center justify-center py-6 lg:px-12 lg:py-12 min-[1360px]:min-h-[calc(var(--solution-visual-max)+6rem)] ${item.phone ? "max-lg:overflow-x-clip" : "overflow-hidden"} ${flipped ? "lg:order-2" : "lg:order-1"}`}
                 >
                   {item.phone ? (
-                    <div className="mx-auto w-full lg:w-[min(560px,100%)] lg:translate-x-8">
+                    <div
+                      className="mx-auto w-full lg:translate-x-8"
+                      style={{
+                        maxWidth:
+                          "min(100%, 560px, calc(var(--solution-visual-max) * 1237 / 1280))",
+                      }}
+                    >
                       <SolutionPhone />
                     </div>
                   ) : item.name === "Shopify Order Tracking" ? (

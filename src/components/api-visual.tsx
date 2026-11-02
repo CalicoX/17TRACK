@@ -133,6 +133,7 @@ export function ApiVisual() {
       aria-hidden
       className="relative w-full"
       style={{
+        maxWidth: `min(100%, calc(var(--solution-visual-max, 470px) * ${W} / ${H}))`,
         aspectRatio: `${W} / ${H}`,
         containerType: "inline-size",
         borderRadius: "calc(8 / 523 * 100cqw)",
