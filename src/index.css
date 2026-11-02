@@ -269,6 +269,15 @@
     linear-gradient(180deg, #f3f8ff 0%, #fafcff 55%, #f6f6f6 100%);
 }
 
+@media (width < 768px) {
+  .track-hero {
+    background:
+      radial-gradient(58% 78% at 12% 0, rgba(147, 197, 253, 0.34), rgba(147, 197, 253, 0) 70%),
+      radial-gradient(62% 88% at 94% 16%, rgba(191, 219, 254, 0.42), rgba(191, 219, 254, 0) 72%),
+      linear-gradient(180deg, #f3f8ff 0%, #fafcff 55%, #fff 100%);
+  }
+}
+
 /* API .hero::before: 56px hairline grid, masked out toward the bottom. */
 .track-hero::before {
   content: "";
@@ -307,18 +316,19 @@
   height: 100% !important;
 }
 
-/* Below 768px the title scales with the viewport and floors at 20px. */
+/* Matches the other section titles: scales with the viewport below 768px,
+   floors at desktop size * 20/32, then stays at 40px from 768px up. */
 .track-hero-title {
-  font-size: clamp(20px, calc(32 * 100vw / 768), 32px);
-  line-height: clamp(calc(28.6px * 20 / 32), calc(28.6 * 100vw / 768), 28.6px);
-  letter-spacing: clamp(-0.66px, calc(-0.66 * 100vw / 768), calc(-0.66px * 20 / 32));
+  font-size: clamp(calc(40px * 20 / 32), calc(40 * 100vw / 768), 40px);
+  line-height: clamp(calc(48px * 20 / 32), calc(48 * 100vw / 768), 48px);
+  letter-spacing: clamp(-0.4px, calc(-0.4 * 100vw / 768), calc(-0.4px * 20 / 32));
 }
 
 @media (width >= 768px) {
   .track-hero-title {
-    font-size: 32px;
-    line-height: 28.6px;
-    letter-spacing: -0.66px;
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.4px;
   }
 }
 

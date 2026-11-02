@@ -706,15 +706,15 @@ export function TrackingHero() {
   }
 
   return (
-    <section className="track-hero relative flex w-full flex-col items-center overflow-hidden px-6 py-16 text-[#212121] antialiased">
+    <section className="track-hero relative flex w-full flex-col items-center overflow-hidden px-6 pt-12 pb-8 text-[#212121] antialiased md:py-16">
       <HeroGlobe />
       <div className="relative z-[1] flex w-full max-w-[728px] flex-col items-center gap-6">
         <img
           src="/figma/banner.webp"
           alt="17RETURNS DTC 品牌退换货售后解决方案。挽回20%+收入，7×24h自动处理，降低80%客服工作量，18%+节省逆向物流费。"
-          width={728}
-          height={90}
-          className="h-[90px] w-full object-cover md:hidden"
+          width={1310}
+          height={160}
+          className="block h-auto w-full object-contain md:hidden"
         />
 
         <div className="flex w-full flex-col items-center gap-[10px] text-center">

@@ -16,6 +16,10 @@ $wide: 1360px;
   color: #212121;
   background: #fff;
   -webkit-font-smoothing: antialiased;
+
+  @media (max-width: #{$md - 1px}) {
+    padding-block: 4rem;
+  }
 }
 
 .headingWrap {
@@ -145,11 +149,10 @@ $wide: 1360px;
 
 .titleRow {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.625rem;
 
   @media (min-width: $lg) {
-    align-items: center;
     gap: 0.875rem;
   }
 }
@@ -159,14 +162,13 @@ $wide: 1360px;
   flex-shrink: 0;
   width: 2rem;
   height: 2rem;
-  margin-top: 0.125rem;
+  margin-top: 0;
   object-fit: contain;
   object-position: left;
 
   @media (min-width: $lg) {
     width: 48px;
     height: 48px;
-    margin-top: 0;
   }
 }
 
