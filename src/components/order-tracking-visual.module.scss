@@ -1,12 +1,14 @@
-// Fixed artboard. The frame keeps the ratio; the board scales with the column.
-$board-w: 488px;
-$board-h: 456px;
-$below: 28px;
-// Person frame is the red box. The street plate is that tall, and wider.
-$shot-w: 268px;
-$shot-h: 356px;
-$bg-w: 354px;
-$bg-h: 424px;
+@use "sass:math";
+
+// Fixed artboard ratios. Everything except the card rims is expressed in
+// container-width units, so the composition scales without a CSS transform
+// (which would also scale the 1px border).
+$board-w: 488;
+$board-h: 456;
+
+@function cq($value) {
+  @return math.div($value, $board-w) * 100cqw;
+}
 
 .frame {
   position: relative;
@@ -27,44 +29,37 @@ $bg-h: 424px;
 
 .board {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: $board-w;
-  height: $board-h;
-  transform-origin: top left;
-  transform: scale(calc(100cqw / #{$board-w}));
+  inset: 0;
 }
 
 .bg {
   position: absolute;
   z-index: 0;
-  bottom: $below;
-  width: $bg-w;
-  height: $bg-h;
-  border-radius: 22px;
+  right: 0;
+  bottom: cq(28);
+  width: cq(354);
+  height: cq(424);
+  border-radius: cq(22);
   object-fit: cover;
   object-position: 68% 42%;
   pointer-events: none;
-  right: 0;
-  box-shadow: 0 16px 32px -22px rgba(80, 48, 24, 0.45);
+  box-shadow: 0 cq(16) cq(32) calc(cq(22) * -1) rgba(80, 48, 24, 0.45);
 }
 
 .card {
   position: absolute;
   z-index: 1;
-  top: 28px;
+  top: cq(28);
   left: 0;
-  width: 268px;
-  transform: scale(1.01);
-  transform-origin: top left;
-  padding: 10px 12px 11px;
+  width: cq(268);
+  padding: cq(10) cq(12) cq(11);
   border: 1px solid rgba(255, 255, 255, 0.84);
-  border-radius: 16px;
+  border-radius: cq(16);
   color: #171717;
   background-color: rgba(255, 255, 255, 0.52);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 14px 32px -18px rgba(15, 23, 42, 0.4);
+    0 cq(14) cq(32) calc(cq(18) * -1) rgba(15, 23, 42, 0.4);
   // Prefixed first. lightningcss drops the unprefixed property when it
   // comes second, and current Chrome ignores the prefix alone.
   -webkit-backdrop-filter: blur(18px) saturate(1.55);
@@ -73,23 +68,23 @@ $bg-h: 424px;
 
 .title {
   margin: 0;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: cq(14);
+  line-height: cq(18);
   font-weight: 600;
   letter-spacing: -0.03em;
   text-align: center;
 }
 
 .date {
-  margin: 4px 0 0;
-  font-size: 11px;
-  line-height: 16px;
+  margin: cq(4) 0 0;
+  font-size: cq(11);
+  line-height: cq(16);
   color: #5c6370;
   text-align: center;
 }
 
 .edd {
-  margin-right: 4px;
+  margin-right: cq(4);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: #171717;
@@ -98,70 +93,70 @@ $bg-h: 424px;
 .carrier {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 10px;
+  gap: cq(8);
+  margin-top: cq(10);
 }
 
 .logo {
-  width: 28px;
-  height: 28px;
+  width: cq(28);
+  height: cq(28);
   flex-shrink: 0;
   object-fit: contain;
 }
 
 .name {
   margin: 0;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: cq(12);
+  line-height: cq(16);
   font-weight: 600;
 }
 
 .number {
   margin: 0;
-  font-size: 11px;
-  line-height: 16px;
+  font-size: cq(11);
+  line-height: cq(16);
   color: #5c6370;
 }
 
 .status {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin: 8px 0 0;
-  font-size: 11px;
-  line-height: 16px;
+  gap: cq(6);
+  margin: cq(8) 0 0;
+  font-size: cq(11);
+  line-height: cq(16);
   font-weight: 500;
 }
 
 .mark {
   display: grid;
   place-items: center;
-  width: 14px;
-  height: 14px;
+  width: cq(14);
+  height: cq(14);
   flex-shrink: 0;
   border-radius: 999px;
   color: #fff;
   background: #2c3f50;
 
   svg {
-    width: 10px;
-    height: 10px;
+    width: cq(10);
+    height: cq(10);
   }
 }
 
 .event {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin: 6px 0 0;
-  font-size: 11px;
-  line-height: 16px;
+  gap: cq(6);
+  margin: cq(6) 0 0;
+  font-size: cq(11);
+  line-height: cq(16);
   color: #5c6370;
 }
 
 .dot {
-  width: 14px;
-  height: 14px;
+  width: cq(14);
+  height: cq(14);
   flex-shrink: 0;
   border: 1.5px solid #c5cad1;
   border-radius: 999px;
@@ -172,18 +167,16 @@ $bg-h: 424px;
   position: absolute;
   z-index: 3;
   right: 0;
-  bottom: 18px;
-  width: 232px;
-  transform: scale(1.01);
-  transform-origin: bottom right;
-  padding: 8px 10px 10px;
+  bottom: cq(18);
+  width: cq(232);
+  padding: cq(8) cq(10) cq(10);
   border: 1px solid rgba(255, 255, 255, 0.82);
-  border-radius: 16px;
+  border-radius: cq(16);
   color: #171717;
   background-color: rgba(255, 255, 255, 0.46);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 14px 32px -18px rgba(15, 23, 42, 0.35);
+    0 cq(14) cq(32) calc(cq(18) * -1) rgba(15, 23, 42, 0.35);
   // Prefixed first. See .card.
   -webkit-backdrop-filter: blur(22px) saturate(1.6);
   backdrop-filter: blur(22px) saturate(1.6);
@@ -191,8 +184,8 @@ $bg-h: 424px;
 
 .picksTitle {
   margin: 0;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: cq(13);
+  line-height: cq(16);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -200,8 +193,8 @@ $bg-h: 424px;
 .products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 8px 0 0;
+  gap: cq(8);
+  margin: cq(8) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -214,36 +207,57 @@ $bg-h: 424px;
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  border-radius: 8px;
+  border-radius: cq(8);
   object-fit: cover;
   background: #ececee;
 }
 
 .productName {
-  margin: 6px 0 0;
+  margin: cq(6) 0 0;
   overflow: hidden;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: cq(11);
+  line-height: cq(14);
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .productPrice {
-  margin: 1px 0 0;
-  font-size: 11px;
-  line-height: 14px;
+  margin: cq(1) 0 0;
+  font-size: cq(11);
+  line-height: cq(14);
   color: #5c6370;
 }
 
 .person {
   position: absolute;
   z-index: 2;
-  right: 126px;
-  bottom: $below;
-  width: $shot-w;
+  right: cq(126);
+  bottom: cq(28);
+  width: cq(268);
   max-width: none;
   object-fit: contain;
   object-position: bottom;
   pointer-events: none;
+}
+
+// Nudge the scene's left-hand composition left as a group. The recommendation
+// card stays put. Only applies in the two-column layout, where the figure has
+// enough padding to absorb the overhang without clipping the rim.
+@media (min-width: 1024px) {
+  .bg {
+    right: cq(24);
+  }
+
+  .card {
+    left: cq(-24);
+  }
+
+  .person {
+    right: cq(150);
+  }
+
+  .picks {
+    right: cq(-24);
+  }
 }

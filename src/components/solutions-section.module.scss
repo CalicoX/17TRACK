@@ -318,6 +318,15 @@ $wide: 1360px;
   }
 }
 
+.buttonApi {
+  color: #fff;
+  background: #1780ff;
+
+  &:hover {
+    background: #0b6fe6;
+  }
+}
+
 .buttonOutline {
   color: #212121;
   background: #fff;

@@ -19,7 +19,7 @@ type Solution = {
   actions: {
     label: string
     href: string
-    tone: "solid" | "outline" | "returns" | "badge"
+    tone: "solid" | "outline" | "returns" | "api" | "badge"
     badge?: { src: string; alt: string }
   }[]
 }
@@ -89,7 +89,7 @@ const SOLUTIONS: Solution[] = [
       {
         label: "Try for free",
         href: "https://www.17track.net/en/api",
-        tone: "solid",
+        tone: "api",
       },
     ],
   },
@@ -159,9 +159,11 @@ function Action({
   const toneClass =
     tone === "returns"
       ? styles.buttonReturns
-      : tone === "solid"
-        ? styles.buttonSolid
-        : styles.buttonOutline
+      : tone === "api"
+        ? styles.buttonApi
+        : tone === "solid"
+          ? styles.buttonSolid
+          : styles.buttonOutline
   return (
     <a
       href={href}
