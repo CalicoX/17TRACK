@@ -9,7 +9,7 @@ import {
   type PointerEvent,
   type ReactElement,
 } from "react"
-import { Filter, Trash2 } from "lucide-react"
+import { Filter, Trash2, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -898,32 +898,47 @@ export function TrackingHero() {
                     setCarrierOpen(open)
                   }}
                 >
-                  <HoverTooltip label="Select carrier">
-                      <PopoverTrigger asChild>
-                        <Button
-                          ref={carrierButtonRef}
+                  <div className="relative flex shrink-0">
+                    <HoverTooltip label="Select carrier">
+                        <PopoverTrigger asChild>
+                          <Button
+                            ref={carrierButtonRef}
+                            type="button"
+                            variant="ghost"
+                            className={cn(
+                              still,
+                              "tool-sheen h-12 gap-2.5 rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] py-0 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-black! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-black! aria-expanded:bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] aria-expanded:text-black",
+                              carrier ? "pr-12" : "pr-3",
+                            )}
+                          >
+                            {carrier && carrierByName(carrier) ? (
+                              <img
+                                src={carrierByName(carrier)?.logo}
+                                alt=""
+                                className="size-9 shrink-0 rounded-full object-cover"
+                              />
+                            ) : (
+                              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eaee]">
+                                <img src="/figma/shipment-major.svg" alt="" />
+                              </span>
+                            )}
+                            {carrier ?? "Auto detect"}
+                          </Button>
+                        </PopoverTrigger>
+                    </HoverTooltip>
+                    {carrier ? (
+                      <HoverTooltip label="Reset to Auto detect">
+                        <button
                           type="button"
-                          variant="ghost"
-                          className={cn(
-                            still,
-                            "tool-sheen h-12 gap-2.5 rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] py-0 pr-3 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-black! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-black! aria-expanded:bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] aria-expanded:text-black",
-                          )}
+                          aria-label="Clear selected carrier"
+                          onClick={() => selectCarrier(null)}
+                          className="absolute top-1/2 right-1.5 flex size-9 -translate-y-1/2 items-center justify-center rounded-full text-[#5c6370] transition-colors hover:bg-black/[0.07] hover:text-[#212121] focus-visible:bg-black/[0.07] focus-visible:text-[#212121] focus-visible:outline-none active:bg-black/[0.12] [&_svg]:size-4"
                         >
-                          {carrier && carrierByName(carrier) ? (
-                            <img
-                              src={carrierByName(carrier)?.logo}
-                              alt=""
-                              className="size-9 shrink-0 rounded-full object-cover"
-                            />
-                          ) : (
-                            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eaee]">
-                              <img src="/figma/shipment-major.svg" alt="" />
-                            </span>
-                          )}
-                          {carrier ?? "Auto detect"}
-                        </Button>
-                      </PopoverTrigger>
-                  </HoverTooltip>
+                          <X />
+                        </button>
+                      </HoverTooltip>
+                    ) : null}
+                  </div>
                   <PopoverContent
                     side="top"
                     align="end"
