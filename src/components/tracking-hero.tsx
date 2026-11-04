@@ -915,7 +915,7 @@ export function TrackingHero() {
                               <img
                                 src={carrierByName(carrier)?.logo}
                                 alt=""
-                                className="size-9 shrink-0 rounded-full object-cover"
+                                className="size-9 shrink-0 rounded-full object-cover ring-1 ring-black/10"
                               />
                             ) : (
                               <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eaee]">
@@ -1029,7 +1029,7 @@ export function TrackingHero() {
                     )}
                     <div
                       className="overflow-y-auto overscroll-contain"
-                      style={{ maxHeight: carrierListMaxHeight }}
+                      style={{ height: carrierListMaxHeight }}
                     >
                       <CarrierGroup
                         title="Search history"
