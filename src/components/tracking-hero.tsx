@@ -297,6 +297,7 @@ export function TrackingHero() {
   const listRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const carrierButtonRef = useRef<HTMLButtonElement>(null)
+  const carrierLastWidthRef = useRef<number | null>(null)
   const mobileInputRef = useRef<HTMLInputElement>(null)
   const [desktopLayout, setDesktopLayout] = useState(isDesktopTrack)
   const showPlaceholder =
@@ -324,6 +325,57 @@ export function TrackingHero() {
           CARRIER_LIST_MAX_HEIGHT,
           Math.max(0, carrierMenuMaxHeight - CARRIER_MENU_FIXED_CHROME),
         )
+
+  useLayoutEffect(() => {
+    const button = carrierButtonRef.current
+    if (!button) return
+
+    const previousWidth = carrierLastWidthRef.current
+    const currentWidth = button.style.width
+      ? button.getBoundingClientRect().width
+      : (previousWidth ?? button.getBoundingClientRect().width)
+
+    button.style.transition = "none"
+    button.style.width = "auto"
+    const nextWidth = button.getBoundingClientRect().width
+    carrierLastWidthRef.current = nextWidth
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
+    if (
+      previousWidth == null ||
+      reducedMotion ||
+      Math.abs(currentWidth - nextWidth) < 0.5
+    ) {
+      button.style.width = ""
+      button.style.transition = ""
+      return
+    }
+
+    button.style.width = `${currentWidth}px`
+    void button.offsetWidth
+    button.style.transition = ""
+    button.style.width = `${nextWidth}px`
+
+    let timeout = 0
+    const finish = () => {
+      button.style.width = ""
+      button.style.transition = ""
+      button.removeEventListener("transitionend", onTransitionEnd)
+      window.clearTimeout(timeout)
+    }
+    const onTransitionEnd = (event: TransitionEvent) => {
+      if (event.target === button && event.propertyName === "width") finish()
+    }
+    button.addEventListener("transitionend", onTransitionEnd)
+    timeout = window.setTimeout(finish, 320)
+
+    return () => {
+      button.removeEventListener("transitionend", onTransitionEnd)
+      window.clearTimeout(timeout)
+    }
+  }, [carrier])
 
   useLayoutEffect(() => {
     if (!pendingFocus) return
@@ -907,22 +959,24 @@ export function TrackingHero() {
                             variant="ghost"
                             className={cn(
                               still,
-                              "tool-sheen h-12 gap-2.5 rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] py-0 pl-1 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-black! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-black! aria-expanded:bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] aria-expanded:text-black",
+                              "tool-sheen carrier-pill h-12 justify-start gap-2.5 overflow-hidden rounded-full border-0 bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] py-0 pl-1.5 text-[14px] leading-5 font-medium tracking-[-0.21px] text-black backdrop-blur-xl hover:bg-white! hover:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! hover:text-black! focus-visible:bg-white! focus-visible:bg-[linear-gradient(180deg,#fff_0%,#fff_100%)]! focus-visible:text-black! aria-expanded:bg-[linear-gradient(180deg,#fff_0%,#f3f4f6_100%)] aria-expanded:text-black",
                               carrier ? "pr-12" : "pr-3",
                             )}
                           >
-                            {carrier && carrierByName(carrier) ? (
-                              <img
-                                src={carrierByName(carrier)?.logo}
-                                alt=""
-                                className="size-9 shrink-0 rounded-full object-cover ring-1 ring-black/10"
-                              />
-                            ) : (
-                              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eaee]">
-                                <img src="/figma/shipment-major.svg" alt="" />
-                              </span>
-                            )}
-                            {carrier ?? "Auto detect"}
+                            <span className="flex shrink-0 items-center gap-2.5 whitespace-nowrap">
+                              {carrier && carrierByName(carrier) ? (
+                                <img
+                                  src={carrierByName(carrier)?.logo}
+                                  alt=""
+                                  className="size-9 shrink-0 rounded-full object-cover ring-1 ring-black/10"
+                                />
+                              ) : (
+                                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eaee]">
+                                  <img src="/figma/shipment-major.svg" alt="" />
+                                </span>
+                              )}
+                              {carrier ?? "Auto detect"}
+                            </span>
                           </Button>
                         </PopoverTrigger>
                     </HoverTooltip>

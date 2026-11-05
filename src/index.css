@@ -138,6 +138,20 @@
   100% { transform: translateX(280%) skewX(-20deg); }
 }
 
+/* The carrier pill animates its measured width so swapping carriers (or
+   clearing back to Auto detect) glides instead of snapping. */
+.carrier-pill {
+  transition:
+    width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carrier-pill {
+    transition: none;
+  }
+}
+
 .badge-sheen {
   position: relative;
   overflow: hidden;
